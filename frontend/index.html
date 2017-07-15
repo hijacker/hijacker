@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Test</title>
+  </head>
+  <body>
+    testing
+    <script type="text/javascript" src="./js/socket.io.js"></script>
+    <script type="text/javascript">
+      var socket = io()
+
+      socket.on('proxy_request', function(req) {
+        console.log('PROXY REQUEST:', req)
+      });
+
+      socket.on('api_response', function(res) {
+        console.log('API RESPONSE:', res)
+      });
+    </script>
+  </body>
+</html>
