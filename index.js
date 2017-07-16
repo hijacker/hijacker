@@ -94,7 +94,26 @@ const handleRoute = (req, res) => {
       // Send response as close to api response as possible
       res.header('Content-Type', response.headers['content-type'])
       res.status(route_rule.statusCode || response.statusCode)
-      res.json(route_rule.body || body || {})
+
+      // Listen for response from admin if breakpoint on
+      if (route_rule.interceptResponse && io.sockets.sockets.length !== 0) {
+        console.log("Waiting for response from admin")
+        let resolved = false
+
+        for (let id in io.sockets.sockets) {
+          let socket = io.sockets.sockets[id]
+
+          socket.once('testing', (data) => {
+            if (!resolved) {
+              res.json(data)
+              resolved = true
+            }
+          })
+        }
+      } else {
+        // Just send back responses
+        res.json(route_rule.body || body || {})
+      }
     })
   } else {
     io.emit('api_response', {
