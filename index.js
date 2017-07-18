@@ -84,6 +84,23 @@ const handleRoute = (req, res) => {
     strictSSL: false
   }
 
+  if (route_rule.interceptRequest && io.sockets.sockets.length !== 0) {
+    console.log("Waiting for response from admin")
+    let resolved = false
+
+    for (let id in io.sockets.sockets) {
+      let socket = io.sockets.sockets[id]
+
+      socket.once(request_id, (data) => {
+        if (!resolved) {
+          resolved = true
+          options.body = data.body || options.body
+          options.method = data.method || options.method
+        }
+      })
+    }
+  }
+
   let responseObj = {
     request_id: request_count,
     headers: res.headers,
