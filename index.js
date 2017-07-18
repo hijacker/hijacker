@@ -5,7 +5,7 @@ const app = express()
 const server = require('http').Server(app)
 const request = require('request')
 const io = require('socket.io')(server)
-
+const uuid = require('uuid/v4')
 
 // Port to run api and web server on
 const PORT = 3000
@@ -35,7 +35,10 @@ app.use('/middleman', express.static('frontend'))
 let request_count = 0
 
 // List of rules to activate on routes
-let rules = []
+let rules = [{
+  path: '/posts/1',
+  interceptResponse: true
+}]
 
 const handleRoute = (req, res) => {
   // API url to make the request to
@@ -47,6 +50,10 @@ const handleRoute = (req, res) => {
   // Grab rule for given route make match regex in future
   let route_rule = rules.filter((el) => el.path === req.originalUrl)[0] || DEFAULT_RULES
 
+  // Generate unique IDs for request and response
+  let request_id = uuid()
+  let response_id = uuid()
+
   // Websocket here for request to proxy (before sent to api server)
   io.emit('proxy_request', {
     request_id: request_count,
@@ -55,7 +62,8 @@ const handleRoute = (req, res) => {
     body: req.body,
     host: req.hostname,
     path: req.originalUrl,
-    rule: route_rule
+    rule: route_rule,
+    intercepted_id: route_rule.interceptRequest ? request_id : false
   })
 
   // Generate headers to keep
@@ -76,24 +84,33 @@ const handleRoute = (req, res) => {
     strictSSL: false
   }
 
+  let responseObj = {
+    request_id: request_count,
+    headers: res.headers,
+    method: res.method,
+    body: route_rule.body || {},
+    url: options.url,
+    statusCode: route_rule.statusCode || 200,
+    apiSkipped: !route_rule.interceptResponse,
+    intercepted_id: route_rule.interceptResponse ? response_id : false,
+    contentType: 'application/json'
+  }
+
   if (!route_rule.skipApi) {
     request(options, (error, response, body) => {
       console.log(`[${request_count}][${options.method}][${response.statusCode}] ${REQUEST_URL}`)
+      responseObj.headers = response.headers
+      responseObj.body = route_rule.body || body
+      responseObj.method = options.method
+      responseObj.statusCode = route_rule.statusCode || response.statusCode
+      responseObj.contentType = response.headers['content-type']
 
       // Websocket here for response from api
-      io.emit('api_response', {
-        request_id: request_count,
-        headers: response.headers,
-        method: options.method,
-        body: body,
-        url: options.url,
-        status: response.statusCode,
-        apiSkipped: false
-      })
+      io.emit('api_response', responseObj)
 
       // Send response as close to api response as possible
-      res.header('Content-Type', response.headers['content-type'])
-      res.status(route_rule.statusCode || response.statusCode)
+      res.header('Content-Type', responseObj.contentType)
+      res.status(responseObj.statusCode)
 
       // Listen for response from admin if breakpoint on
       if (route_rule.interceptResponse && io.sockets.sockets.length !== 0) {
@@ -103,32 +120,47 @@ const handleRoute = (req, res) => {
         for (let id in io.sockets.sockets) {
           let socket = io.sockets.sockets[id]
 
-          socket.once('testing', (data) => {
+          socket.once(response_id, (data) => {
             if (!resolved) {
-              res.json(data)
               resolved = true
+              res.status(data.statusCode || 200)
+              res.json(data.body || {})
             }
           })
         }
       } else {
         // Just send back responses
-        res.json(route_rule.body || body || {})
+        res.json(responseObj.body)
       }
     })
   } else {
-    io.emit('api_response', {
-      request_id: request_count,
-      headers: res.headers,
-      method: res.method,
-      body: route_rule.body || {},
-      url: options.url,
-      status: route_rule.statusCode || 200,
-      apiSkipped: true
-    })
+    // Websocket here for response from api
+    io.emit('api_response', responseObj)
 
-    res.header('Content-Type', 'application/json')
-    res.status(route_rule.statusCode || 200)
-    res.json(route_rule.body || {})
+    // Send response as close to api response as possible
+    res.header('Content-Type', responseObj.contentType)
+    res.status(responseObj.statusCode)
+
+    // Listen for response from admin if breakpoint on
+    if (route_rule.interceptResponse && io.sockets.sockets.length !== 0) {
+      console.log("Waiting for response from admin")
+      let resolved = false
+
+      for (let id in io.sockets.sockets) {
+        let socket = io.sockets.sockets[id]
+
+        socket.once(response_id, (data) => {
+          if (!resolved) {
+            resolved = true
+            res.status(data.statusCode || 200)
+            res.json(data.body || {})
+          }
+        })
+      }
+    } else {
+      // Just send back responses
+      res.json(responseObj.body)
+    }
   }
 
 }
