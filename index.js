@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 });
 
 // Admin panel setup
-app.use('/middleman', express.static('frontend'))
+app.use('/middleman', express.static('src/frontend'))
 
 // Request count to use as IDs for request
 let request_count = 0
@@ -84,6 +84,7 @@ const handleRoute = (req, res) => {
     strictSSL: false
   }
 
+  // interceptRequest if the route rule says to
   if (route_rule.interceptRequest && io.sockets.sockets.length !== 0) {
     console.log("Waiting for response from admin")
     let resolved = false
