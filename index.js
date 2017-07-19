@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 });
 
 // Admin panel setup
-app.use('/middleman', express.static('src/frontend'))
+app.use('/middleman', express.static(path.join(__dirname, 'src/frontend')))
 
 // Prevent favicon requests
 app.get('/favicon.ico', (req, res) => {
