@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": "./bin/index.js",
   "scripts": {
     "start": "nodemon index.js"
   },
