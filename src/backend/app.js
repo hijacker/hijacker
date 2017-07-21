@@ -93,6 +93,7 @@ const app = (server) => {
       statusCode: route_rule.statusCode || 200,
       apiSkipped: !route_rule.interceptResponse,
       intercepted_id: route_rule.interceptResponse ? response_id : false,
+      rule: route_rule,
       contentType: 'application/json'
     }
 
@@ -105,64 +106,43 @@ const app = (server) => {
         responseObj.statusCode = route_rule.statusCode || response.statusCode
         responseObj.contentType = response.headers['content-type']
 
-        // Websocket here for response from api
-        io.emit('api_response', responseObj)
-
-        // Send response as close to api response as possible
-        res.header('Content-Type', responseObj.contentType)
-        res.status(responseObj.statusCode)
-
-        // Listen for response from admin if breakpoint on
-        if (route_rule.interceptResponse && io.sockets.sockets.length !== 0) {
-          console.log("Waiting for response from admin")
-          let resolved = false
-
-          for (let id in io.sockets.sockets) {
-            let socket = io.sockets.sockets[id]
-
-            socket.once(response_id, (data) => {
-              if (!resolved) {
-                resolved = true
-                res.status(data.statusCode || 200)
-                res.json(data.body || {})
-              }
-            })
-          }
-        } else {
-          // Just send back responses
-          res.json(responseObj.body)
-        }
+        sendResponse(responseObj, res)
       })
     } else {
       // Websocket here for response from api
-      io.emit('api_response', responseObj)
-
-      // Send response as close to api response as possible
-      res.header('Content-Type', responseObj.contentType)
-      res.status(responseObj.statusCode)
-
-      // Listen for response from admin if breakpoint on
-      if (route_rule.interceptResponse && io.sockets.sockets.length !== 0) {
-        console.log("Waiting for response from admin")
-        let resolved = false
-
-        for (let id in io.sockets.sockets) {
-          let socket = io.sockets.sockets[id]
-
-          socket.once(response_id, (data) => {
-            if (!resolved) {
-              resolved = true
-              res.status(data.statusCode || 200)
-              res.json(data.body || {})
-            }
-          })
-        }
-      } else {
-        // Just send back responses
-        res.json(responseObj.body)
-      }
+      sendResponse(responseObj, res)
     }
 
+  }
+
+  const sendResponse = (responseObj, res) => {
+    // Websocket here for response from api
+    io.emit('api_response', responseObj)
+
+    // Send response as close to api response as possible
+    res.header('Content-Type', responseObj.contentType)
+    res.status(responseObj.statusCode)
+
+    // Listen for response from admin if breakpoint on
+    if (responseObj.rule.interceptResponse && io.sockets.sockets.length !== 0) {
+      console.log("Waiting for response from admin")
+      let resolved = false
+
+      for (let id in io.sockets.sockets) {
+        let socket = io.sockets.sockets[id]
+
+        socket.once(response_id, (data) => {
+          if (!resolved) {
+            resolved = true
+            res.status(data.statusCode || 200)
+            res.json(data.body || {})
+          }
+        })
+      }
+    } else {
+      // Just send back responses
+      res.json(responseObj.body)
+    }
   }
 
   const initSockets = () => {
@@ -179,6 +159,5 @@ const app = (server) => {
     initSockets: initSockets
   }
 }
-
 
 module.exports = app
