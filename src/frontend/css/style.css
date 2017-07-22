@@ -1,0 +1,12 @@
+.side-bar {
+  position: fixed;
+  top: 0;
+  left:0;
+  bottom: 0;
+  width: 250px;
+  background-color: #3d3d3d;
+}
+
+.content {
+  margin-left: 250px;
+}
