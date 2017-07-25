@@ -66,3 +66,5 @@ Hijacker is currently under development with the following features planned:
 - Request/Response Breakpoints (Editing requests before they are sent to the API server and responses before they are sent back to the client) (Implemented but needs dashboard)
 - More advanced route rules
 - Support for multiple API's for a project
+- Better CLI
+- Allow use without an existing API server
