@@ -1,12 +1,98 @@
-.side-bar {
-  position: fixed;
-  top: 0;
-  left:0;
-  bottom: 0;
-  width: 250px;
-  background-color: #3d3d3d;
+.no-radius {
+  border-radius: 0 !important;
+  width: 100%;
 }
 
-.content {
-  margin-left: 250px;
+.row {
+  margin-top: 10px;
+}
+
+.card {
+  border: 1px solid #e5e5e5;
+}
+
+.card-head {
+  font-size: 1.2em;
+  background-color: #f0f0f0;
+  padding: 5px;
+}
+
+.card-head-addon {
+  float: right;
+}
+
+.card-body {
+  padding: 5px;
+}
+
+
+
+/* Modal */
+@import "https://fonts.googleapis.com/css?family=Raleway";
+.modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  visibility: hidden;
+  backface-visibility: hidden;
+  opacity: 0;
+  transition: opacity .15s ease-in-out;
+}
+.modal.modal-open {
+  visibility: visible;
+  backface-visibility: visible;
+  opacity: 1;
+  z-index: 1;
+}
+.modal .modal-inner {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.modal .modal-inner .modal-content {
+  background-color: white;
+  max-width: 35em;
+  padding: 1em 1.5em;
+  position: relative;
+  margin: 2em;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.35);
+}
+.modal .modal-inner .modal-content .modal-close-icon {
+  position: absolute;
+  right: 1.5em;
+}
+.modal .modal-inner .modal-content .modal-content-inner {
+  padding-right: 2em;
+}
+.modal .modal-inner .modal-content .modal-content-inner h1, .modal .modal-inner .modal-content .modal-content-inner h2, .modal .modal-inner .modal-content .modal-content-inner h3, .modal .modal-inner .modal-content .modal-content-inner h4, .modal .modal-inner .modal-content .modal-content-inner h5, .modal .modal-inner .modal-content .modal-content-inner h6 {
+  margin-bottom: 0.25em;
+}
+.modal .modal-inner .modal-content .modal-content-inner p {
+  margin-bottom: 1em;
+}
+.modal .modal-inner .modal-content .modal-buttons-seperator {
+  margin: 1.5em 0;
+  margin-top: 0;
+}
+.modal .modal-inner .modal-content .modal-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+.modal .modal-inner .modal-content .modal-buttons button {
+  margin-left: 1em;
+}
+.modal .modal-inner .modal-content .modal-buttons button:first-child {
+  margin-left: 0;
+}
+
+.demo-container {
+  text-align: center;
 }

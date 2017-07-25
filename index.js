@@ -5,7 +5,7 @@ const path = require('path')
 const server = require('http').Server(app)
 
 const config = require('./src/backend/util/config')
-const middleman = require('./src/backend/app')(server)
+const hijacker = require('./src/backend/app')(server)
 
 // Express setup
 app.use(bodyParser.json())
@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 });
 
 // Admin panel setup
-app.use('/middleman', express.static(path.join(__dirname, 'src/frontend')))
+app.use('/hijacker', express.static(path.join(__dirname, 'src/frontend')))
 
 // Prevent favicon requests
 app.get('/favicon.ico', (req, res) => {
@@ -24,10 +24,10 @@ app.get('/favicon.ico', (req, res) => {
 })
 
 // Set routes for the proxy to lisetn too
-app.get('*', middleman.handleRoute)
-app.post('*', middleman.handleRoute)
+app.get('*', hijacker.handleRoute)
+app.post('*', hijacker.handleRoute)
 
-middleman.initSockets()
+hijacker.initSockets()
 
 server.listen(config.port, () => {
   console.log(`Application is listening on port ${config.port}`)

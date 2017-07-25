@@ -1,6 +1,6 @@
 {
-  "name": "middleman",
-  "version": "1.0.0",
+  "name": "hijacker",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "bin": "./bin/index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/travis-w/middleman.git"
+    "url": "git+https://github.com/travis-w/hijacker.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/travis-w/middleman/issues"
+    "url": "https://github.com/travis-w/hijacker/issues"
   },
-  "homepage": "https://github.com/travis-w/middleman#readme",
+  "homepage": "https://github.com/travis-w/hijacker#readme",
   "dependencies": {
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
