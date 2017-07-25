@@ -1,9 +1,11 @@
 {
   "name": "hijacker",
-  "version": "0.1.0",
-  "description": "",
+  "version": "0.1.1",
+  "description": "Frontend development tool for intercepting and mocking api requests",
   "main": "index.js",
-  "bin": "./bin/index.js",
+  "bin": {
+    "hijacker": "./bin/index.js"
+  },
   "scripts": {
     "start": "nodemon index.js"
   },
@@ -24,5 +26,6 @@
     "request": "^2.81.0",
     "socket.io": "^2.0.3",
     "uuid": "^3.1.0"
-  }
+  },
+  "devDependencies": {}
 }
