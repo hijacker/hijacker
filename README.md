@@ -22,7 +22,7 @@ To set up a project for use with Hijacker a hijacker.conf.json file should be ad
 
 ```
 {
-  "base_url": "http://api.base.com", // Base URL for API to intercept (without trailing backslash) requests for
+  "base_url": "http://api.base.com", // (REQUIRED) Base URL for API to intercept (without trailing backslash) requests for
   "port": 3000,  // Port to run the hijacker server on
   "rules": []    // List of rule objects for intercepting requests
 }
@@ -44,6 +44,37 @@ Here is an basic config file that defines a rule for the route `/cars`. Every ot
     }
   ]
 }
+```
+
+### Running
+Once you have have your config file set up in your project you can start the Hijacker server in the following ways:
+
+#### Global Install
+If you installed Hijacker globally, to start the server, all you need to do is run the following command in a directory that contains a configuration file:
+
+```
+hijakcer
+```
+
+#### Local Install
+If you installed Hijacker to a specific npm project you can run the following command in a directory with a configuration file:
+
+```
+./node_modules/.bin/hijacker
+```
+
+#### package.json Setup
+In either installation case, you can add a command similar to the following to the scripts section of the package.json file of a project.
+
+```
+"scripts": {
+  "hijacker": "hijacker"
+}
+```
+
+And then you can run the following command in your node project to start the server:
+```
+npm run hijacker
 ```
 
 ### Route Rule Object
