@@ -1,6 +1,9 @@
 # Hijacker
 Hijacker can be used as an API relay to assist with front end development. It can intercept requests and responses between the client and the API server.  
 
+### NPM
+Hijacker can be found on npm [here](https://www.npmjs.com/package/hijacker)
+
 ## Getting Started
 Hijacker is designed to be used alongside of an existing API so setting up a project is as simple as letting Hijacker know your API url and a list of rules you would like to intercept and then pointing your client to the Hijacker server instead of your API server.  If no rule is provided for a given route, it will return the response from the API server, so Hijacker can be used with out any rules, and your application should function as if Hijacker is not there.
 
@@ -23,8 +26,8 @@ To set up a project for use with Hijacker a hijacker.conf.json file should be ad
 ```
 {
   "base_url": "http://api.base.com", // (REQUIRED) Base URL for API to intercept (without trailing backslash) requests for
-  "port": 3000,  // Port to run the hijacker server on
-  "rules": []    // List of rule objects for intercepting requests
+  "port": 3000,  // Port to run the hijacker server on (Default: 3005)
+  "rules": []    // List of rule objects for intercepting requests (Default: [])
 }
 ```
 
@@ -53,7 +56,7 @@ Once you have have your config file set up in your project you can start the Hij
 If you installed Hijacker globally, to start the server, all you need to do is run the following command in a directory that contains a configuration file:
 
 ```
-hijakcer
+hijacker
 ```
 
 #### Local Install
@@ -78,17 +81,17 @@ npm run hijacker
 ```
 
 ### Route Rule Object
-Below are parameters that can be used in a route rule.
+Below are parameters that can be used in a route rule. Optional parameters will default to values from the original request/response.
 
-| Parameter         | Description                                                  |
-| ----------------- | ------------------------------------------------------------ |
-| body              | Body object to send back to client in response               |
-| disabled          | Flag to allow disabling a rule without deleting from list    |
-| interceptRequest  | Ability to intercept request from client before sent to api  |
-| interceptResponse | Ability to intercept response from api before sent to client |
-| path              | Apply rule to requests to paths that match                   |
-| skipApi           | Skip call to api server and send predefined response         |
-| statusCode        | Status code to send back to the client                       |
+| Parameter         | Default    | Description                                                  |
+| ----------------- | ---------- | ------------------------------------------------------------ |
+| body              | (optional) | Body object to send back to client in response               |
+| disabled          | false      | Flag to allow disabling a rule without deleting from list    |
+| interceptRequest  | false      | Ability to intercept request from client before sent to api  |
+| interceptResponse | false      | Ability to intercept response from api before sent to client |
+| path              | (required) | Apply rule to requests to paths that match                   |
+| skipApi           | false      | Skip call to api server and send predefined response         |
+| statusCode        | (optional) | Status code to send back to the client                       |
 
 
 ## Future Work
@@ -96,6 +99,8 @@ Hijacker is currently under development with the following features planned:
 - Dashboard to configure Hijacker rules
 - Request/Response Breakpoints (Editing requests before they are sent to the API server and responses before they are sent back to the client) (Implemented but needs dashboard)
 - More advanced route rules
+  - Match paths with regex
+  - Modify responses/requests w/ functions rather than replacing with object
 - Support for multiple API's for a project
 - Better CLI
 - Allow use without an existing API server
