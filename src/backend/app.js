@@ -30,7 +30,11 @@ const app = (server) => {
     console.log(`[${++request_count}][PROXY][${req.method}] ${REQUEST_URL}`)
 
     // Grab rule for given route make match regex in future
-    let route_rule = rules.filter((el) => !el.disabled && el.path === req.originalUrl)[0] || DEFAULT_RULES
+    let route_rule = rules.filter((rule) => {
+      // Make sure path and method match and rule is enabled
+      return !rule.disabled && rule.path === req.originalUrl
+                          && (!rule.hasOwnProperty('method') || rule.method === req.method)
+    })[0] || DEFAULT_RULES
 
     // Generate unique IDs for request and responsef
     let request_id = uuid()

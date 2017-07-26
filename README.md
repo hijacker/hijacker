@@ -91,6 +91,7 @@ Below are parameters that can be used in a route rule. Optional parameters will 
 | interceptResponse | false      | Ability to intercept response from api before sent to client |
 | path              | (required) | Apply rule to requests to paths that match                   |
 | skipApi           | false      | Skip call to api server and send predefined response         |
+| method            | All        | HTTP method to apply the rule to                             |
 | statusCode        | (optional) | Status code to send back to the client                       |
 
 
