@@ -9,48 +9,22 @@
   </head>
   <body>
     <div id="app">
-      <div class="container">
-        <div class="row">
-            <div class="six columns">
+      <div class="header"></div>
+      <div class="sidebar"></div>
+      <div class="content">
+        <div class="main container">
+          <div class="row">
+            <div class="twelve columns">
               <div class="card">
-                <div class="card-head">
-                  Rules
-
-                  <div class="card-head-addon" v-on:click="setModal('addRule', true)">
-                    [Icon]
-                  </div>
-                </div>
-                <div class="card-body">
-                  List of rules here
-                </div>
-              </div>
-            </div>
-            <div class="six columns">
-              <div class="card">
-                <div class="card-head">
-                  Caught Requests
-                </div>
-                <div class="card-body">
-                  Stuff HEre
-                </div>
-              </div>
-            </div>
-        </div>
-
-        <div class="row">
-          <div class="twelve columns">
-            <div class="card">
-              <div class="card-head">
-                Log
-              </div>
-              <div class="card-body">
-                Log of events
+                <h2>Rules</h2>
+                <p>
+                  Body here
+                </p>
               </div>
             </div>
           </div>
         </div>
       </div>
-
       <!-- Toggle modal-open class to open/close -->
       <div class="modal" v-bind:class="{ 'modal-open': showModal.addRule }">
         <div class="modal-inner">
