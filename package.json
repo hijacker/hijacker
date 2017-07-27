@@ -1,6 +1,6 @@
 {
   "name": "hijacker",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Frontend development tool for intercepting and mocking api requests",
   "main": "index.js",
   "bin": {
