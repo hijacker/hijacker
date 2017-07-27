@@ -33,7 +33,7 @@ const app = (server) => {
     let route_rule = rules.filter((rule) => {
       // Make sure path and method match and rule is enabled
       return !rule.disabled && rule.path === req.originalUrl
-                          && (!rule.hasOwnProperty('method') || rule.method === req.method)
+                            && (!rule.hasOwnProperty('method') || rule.method === req.method)
     })[0] || DEFAULT_RULES
 
     // Generate unique IDs for request and responsef

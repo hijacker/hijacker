@@ -17,9 +17,10 @@
             <div class="twelve columns">
               <div class="card">
                 <h2>Rules</h2>
-                <p>
-                  Body here
-                </p>
+                <div class="rule" v-for="rule in rules" v-bind:class="[rule.method ? rule.method.toLowerCase() : '', { 'disabled': rule.disabled }]">
+                  <span class="method">{{ rule.method || 'ALL' }}</span>
+                  <span class="path">{{ rule.path }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -68,16 +69,19 @@
           }
         },
         created: function() {
+          var self = this;
+
           // Onload fucntion
-          this.socket.on('settings', function(data) {
-            this.rules = data.rules;
+          self.socket.on('settings', function(data) {
+            self.rules = data.rules;
+            console.log(this.rules)
           })
 
-          this.socket.on('proxy_request', function(data) {
+          self.socket.on('proxy_request', function(data) {
             console.log('PROXY REQUEST:', data)
           });
 
-          this.socket.on('api_response', function(data) {
+          self.socket.on('api_response', function(data) {
             console.log('API RESPONSE:', data)
           });
         }

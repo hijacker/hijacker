@@ -6,8 +6,8 @@ body {
   width: 100%;
   height: 80px;
   background-color: #3d3d3d;
-  -webkit-box-shadow: 0 5px 5px 0px #e5e5e5;
-            box-shadow: 0 5px 5px 0px #e5e5e5;
+  -webkit-box-shadow: 0 5px 5px 0px #f2f2f2;
+            box-shadow: 0 5px 5px 0px #f2f2f2;
 }
 
 .sidebar {
@@ -16,8 +16,8 @@ body {
   bottom: 0;
   width: 200px;
   background-color: #ffffff;
-  -webkit-box-shadow: 5px 0 5px -2px #e5e5e5;
-            box-shadow: 5px 0 5px -2px #e5e5e5;
+  -webkit-box-shadow: 5px 0 5px -2px #f2f2f2;
+            box-shadow: 5px 0 5px -2px #f2f2f2;
 }
 
 .content {
@@ -32,19 +32,104 @@ body {
 .card {
   width: 100%;
   background-color: #ffffff;
-  -webkit-box-shadow: 5px 2px 5px 2px #e5e5e5;
-            box-shadow: 2px 2px 2px 2px #e5e5e5;
+  -webkit-box-shadow: 1px 1px 1px 1px #f2f2f2;
+            box-shadow: 1px 1px 1px 1px #f2f2f2;
   padding: 5px;
+  border: 1px solid #e5e5e5;
+  box-sizing: border-box;
 }
 
 .card > h2 {
+  color: #3d3d3d;
   font-size: 25px;
   margin: 0;
   border-bottom: 1px solid #e5e5e5;
 }
 
-.card > p {
-  margin: 5px 0 0;
+.rule {
+  width: 100%;
+  margin: 5px 0;
+  padding: 5px;
+  background-color: #ebf3fb;
+  border: 1px solid #61affe;
+  box-sizing: border-box;
+}
+
+
+.rule > .method {
+  text-align: center;
+  display: inline-block;
+  background-color: #61affe;
+  padding: 3px 3px;
+  width: 75px;
+  box-sizing: border-box;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.rule > .path {
+  color: #3d3d3d;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.rule.get {
+  background-color: #e8f6f0;
+  border-color: #49cc90;
+}
+
+.rule.get > .method {
+  background-color: #49cc90;
+}
+
+.rule.post {
+  background-color: #fbf1e6;
+  border-color: #fca130;
+}
+
+.rule.post > .method {
+  background-color: #fca130;
+}
+
+.rule.put {
+  background-color: #f4e7fd;
+  border-color: #b346ff;
+}
+
+.rule.put > .method {
+  background-color: #b346ff;
+}
+
+.rule.patch {
+  background-color: #fddef5;
+  border-color: #ff4dd1;
+}
+
+.rule.patch > .method {
+  background-color: #ff4dd1;
+}
+
+.rule.delete {
+  background-color: #fbe7e7;
+  border-color: #f93e3e;
+}
+
+.rule.delete > .method {
+  background-color: #f93e3e;
+}
+
+.rule.disabled {
+  background-color: #f9f9f9;
+  border-color: #f0f0f0;
+}
+
+.rule.disabled > .method {
+  background-color: #f0f0f0;
+}
+
+.rule.disabled > .path {
+  color: #828590;
+  text-decoration: line-through;
 }
 
 .row {
