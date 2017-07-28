@@ -20,6 +20,10 @@
                 <div class="rule" v-for="rule in rules" v-bind:class="[rule.method ? rule.method.toLowerCase() : '', { 'disabled': rule.disabled }]">
                   <span class="method">{{ rule.method || 'ALL' }}</span>
                   <span class="path">{{ rule.path }}</span>
+                  <div class="collapse">
+                    <div class="category">Body</div>
+                    <div class="category">Paramters</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -74,7 +78,6 @@
           // Onload fucntion
           self.socket.on('settings', function(data) {
             self.rules = data.rules;
-            console.log(this.rules)
           })
 
           self.socket.on('proxy_request', function(data) {
