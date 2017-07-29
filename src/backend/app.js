@@ -2,6 +2,7 @@ const request = require('request')
 const uuid = require('uuid/v4')
 
 const config = require('./util/config')
+const rules = require('./util/rules')
 
 // Base url for api to proxy to.
 const BASE_URL = config.base_url
@@ -9,18 +10,11 @@ const BASE_URL = config.base_url
 const app = (server) => {
   const io = require('socket.io')(server)
 
-  // Default set of rules (to fall back on if non specified)
-  const DEFAULT_RULES = {
-    interceptRequest  :  false, // Allow "breakpoint" on original request before sent to api
-    interceptResponse :  false, // Allow "breakpoint" on response from api before sent to client
-    skipApi           :  false  // Allow skipping going to the api all together
-  }
-
   // Request count to use as IDs for request
   let request_count = 0
 
   // List of rules to activate on routes
-  let rules = config.rules
+  let ruleList = rules.read(config.rules)
 
   const handleRoute = (req, res) => {
     console.log(req.originalUrl)
@@ -30,11 +24,7 @@ const app = (server) => {
     console.log(`[${++request_count}][PROXY][${req.method}] ${REQUEST_URL}`)
 
     // Grab rule for given route make match regex in future
-    let route_rule = rules.filter((rule) => {
-      // Make sure path and method match and rule is enabled
-      return !rule.disabled && rule.path === req.originalUrl
-                            && (!rule.hasOwnProperty('method') || rule.method === req.method)
-    })[0] || DEFAULT_RULES
+    let route_rule = rules.match(ruleList, req)
 
     // Generate unique IDs for request and responsef
     let request_id = uuid()
@@ -155,7 +145,7 @@ const app = (server) => {
     // Send data needed for admin setup on setup
     io.on('connection', (socket) => {
       socket.emit('settings', {
-        rules: rules
+        rules: ruleList
       })
     })
   }

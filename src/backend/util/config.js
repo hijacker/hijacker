@@ -1,5 +1,5 @@
 const path = require('path')
-const util = require('util')
+
 const package = require('../../../package.json')
 
 const config = () => {
@@ -21,7 +21,7 @@ const config = () => {
     process.exit(1)
   }
 
-  const settings = util._extend(DEFAULTS, rc)
+  const settings = Object.assign({}, DEFAULTS, rc)
 
   // Set
   if (!settings.hasOwnProperty('base_url')) {
