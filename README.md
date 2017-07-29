@@ -1,5 +1,7 @@
 # Hijacker
-Hijacker can be used as an API relay to assist with front end development. It can intercept requests and responses between the client and the API server.  
+Hijacker can be used as an API relay to assist with front end development. It can intercept requests and responses between the client and the API server.
+
+*NOTE:* Hijacker is in early development and subject may break config files from update to update.
 
 ### NPM
 Hijacker can be found on npm [here](https://www.npmjs.com/package/hijacker)
@@ -89,6 +91,7 @@ Below are parameters that can be used in a route rule. Optional parameters will 
 | disabled          | false      | Flag to allow disabling a rule without deleting from list    |
 | interceptRequest  | false      | Ability to intercept request from client before sent to api  |
 | interceptResponse | false      | Ability to intercept response from api before sent to client |
+| keepHeaders       | []         | List of headers to forward to api server                     |
 | path              | (required) | Apply rule to requests to paths that match                   |
 | skipApi           | false      | Skip call to api server and send predefined response         |
 | method            | All        | HTTP method to apply the rule to                             |

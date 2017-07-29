@@ -23,9 +23,9 @@ const app = (server) => {
   let rules = config.rules
 
   const handleRoute = (req, res) => {
+    console.log(req.originalUrl)
     // API url to make the request to
     const REQUEST_URL = BASE_URL + req.originalUrl
-    const HEADERS_TO_KEEP = []
 
     console.log(`[${++request_count}][PROXY][${req.method}] ${REQUEST_URL}`)
 
@@ -52,11 +52,13 @@ const app = (server) => {
       intercepted_id: route_rule.interceptRequest ? request_id : false
     })
 
-    // Generate headers to keep
+    // Generate headers to send to server
     let headers = {}
-    for (let i = 0; i < HEADERS_TO_KEEP.length; i++) {
-      if (req.headers.hasOwnProperty(HEADERS_TO_KEEP[i])) {
-        headers[HEADERS_TO_KEEP[i]] = req.headers[HEADERS_TO_KEEP[i]]
+    let headers_to_keep = route_rule.keep_headers || []
+
+    for (let i = 0; i < headers_to_keep.length; i++) {
+      if (req.headers.hasOwnProperty(headers_to_keep[i])) {
+        headers[headers_to_keep[i]] = req.headers[headers_to_keep[i]]
       }
     }
 
