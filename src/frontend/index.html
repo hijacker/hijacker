@@ -1,94 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Test</title>
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/skeleton.css">
-    <link rel="stylesheet" href="css/style.css">
-  </head>
+    <title>Hijacker</title>
+  <link href="css/style.css" rel="stylesheet"></head>
   <body>
-    <div id="app">
-      <div class="header"></div>
-      <div class="sidebar"></div>
-      <div class="content">
-        <div class="main container">
-          <div class="row">
-            <div class="twelve columns">
-              <div class="card">
-                <h2>Rules</h2>
-                <div class="rule" v-for="rule in rules" v-bind:class="[rule.method ? rule.method.toLowerCase() : '', { 'disabled': rule.disabled }]">
-                  <span class="method">{{ rule.method || 'ALL' }}</span>
-                  <span class="path">{{ rule.path }}</span>
-                  <div class="collapse">
-                    <div class="category">Body</div>
-                    <div class="category">Paramters</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Toggle modal-open class to open/close -->
-      <div class="modal" v-bind:class="{ 'modal-open': showModal.addRule }">
-        <div class="modal-inner">
-          <div class="modal-content">
-            <div class="modal-close-icon">
-              <a v-on:click="setModal('addRule', false)" class="close-modal">[icon]</a>
-            </div>
-            <div class="modal-content-inner">
-              <h4>This is the heading</h4>
-              <p>Donec volutpat nisi nisl, sit amet facilisis enim lobortis sed. </p>
-            </div>
-            <hr class="modal-buttons-seperator">
-            <div class="modal-buttons">
-              <button class="button close-modal">Cancel</button>
-              <button class="button button-primary close-modal">OK</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <script type="text/javascript" src="./js/socket.io.js"></script>
-    <script type="text/javascript" src="./js/vue.min.js"></script>
-    <script type="text/javascript">
-      var app = new Vue({
-        el: '#app',
-        data: {
-          showModal: {
-            addRule: false,
-            editRule: false,
-            viewLog: false,
-            editResponse: false,
-            editRequest: false
-          },
-          socket: io(),
-          rules: []
-        },
-        methods: {
-          setModal: function(modal, val) {
-            this.showModal[modal] = val
-          }
-        },
-        created: function() {
-          var self = this;
-
-          // Onload fucntion
-          self.socket.on('settings', function(data) {
-            self.rules = data.rules;
-          })
-
-          self.socket.on('proxy_request', function(data) {
-            console.log('PROXY REQUEST:', data)
-          });
-
-          self.socket.on('api_response', function(data) {
-            console.log('API RESPONSE:', data)
-          });
-        }
-      });
-    </script>
-  </body>
+    <div id="app"></div>
+  <script type="text/javascript" src="js/main.js"></script></body>
 </html>
