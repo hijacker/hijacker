@@ -6,7 +6,10 @@ const DEFAULT_RULE = {
   interceptResponse: false,
 
   // Allow skipping going to the api all together
-  skipApi: false
+  skipApi: false,
+
+  // Rule disabled. If true, rule wont be run
+  disabled: false
 }
 
 const match = function(list, req) {
@@ -21,7 +24,7 @@ const read = function(ruleList) {
   let rules = []
 
   for (let i = 0; i < ruleList.length; i++) {
-    rules.push(Object.assign({}, DEFAULT_RULE, ruleList[i]))
+    rules.push(Object.assign({}, DEFAULT_RULE, ruleList[i], { id: i }))
   }
 
   return rules

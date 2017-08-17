@@ -147,6 +147,11 @@ const app = (server) => {
       socket.emit('settings', {
         rules: ruleList
       })
+
+      socket.on('UPDATE_RULE', (rule) => {
+        const index = ruleList.findIndex(r => r.id === rule.id)
+        ruleList[index] = rule
+      })
     })
   }
 
