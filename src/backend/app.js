@@ -127,7 +127,7 @@ const app = (server) => {
       for (let id in io.sockets.sockets) {
         let socket = io.sockets.sockets[id]
 
-        socket.once(response_id, (data) => {
+        socket.once(responseObj.response_id, (data) => {
           if (!resolved) {
             resolved = true
             res.status(data.statusCode || 200)
