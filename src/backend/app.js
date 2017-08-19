@@ -1,4 +1,4 @@
-const request = require('request')
+const axios = require('axios')
 const uuid = require('uuid/v4')
 
 const config = require('./util/config')
@@ -17,7 +17,6 @@ const app = (server) => {
   let ruleList = rules.read(config.rules)
 
   const handleRoute = (req, res) => {
-    console.log(req.originalUrl)
     // API url to make the request to
     const REQUEST_URL = BASE_URL + req.originalUrl
 
@@ -57,8 +56,7 @@ const app = (server) => {
       url: REQUEST_URL,
       method: req.method,
       headers: headers,
-      body: req.body,
-      json: true,
+      data: req.body,
       strictSSL: false
     }
 
@@ -94,12 +92,22 @@ const app = (server) => {
     }
 
     if (!route_rule.skipApi) {
-      request(options, (error, response, body) => {
-        console.log(`[${request_count}][${options.method}][${response.statusCode}] ${REQUEST_URL}`)
+      axios(options).then(response => {
+        console.log(`[${request_count}][${options.method}][${response.status}] ${REQUEST_URL}`)
         responseObj.headers = response.headers
-        responseObj.body = route_rule.body || body
+        responseObj.body = route_rule.body || response.data
         responseObj.method = options.method
-        responseObj.statusCode = route_rule.statusCode || response.statusCode
+        responseObj.statusCode = route_rule.statusCode || response.status
+        responseObj.contentType = response.headers['content-type']
+
+        sendResponse(responseObj, res)
+      }).catch(err => {
+        let response = err.response
+        console.log(`[${request_count}][${options.method}][${response.status}] ${REQUEST_URL}`)
+        responseObj.headers = response.headers
+        responseObj.body = route_rule.body || response.data
+        responseObj.method = options.method
+        responseObj.statusCode = route_rule.statusCode || response.status
         responseObj.contentType = response.headers['content-type']
 
         sendResponse(responseObj, res)
