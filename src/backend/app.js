@@ -163,6 +163,28 @@ const app = (server) => {
     })
   }
 
+  const intercept = (obj) => {
+    return new Promise((resolve, reject) => {
+      if (io.sockets.sockets.length !== 0) {
+        console.log('Waiting for response from admin')
+        let resolved = false
+
+        for (let id in io.sockets.sockets) {
+          let socket = io.sockets.sockets[id]
+
+          socket.once(obj.intercepted_id, (data) => {
+            if (!resolved) {
+              resolved = true
+              resolve(data)
+            }
+          })
+        }
+      } else {
+        resolve(obj)
+      }
+    })
+  }
+
   return {
     handleRoute: handleRoute,
     initSockets: initSockets
