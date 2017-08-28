@@ -91,31 +91,7 @@ const app = (server) => {
       contentType: 'application/json'
     }
 
-    if (!route_rule.skipApi) {
-      axios(options).then(response => {
-        console.log(`[${request_count}][${options.method}][${response.status}] ${REQUEST_URL}`)
-        responseObj.headers = response.headers
-        responseObj.body = route_rule.body || response.data
-        responseObj.method = options.method
-        responseObj.statusCode = route_rule.statusCode || response.status
-        responseObj.contentType = response.headers['content-type']
 
-        sendResponse(responseObj, res)
-      }).catch(err => {
-        let response = err.response
-        console.log(`[${request_count}][${options.method}][${response.status}] ${REQUEST_URL}`)
-        responseObj.headers = response.headers
-        responseObj.body = route_rule.body || response.data
-        responseObj.method = options.method
-        responseObj.statusCode = route_rule.statusCode || response.status
-        responseObj.contentType = response.headers['content-type']
-
-        sendResponse(responseObj, res)
-      })
-    } else {
-      // Websocket here for response from api
-      sendResponse(responseObj, res)
-    }
 
   }
 
@@ -180,6 +156,30 @@ const app = (server) => {
           })
         }
       } else {
+        resolve(obj)
+      }
+    })
+  }
+
+  const request = (obj) => {
+    return new Promise((resolve, reject) => {
+      if (!route_rule.skipApi) {
+        // Generate axios options here
+        let options = {
+
+        }
+
+        axios(options).then(response => {
+          // Gen new obj here
+
+          resolve(newObj)
+        }).catch(err => {
+          // Gen new obj here
+
+          resolve(newObj)
+        })
+      } else {
+        // Skip
         resolve(obj)
       }
     })
