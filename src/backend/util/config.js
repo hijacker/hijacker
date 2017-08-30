@@ -5,7 +5,19 @@ const package = require('../../../package.json')
 const config = () => {
   // Set default configs
   const DEFAULTS = {
+    // Port to run hijacker on
     port: 3005,
+
+    // Ussed for global settings
+    global: {
+      // Headers to forward to the api server
+      keep_headers: [],
+
+      // Headers to allow in access-control-allow-headers
+      allow_headers: []
+    },
+
+    // List of rules
     rules: []
   }
 

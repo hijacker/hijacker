@@ -43,7 +43,7 @@ const app = (server) => {
 
     // Generate headers to send to server
     let headers = {}
-    let headers_to_keep = route_rule.keep_headers || []
+    let headers_to_keep = route_rule.keep_headers || config.global.keep_headers || []
 
     for (let i = 0; i < headers_to_keep.length; i++) {
       if (req.headers.hasOwnProperty(headers_to_keep[i])) {
@@ -91,8 +91,31 @@ const app = (server) => {
       contentType: 'application/json'
     }
 
+    if (!route_rule.skipApi) {
+      axios(options).then(response => {
+        console.log(`[${request_count}][${options.method}][${response.status}] ${REQUEST_URL}`)
+        responseObj.headers = response.headers
+        responseObj.body = route_rule.body || response.data
+        responseObj.method = options.method
+        responseObj.statusCode = route_rule.statusCode || response.status
+        responseObj.contentType = response.headers['content-type']
 
+        sendResponse(responseObj, res)
+      }).catch(err => {
+        let response = err.response
+        console.log(`[${request_count}][${options.method}][${response.status}] ${REQUEST_URL}`)
+        responseObj.headers = response.headers
+        responseObj.body = route_rule.body || response.data
+        responseObj.method = options.method
+        responseObj.statusCode = route_rule.statusCode || response.status
+        responseObj.contentType = response.headers['content-type']
 
+        sendResponse(responseObj, res)
+      })
+    } else {
+      // Websocket here for response from api
+      sendResponse(responseObj, res)
+    }
   }
 
   const sendResponse = (responseObj, res) => {
@@ -163,7 +186,7 @@ const app = (server) => {
 
   const request = (obj) => {
     return new Promise((resolve, reject) => {
-      if (!route_rule.skipApi) {
+      if (!obj.rule.skipApi) {
         // Generate axios options here
         let options = {
 
