@@ -16,18 +16,22 @@ const app = (server) => {
   // List of rules to activate on routes
   let ruleList = rules.read(config.rules)
 
+  /**
+   * Main route handling function for HIjacker
+   * @param {Request} req - Express request object
+   * @param {Response} res - Express response object
+   *
+   */
   const handleRoute = (req, res) => {
     // API url to make the request to
     const REQUEST_URL = BASE_URL + req.originalUrl
 
     console.log(`[${++request_count}][PROXY][${req.method}] ${REQUEST_URL}`)
 
-    // Grab rule for given route make match regex in future
-    let route_rule = rules.match(ruleList, req)
-
+    // Set up original object to pass through promise chain
     let originalObj = {
       id: request_count,
-      rule: route_rule,
+      rule: rules.match(ruleList, req),
       request: {
         headers: req.headers,
         method: req.method,
@@ -37,7 +41,7 @@ const app = (server) => {
       }
     }
 
-    intercept(originalObj, 'request', io)
+    intercept(originalObj, 'request')
       .then(obj => {
         // Generate headers to send to server
         let headers = {}
@@ -50,11 +54,11 @@ const app = (server) => {
         }
 
         obj.request.headers = headers
-        
+
         return request(obj)
       })
       .then(obj => {
-        return intercept(obj, 'response', io)
+        return intercept(obj, 'response')
       })
       .then(obj => {
         // return shit here
@@ -65,7 +69,15 @@ const app = (server) => {
       })
   }
 
-  const intercept = (obj, type, io) => {
+  /**
+   * Send request to client to modify request/response
+   * @param {object} obj - Hijacker object that gets passed through promises
+   * @param {string} type - Type of intercept. request or response
+   *
+   * @returns {object} Hijacker object with data modified from socket return
+   *
+   */
+  const intercept = (obj, type) => {
     return new Promise((resolve, reject) => {
       if (obj.rule[`intercept${type.charAt(0).toUpperCase() + type.slice(1)}`] && io.sockets.sockets.length !== 0) {
         let resolved = false
@@ -93,13 +105,20 @@ const app = (server) => {
     })
   }
 
+  /**
+   * Make request to api server if supposed to. And modify object
+   * @param {object} obj - Hijacker object that gets passed through promises
+   *
+   * @returns {object} Hijacker object with data modified from request
+   *
+   */
   const request = (obj) => {
     return new Promise((resolve, reject) => {
       const REQUEST_URL = BASE_URL + obj.request.originalUrl
 
       let newObj = obj
 
-      // Set options to relay to api server
+      // Axios options
       let options = {
         url: REQUEST_URL,
         method: obj.request.method,
@@ -148,6 +167,12 @@ const app = (server) => {
     })
   }
 
+  /**
+   * Send response to client. End of the chain
+   * @param {object} obj - Hijacker object with response data to finish request
+   * @param {Response} res - Express response object to finish off request
+   *
+   */
   const sendResponse = (responseObj, res) => {
     // Websocket here for response from api
     io.emit('api_response', responseObj)
@@ -158,6 +183,10 @@ const app = (server) => {
     res.json(responseObj.body)
   }
 
+  /**
+   * Set up listening to sockets from client
+   *
+   */
   const initSockets = () => {
     // Send data needed for admin setup on setup
     io.on('connection', (socket) => {
@@ -165,6 +194,7 @@ const app = (server) => {
         rules: ruleList
       })
 
+      // Update a rule
       socket.on('UPDATE_RULE', (rule) => {
         const index = ruleList.findIndex(r => r.id === rule.id)
         ruleList[index] = rule
