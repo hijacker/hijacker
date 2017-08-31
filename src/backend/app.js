@@ -1,5 +1,6 @@
 const axios = require('axios')
 const uuid = require('uuid/v4')
+const https = require('https')
 
 const config = require('./util/config')
 const rules = require('./util/rules')
@@ -41,6 +42,7 @@ const app = (server) => {
       }
     }
 
+    // Intercept (Request) => Request => Intercept (Response) => Return to client
     intercept(originalObj, 'request')
       .then(obj => {
         // Generate headers to send to server
@@ -124,7 +126,9 @@ const app = (server) => {
         method: obj.request.method,
         headers: obj.request.headers,
         data: obj.request.body,
-        strictSSL: false
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false
+        })
       }
 
       let responseObj = {
