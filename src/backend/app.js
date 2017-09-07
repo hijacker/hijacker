@@ -85,10 +85,13 @@ const app = (server) => {
         let resolved = false
         let newObj = obj
 
-        newObj.interceptId = uuid()
+        newObj.intercept = {
+          id: uuid(),
+          type
+        }
 
         // Send event to clients
-        io.emit(`intercept_${type}`, newObj)
+        io.emit('intercept', newObj)
         console.log('Waiting on response from client')
 
         for (let id in io.sockets.sockets) {
