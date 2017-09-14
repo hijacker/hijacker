@@ -9,7 +9,10 @@ const DEFAULT_RULE = {
   skipApi: false,
 
   // Rule disabled. If true, rule wont be run
-  disabled: false
+  disabled: false,
+
+  // Route the requested url path to a different one in the api
+  routeTo: undefined
 }
 
 const match = function(list, req) {

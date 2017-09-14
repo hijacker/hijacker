@@ -119,7 +119,7 @@ const app = (server) => {
    */
   const request = (obj) => {
     return new Promise((resolve, reject) => {
-      const REQUEST_URL = BASE_URL + obj.request.originalUrl
+      const REQUEST_URL = BASE_URL + (obj.rule.routeTo || obj.request.originalUrl)
 
       let newObj = obj
 
