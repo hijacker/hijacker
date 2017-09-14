@@ -97,7 +97,7 @@ const app = (server) => {
         for (let id in io.sockets.sockets) {
           let socket = io.sockets.sockets[id]
 
-          socket.once(newObj.interceptId, (data) => {
+          socket.once(newObj.intercept.id, (data) => {
             if (!resolved) {
               resolved = true
               resolve(data)
