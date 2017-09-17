@@ -73,31 +73,31 @@ const app = (server) => {
 
   /**
    * Send request to client to modify request/response
-   * @param {object} obj - Hijacker object that gets passed through promises
+   *
+   * @async
+   * @function intercept
+   * @param {Object} obj - Hijacker object that gets passed through promises
    * @param {string} type - Type of intercept. request or response
-   *
-   * @returns {object} Hijacker object with data modified from socket return
-   *
+   * @returns {Promise<Object>} Hijacker object with data modified from socket return
    */
   const intercept = (obj, type) => {
     return new Promise((resolve, reject) => {
       if (obj.rule[`intercept${type.charAt(0).toUpperCase() + type.slice(1)}`] && io.sockets.sockets.length !== 0) {
         let resolved = false
-        let newObj = obj
 
-        newObj.intercept = {
+        obj.intercept = {
           id: uuid(),
           type
         }
 
         // Send event to clients
-        io.emit('intercept', newObj)
+        io.emit('intercept', obj)
         console.log('Waiting on response from client')
 
         for (let id in io.sockets.sockets) {
           let socket = io.sockets.sockets[id]
 
-          socket.once(newObj.intercept.id, (data) => {
+          socket.once(obj.intercept.id, (data) => {
             if (!resolved) {
               resolved = true
               resolve(data)
@@ -112,16 +112,15 @@ const app = (server) => {
 
   /**
    * Make request to api server if supposed to. And modify object
-   * @param {object} obj - Hijacker object that gets passed through promises
    *
-   * @returns {object} Hijacker object with data modified from request
-   *
+   * @async
+   * @function request
+   * @param {Object} obj - Hijacker object that gets passed through promises
+   * @returns {Promise<Object>} Hijacker object with data modified from request
    */
   const request = (obj) => {
     return new Promise((resolve, reject) => {
       const REQUEST_URL = BASE_URL + (obj.rule.routeTo || obj.request.originalUrl)
-
-      let newObj = obj
 
       // Axios options
       let options = {
@@ -153,8 +152,8 @@ const app = (server) => {
           responseObj.statusCode = obj.rule.statusCode || response.status
           responseObj.contentType = response.headers['content-type']
 
-          newObj.response = responseObj
-          resolve(newObj)
+          obj.response = responseObj
+          resolve(obj)
         }).catch(err => {
           let response = err.response
           console.log(`[${request_count}][${options.method}][${response.status}] ${REQUEST_URL}`)
@@ -164,28 +163,33 @@ const app = (server) => {
           responseObj.statusCode = obj.rule.statusCode || response.status
           responseObj.contentType = response.headers['content-type']
 
-          newObj.response = responseObj
-          resolve(newObj)
+          obj.response = responseObj
+          resolve(obj)
         })
       } else {
-        newObj.response = responseObj
-        resolve(newObj)
+        obj.response = responseObj
+        resolve(obj)
       }
     })
   }
 
   /**
    * Send response to client. End of the chain
-   * @param {object} obj - Hijacker object with response data to finish request
-   * @param {Response} res - Express response object to finish off request
    *
+   * @async
+   * @function sendResponse
+   * @param {Object} responseObj - Hijacker object with response data to finish request
+   * @param {Object} response.headers = Headers to send back in the response to the client
+   * @param {Object} response.body - Response body to send back to the client
+   * @param {number} response.statusCode - HTTP code to send back to the client
+   * @param {Response} res - Express response object to finish off request
    */
   const sendResponse = (responseObj, res) => {
     // Websocket here for response from api
     io.emit('api_response', responseObj)
 
     // Send response as close to api response as possible
-    res.header('Content-Type', responseObj.contentType)
+    res.set(responseObj.headers)
     res.status(responseObj.statusCode)
     res.json(responseObj.body)
   }
@@ -193,6 +197,7 @@ const app = (server) => {
   /**
    * Set up listening to sockets from client
    *
+   * @function initSockets
    */
   const initSockets = () => {
     // Send data needed for admin setup on setup
