@@ -15,7 +15,7 @@ const app = (server) => {
   let request_count = 0
 
   // List of rules to activate on routes
-  let ruleList = rules.read(config.rules)
+  let ruleList = config.rules.map(rules.read)
 
   /**
    * Main route handling function for HIjacker
@@ -210,6 +210,11 @@ const app = (server) => {
       socket.on('UPDATE_RULE', (rule) => {
         const index = ruleList.findIndex(r => r.id === rule.id)
         ruleList[index] = rule
+      })
+
+      socket.on('ADD_RULE', (rule) => {
+        // TODO: Handle case if rule doesn't meet validation reqs
+        ruleList.push(rules.read(rule))
       })
     })
   }

@@ -1,3 +1,5 @@
+let uuid = require('uuid/v4')
+
 const DEFAULT_RULE = {
   // Allow "breakpoint" on original request before sent to api
   interceptRequest: false,
@@ -23,14 +25,9 @@ const match = function(list, req) {
   })[0] || DEFAULT_RULE
 }
 
-const read = function(ruleList) {
-  let rules = []
-
-  for (let i = 0; i < ruleList.length; i++) {
-    rules.push(Object.assign({}, DEFAULT_RULE, ruleList[i], { id: i }))
-  }
-
-  return rules
+const read = function(rule) {
+  // TODO: Validate rule and add functionality to check depricaded functions
+  return Object.assign({}, DEFAULT_RULE, rule, { id: uuid() })
 }
 
 module.exports = {
