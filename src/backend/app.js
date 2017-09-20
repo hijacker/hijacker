@@ -11,11 +11,11 @@ const BASE_URL = config.base_url
 const app = (server) => {
   const io = require('socket.io')(server)
 
+  // List of rules to activate on routes
+  const ruleList = config.rules.map(rules.read)
+
   // Request count to use as IDs for request
   let request_count = 0
-
-  // List of rules to activate on routes
-  let ruleList = config.rules.map(rules.read)
 
   /**
    * Main route handling function for HIjacker
