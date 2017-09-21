@@ -1,21 +1,24 @@
 const express = require('express')
-const app = express()
 const bodyParser = require('body-parser')
 const path = require('path')
-const server = require('http').Server(app)
+const http = require('http')
 
 const config = require('./src/backend/util/config')
-const hijacker = require('./src/backend/app')(server)
+const backend = require('./src/backend/app')
+
+const app = express()
+const server = http.Server(app)
+const hijacker = backend(server)
 
 // Express setup
 app.use(bodyParser.json())
 app.use((req, res, next) => {
-  let configAllow = (config.global.allow_headers || []).join(', ')
+  const configAllow = (config.global.allow_headers || []).join(', ')
 
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', configAllow);
-  next();
-});
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Headers', configAllow)
+  next()
+})
 
 // Admin panel setup
 app.use('/hijacker', express.static(path.join(__dirname, 'src/frontend')))

@@ -1,4 +1,4 @@
-let uuid = require('uuid/v4')
+const uuid = require('uuid/v4')
 
 /**
  * Default values for a hijacker rule
@@ -8,7 +8,7 @@ let uuid = require('uuid/v4')
  * @default
  */
 const DEFAULT_RULE = {
-  // TODO: Add all possible rule values here (undefined if need be, will require some rework elswhere)
+  // TODO: Add all possible rule values here (undefined if need be, will require some rework)
   /**
    * Flag to disable a rule
    *
@@ -65,13 +65,13 @@ const DEFAULT_RULE = {
  * @param {Request} req - Express request object to match
  * @return {Object} Rule that matches the given request. Default rule if no match
  */
-const match = (list, req) => {
-  return list.filter((rule) => {
+const match = (list, req) => (
+  list.filter(rule => (
     // Make sure path and method match and rule is enabled
-    return !rule.disabled && rule.path === req.originalUrl
-                          && (!rule.hasOwnProperty('method') || rule.method === req.method)
-  })[0] || DEFAULT_RULE
-}
+    !rule.disabled && rule.path === req.originalUrl &&
+      (!Object.prototype.hasOwnProperty.call(rule, 'method') || rule.method === req.method)
+  ))[0] || DEFAULT_RULE
+)
 
 /**
  * Read in a rule. Apply default values where needed
@@ -79,12 +79,12 @@ const match = (list, req) => {
  * @param {Object} rule - Rule to read in and modify if needed
  * @return {Object} Rule with default values filled in where needed
  */
-const read = function(rule) {
+const read = rule => (
   // TODO: Validate rule and add functionality to check depricaded functions
-  return Object.assign({}, DEFAULT_RULE, rule, { id: uuid() })
-}
+  Object.assign({}, DEFAULT_RULE, rule, { id: uuid() })
+)
 
 module.exports = {
-  match: match,
-  read: read
+  match,
+  read
 }

@@ -1,6 +1,6 @@
 const path = require('path')
 
-const package = require('../../../package.json')
+const packageInfo = require('../../../package.json')
 
 const config = () => {
   // Set default configs
@@ -25,7 +25,7 @@ const config = () => {
 
   // Look for rc file in
   try {
-    rc = require(path.join(process.cwd(), `${package.name}.config`))
+    rc = require(path.join(process.cwd(), `${packageInfo.name}.config`))
   } catch (e) {
     // No config file. Create and start again
     console.log(e)
@@ -36,7 +36,7 @@ const config = () => {
   const settings = Object.assign({}, DEFAULTS, rc)
 
   // Set
-  if (!settings.hasOwnProperty('base_url')) {
+  if (!Object.prototype.hasOwnProperty.call(settings, 'base_url')) {
     console.error('No base_url found. Add a base_url to continue')
     process.exit(1)
   }

@@ -1,6 +1,7 @@
 const axios = require('axios')
-const uuid = require('uuid/v4')
 const https = require('https')
+const socketio = require('socket.io')
+const uuid = require('uuid/v4')
 
 const config = require('./util/config')
 const rules = require('./util/rules')
@@ -9,13 +10,13 @@ const rules = require('./util/rules')
 const BASE_URL = config.base_url
 
 const app = (server) => {
-  const io = require('socket.io')(server)
+  const io = socketio(server)
 
   // List of rules to activate on routes
   const ruleList = config.rules.map(rules.read)
 
   // Request count to use as IDs for request
-  let request_count = 0
+  let requestCount = 0
 
   /**
    * Main route handling function for HIjacker
@@ -27,11 +28,11 @@ const app = (server) => {
     // API url to make the request to
     const REQUEST_URL = BASE_URL + req.originalUrl
 
-    console.log(`[${++request_count}][PROXY][${req.method}] ${REQUEST_URL}`)
+    console.log(`[${++requestCount}][PROXY][${req.method}] ${REQUEST_URL}`)
 
     // Set up original object to pass through promise chain
-    let originalObj = {
-      id: request_count,
+    const originalObj = {
+      id: requestCount,
       rule: rules.match(ruleList, req),
       request: {
         headers: req.headers,
@@ -44,14 +45,14 @@ const app = (server) => {
 
     // Intercept (Request) => Request => Intercept (Response) => Return to client
     intercept(originalObj, 'request')
-      .then(obj => {
+      .then((obj) => {
         // Generate headers to send to server
-        let headers = {}
-        let headers_to_keep = obj.rule.keep_headers || config.global.keep_headers || []
+        const headers = {}
+        const headersToKeep = obj.rule.keep_headers || config.global.keep_headers || []
 
-        for (let i = 0; i < headers_to_keep.length; i++) {
-          if (obj.request.headers.hasOwnProperty(headers_to_keep[i])) {
-            headers[headers_to_keep[i]] = obj.request.headers[headers_to_keep[i]]
+        for (let i = 0; i < headersToKeep.length; i++) {
+          if (Object.prototype.hasOwnProperty.call(obj.request.headers, headersToKeep[i])) {
+            headers[headersToKeep[i]] = obj.request.headers[headersToKeep[i]]
           }
         }
 
@@ -59,14 +60,12 @@ const app = (server) => {
 
         return request(obj)
       })
-      .then(obj => {
-        return intercept(obj, 'response')
-      })
-      .then(obj => {
+      .then(obj => intercept(obj, 'response'))
+      .then((obj) => {
         // return shit here
         sendResponse(obj.response, res)
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
       })
   }
@@ -80,8 +79,8 @@ const app = (server) => {
    * @param {string} type - Type of intercept. request or response
    * @returns {Promise<Object>} Hijacker object with data modified from socket return
    */
-  const intercept = (obj, type) => {
-    return new Promise((resolve, reject) => {
+  const intercept = (obj, type) => (
+    new Promise((resolve, reject) => {
       if (obj.rule[`intercept${type.charAt(0).toUpperCase() + type.slice(1)}`] && io.sockets.sockets.length !== 0) {
         let resolved = false
 
@@ -94,8 +93,8 @@ const app = (server) => {
         io.emit('intercept', obj)
         console.log('Waiting on response from client')
 
-        for (let id in io.sockets.sockets) {
-          let socket = io.sockets.sockets[id]
+        for (const id in io.sockets.sockets) {
+          const socket = io.sockets.sockets[id]
 
           socket.once(obj.intercept.id, (data) => {
             if (!resolved) {
@@ -108,7 +107,7 @@ const app = (server) => {
         resolve(obj)
       }
     })
-  }
+  )
 
   /**
    * Make request to api server if supposed to. And modify object
@@ -118,12 +117,12 @@ const app = (server) => {
    * @param {Object} obj - Hijacker object that gets passed through promises
    * @returns {Promise<Object>} Hijacker object with data modified from request
    */
-  const request = (obj) => {
-    return new Promise((resolve, reject) => {
+  const request = obj => (
+    new Promise((resolve, reject) => {
       const REQUEST_URL = BASE_URL + (obj.rule.routeTo || obj.request.originalUrl)
 
       // Axios options
-      let options = {
+      const options = {
         url: REQUEST_URL,
         method: obj.request.method,
         headers: obj.request.headers,
@@ -133,7 +132,7 @@ const app = (server) => {
         })
       }
 
-      let responseObj = {
+      const responseObj = {
         headers: obj.request.headers,
         method: obj.request.method,
         body: obj.rule.body || {},
@@ -144,8 +143,8 @@ const app = (server) => {
       }
 
       if (!obj.rule.skipApi) {
-        axios(options).then(response => {
-          console.log(`[${request_count}][${options.method}][${response.status}] ${REQUEST_URL}`)
+        axios(options).then((response) => {
+          console.log(`[${requestCount}][${options.method}][${response.status}] ${REQUEST_URL}`)
           responseObj.headers = response.headers
           responseObj.body = obj.rule.body || response.data
           responseObj.method = options.method
@@ -154,9 +153,9 @@ const app = (server) => {
 
           obj.response = responseObj
           resolve(obj)
-        }).catch(err => {
-          let response = err.response
-          console.log(`[${request_count}][${options.method}][${response.status}] ${REQUEST_URL}`)
+        }).catch((err) => {
+          const response = err.response
+          console.log(`[${requestCount}][${options.method}][${response.status}] ${REQUEST_URL}`)
           responseObj.headers = response.headers
           responseObj.body = obj.rule.body || response.data
           responseObj.method = options.method
@@ -171,7 +170,7 @@ const app = (server) => {
         resolve(obj)
       }
     })
-  }
+  )
 
   /**
    * Send response to client. End of the chain
@@ -220,8 +219,8 @@ const app = (server) => {
   }
 
   return {
-    handleRoute: handleRoute,
-    initSockets: initSockets
+    handleRoute,
+    initSockets
   }
 }
 
