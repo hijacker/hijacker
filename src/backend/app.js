@@ -28,7 +28,9 @@ const app = (server) => {
     // API url to make the request to
     const REQUEST_URL = BASE_URL + req.originalUrl
 
-    console.log(`[${++requestCount}][PROXY][${req.method}] ${REQUEST_URL}`)
+    requestCount += 1
+
+    console.log(`[${requestCount}][PROXY][${req.method}] ${REQUEST_URL}`)
 
     // Set up original object to pass through promise chain
     const originalObj = {
@@ -49,6 +51,7 @@ const app = (server) => {
         // Generate headers to send to server
         const headers = {}
         const headersToKeep = obj.rule.keep_headers || config.global.keep_headers || []
+        const nextObj = obj
 
         for (let i = 0; i < headersToKeep.length; i++) {
           if (Object.prototype.hasOwnProperty.call(obj.request.headers, headersToKeep[i])) {
@@ -56,7 +59,7 @@ const app = (server) => {
           }
         }
 
-        obj.request.headers = headers
+        nextObj.request.headers = headers
 
         return request(obj)
       })
@@ -119,55 +122,56 @@ const app = (server) => {
    */
   const request = obj => (
     new Promise((resolve, reject) => {
-      const REQUEST_URL = BASE_URL + (obj.rule.routeTo || obj.request.originalUrl)
+      const nextObj = obj
+      const REQUEST_URL = BASE_URL + (nextObj.rule.routeTo || nextObj.request.originalUrl)
 
       // Axios options
       const options = {
         url: REQUEST_URL,
-        method: obj.request.method,
-        headers: obj.request.headers,
-        data: obj.request.body,
+        method: nextObj.request.method,
+        headers: nextObj.request.headers,
+        data: nextObj.request.body,
         httpsAgent: new https.Agent({
           rejectUnauthorized: false
         })
       }
 
       const responseObj = {
-        headers: obj.request.headers,
-        method: obj.request.method,
-        body: obj.rule.body || {},
+        headers: nextObj.request.headers,
+        method: nextObj.request.method,
+        body: nextObj.rule.body || {},
         url: options.url,
-        statusCode: obj.rule.statusCode || 200,
-        apiSkipped: !obj.rule.interceptResponse,
+        statusCode: nextObj.rule.statusCode || 200,
+        apiSkipped: !nextObj.rule.interceptResponse,
         contentType: 'application/json'
       }
 
-      if (!obj.rule.skipApi) {
+      if (!nextObj.rule.skipApi) {
         axios(options).then((response) => {
           console.log(`[${requestCount}][${options.method}][${response.status}] ${REQUEST_URL}`)
           responseObj.headers = response.headers
-          responseObj.body = obj.rule.body || response.data
+          responseObj.body = nextObj.rule.body || response.data
           responseObj.method = options.method
-          responseObj.statusCode = obj.rule.statusCode || response.status
+          responseObj.statusCode = nextObj.rule.statusCode || response.status
           responseObj.contentType = response.headers['content-type']
 
-          obj.response = responseObj
-          resolve(obj)
+          nextObj.response = responseObj
+          resolve(nextObj)
         }).catch((err) => {
           const response = err.response
           console.log(`[${requestCount}][${options.method}][${response.status}] ${REQUEST_URL}`)
           responseObj.headers = response.headers
-          responseObj.body = obj.rule.body || response.data
+          responseObj.body = nextObj.rule.body || response.data
           responseObj.method = options.method
-          responseObj.statusCode = obj.rule.statusCode || response.status
+          responseObj.statusCode = nextObj.rule.statusCode || response.status
           responseObj.contentType = response.headers['content-type']
 
-          obj.response = responseObj
-          resolve(obj)
+          nextObj.response = responseObj
+          resolve(nextObj)
         })
       } else {
-        obj.response = responseObj
-        resolve(obj)
+        nextObj.response = responseObj
+        resolve(nextObj)
       }
     })
   )
