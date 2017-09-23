@@ -53,11 +53,11 @@ const app = (server) => {
         const headersToKeep = obj.rule.keep_headers || config.global.keep_headers || []
         const nextObj = obj
 
-        for (let i = 0; i < headersToKeep.length; i++) {
-          if (Object.prototype.hasOwnProperty.call(obj.request.headers, headersToKeep[i])) {
-            headers[headersToKeep[i]] = obj.request.headers[headersToKeep[i]]
+        headersToKeep.forEach((header) => {
+          if (Object.prototype.hasOwnProperty.call(obj.request.headers, header)) {
+            headers[header] = obj.request.headers[header]
           }
-        }
+        })
 
         nextObj.request.headers = headers
 
@@ -84,30 +84,33 @@ const app = (server) => {
    */
   const intercept = (obj, type) => (
     new Promise((resolve, reject) => {
-      if (obj.rule[`intercept${type.charAt(0).toUpperCase() + type.slice(1)}`] && io.sockets.sockets.length !== 0) {
+      const nextObj = obj
+      if (nextObj.rule[`intercept${type.charAt(0).toUpperCase() + type.slice(1)}`] && io.sockets.sockets.length !== 0) {
         let resolved = false
 
-        obj.intercept = {
+        nextObj.intercept = {
           id: uuid(),
           type
         }
 
         // Send event to clients
-        io.emit('intercept', obj)
+        io.emit('intercept', nextObj)
         console.log('Waiting on response from client')
 
-        for (const id in io.sockets.sockets) {
-          const socket = io.sockets.sockets[id]
-
-          socket.once(obj.intercept.id, (data) => {
-            if (!resolved) {
-              resolved = true
-              resolve(data)
-            }
-          })
+        const clientResponse = (data) => {
+          if (!resolved) {
+            resolved = true
+            resolve(data)
+          }
         }
+
+        Object.keys(io.sockets.sockets).forEach((socketId) => {
+          const socket = io.sockets.sockets[socketId]
+
+          socket.once(obj.intercept.id, clientResponse)
+        })
       } else {
-        resolve(obj)
+        resolve(nextObj)
       }
     })
   )

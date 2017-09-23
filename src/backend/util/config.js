@@ -23,8 +23,9 @@ const config = () => {
 
   let rc = {}
 
-  // Look for rc file in
+  // TODO: Figure out a better way to read in rules (and watch?)
   try {
+    // eslint-disable-next-line
     rc = require(path.join(process.cwd(), `${packageInfo.name}.config`))
   } catch (e) {
     // No config file. Create and start again
