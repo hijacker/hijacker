@@ -1,3 +1,5 @@
 module.exports = {
-  verbose: true
+  verbose: true,
+  coverageReporters: ["text", "html"],
+  coverageDirectory: 'test/coverage'
 }

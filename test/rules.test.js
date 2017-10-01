@@ -109,3 +109,22 @@ test('should match all methods if none provided in rule', () => {
   expect(rules.match(ruleList, reqFour)).toEqual(ruleList[0])
   expect(rules.match(ruleList, reqFive)).toEqual(ruleList[0])
 })
+
+test('should return default rule if no match', () => {
+  const ruleList = [
+    {
+      path: '/test-route',
+      method: 'POST'
+    },
+    {
+      path: '/test-route',
+      method: 'GET'
+    }
+  ]
+
+  const reqOne = { originalUrl: '/test-route', method: 'DELETE' }
+
+  expect(ruleList).not.toContainEqual(rules.match(ruleList, reqOne))
+  expect(rules.match(ruleList, reqOne)).toHaveProperty('interceptRequest')
+  expect(rules.match(ruleList, reqOne)).toHaveProperty('disabled')
+})
