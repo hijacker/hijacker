@@ -3,8 +3,8 @@ const bodyParser = require('body-parser')
 const path = require('path')
 const http = require('http')
 
-const config = require('./src/backend/util/config')
-const backend = require('./src/backend/app')
+const config = require('./lib/backend/util/config')
+const backend = require('./lib/backend/app')
 
 const app = express()
 const server = http.Server(app)
@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 })
 
 // Admin panel setup
-app.use('/hijacker', express.static(path.join(__dirname, 'src/frontend')))
+app.use('/hijacker', express.static(path.join(__dirname, 'lib/frontend')))
 
 // Prevent favicon requests
 app.get('/favicon.ico', (req, res) => {

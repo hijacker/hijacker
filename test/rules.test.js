@@ -1,4 +1,4 @@
-let rules = require('../src/backend/util/rules')
+let rules = require('../lib/backend/util/rules')
 
 test('should add an id to a rule when read in', () => {
   let rule = {

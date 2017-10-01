@@ -9,7 +9,7 @@
   "scripts": {
     "start": "nodemon index.js",
     "test": "jest",
-    "lint": "eslint -- ext .js src/backend/ index.js"
+    "lint": "eslint -- ext .js lib/backend/ index.js"
   },
   "repository": {
     "type": "git",
