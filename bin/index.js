@@ -10,4 +10,5 @@ program
   .version(pkg.version)
   .parse(process.argv)
 
+// TODO: Restructure to take in options as argument
 require('../index.js')
