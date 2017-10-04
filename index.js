@@ -13,7 +13,7 @@ const hijacker = backend(server)
 // Express setup
 app.use(bodyParser.json())
 app.use((req, res, next) => {
-  const configAllow = (config.global.allow_headers || []).join(', ')
+  const configAllow = (config.globalRule.allow_headers || []).join(', ')
 
   res.header('Access-Control-Allow-Origin', '*')
   res.header('Access-Control-Allow-Headers', configAllow)

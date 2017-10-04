@@ -7,7 +7,7 @@
     "hijacker": "./bin/index.js"
   },
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon ./bin/index.js",
     "test": "jest --coverage",
     "lint": "eslint -- ext .js lib/backend/ index.js test"
   },
