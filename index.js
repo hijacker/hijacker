@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const path = require('path')
 const http = require('http')
 
-const config = require('./lib/backend/util/config')
+const config = require('./lib/backend/util/config').config
 const backend = require('./lib/backend/app')
 
 const app = express()
