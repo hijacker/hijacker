@@ -21,7 +21,8 @@
   "devDependencies": {
     "eslint": "^4.7.1",
     "eslint-config-airbnb-standard": "^1.4.1",
-    "jest": "^21.1.0"
+    "jest": "^21.1.0",
+    "nock": "^9.1.0"
   },
   "scripts": {
     "start": "nodemon ./bin/index.js",
