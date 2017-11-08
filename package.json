@@ -2,25 +2,13 @@
   "name": "hijacker",
   "version": "0.1.6",
   "description": "Frontend development tool for intercepting and mocking api requests",
-  "main": "index.js",
+  "author": "Travis Weidenbenner <travis@thetravisw.com>",
+  "license": "MIT",
+  "repository": "travis-w/hijacker",
+  "homepage": "http://hijacker.io",
   "bin": {
     "hijacker": "./bin/index.js"
   },
-  "scripts": {
-    "start": "nodemon ./bin/index.js",
-    "test": "jest --coverage",
-    "lint": "eslint -- ext .js lib/backend/ index.js test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/travis-w/hijacker.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/travis-w/hijacker/issues"
-  },
-  "homepage": "https://github.com/travis-w/hijacker#readme",
   "dependencies": {
     "axios": "^0.16.2",
     "body-parser": "^1.17.2",
@@ -34,5 +22,10 @@
     "eslint": "^4.7.1",
     "eslint-config-airbnb-standard": "^1.4.1",
     "jest": "^21.1.0"
+  },
+  "scripts": {
+    "start": "nodemon ./bin/index.js",
+    "test": "jest --coverage",
+    "lint": "eslint -- ext .js lib/backend/ index.js test"
   }
 }
