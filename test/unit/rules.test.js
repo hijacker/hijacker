@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-const rules = require('../lib/backend/util/rules')
+const rules = require('../../lib/util/rules')
 
 test('should add an id to a rule when read in', () => {
   const rule = {

@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-const config = require('../lib/backend/util/config')
+const config = require('../../lib/util/config')
 
 test('should return config object for valid config file', () => {
   const configObj = {
