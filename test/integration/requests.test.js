@@ -14,10 +14,18 @@ describe('Integration Tests', () => {
       rules: [
         {
           path: '/cars',
-          skipApi: true,
+          skipApi: false,
           method: 'POST',
           body: {
             test: 'testing'
+          }
+        },
+        {
+          path: '/posts',
+          skipApi: true,
+          method: 'GET',
+          body: {
+            posts: 'get'
           }
         }
       ]
@@ -29,6 +37,11 @@ describe('Integration Tests', () => {
 
   afterAll(() => {
     hijackerServer.close()
+  })
+
+  afterEach(() => {
+    // Cleear all intercepts incase a test fails
+    nock.cleanAll()
   })
 
   it('should return api result if no matching rule', (done) => {
@@ -46,6 +59,7 @@ describe('Integration Tests', () => {
           make: 'Ford',
           model: 'Mustang'
         })
+
         done()
       })
   })
@@ -63,6 +77,28 @@ describe('Integration Tests', () => {
         expect(response.data).toEqual({
           test: 'testing'
         })
+
+        done()
+      })
+  })
+
+  it('should not hit api if skipApi enabled', (done) => {
+    const nockReq = nockServer.get('/posts')
+      .reply(200, {
+        id: 1,
+        make: 'Ford',
+        model: 'Mustang'
+      })
+
+    axios.get('http://localhost:3000/posts')
+      .then((response) => {
+        expect(response.data).toEqual({
+          posts: 'get'
+        })
+
+        // nock intercept should be active b/c api skiped
+        expect(nockReq.isDone()).toBe(false)
+
         done()
       })
   })
