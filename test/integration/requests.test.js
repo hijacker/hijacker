@@ -1,3 +1,5 @@
+/* eslint-env jest */
+
 const nock = require('nock')
 const axios = require('axios')
 
@@ -27,6 +29,12 @@ describe('Integration Tests', () => {
           body: {
             posts: 'get'
           }
+        },
+        {
+          path: '/cars',
+          skipApi: false,
+          method: 'PUT',
+          statusCode: 418
         }
       ]
     }
@@ -99,6 +107,21 @@ describe('Integration Tests', () => {
         // nock intercept should be active b/c api skiped
         expect(nockReq.isDone()).toBe(false)
 
+        done()
+      })
+  })
+
+  it('should set the status code if specified in rule', (done) => {
+    nockServer.put('/cars')
+      .reply(200, {
+        id: 1,
+        make: 'Ford',
+        model: 'Mustang'
+      })
+
+    axios.put('http://localhost:3000/cars')
+      .catch((err) => {
+        expect(err.response.status).toBe(418)
         done()
       })
   })
