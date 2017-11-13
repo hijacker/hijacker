@@ -1,6 +1,6 @@
 /**
  * Hijacker
- * Copyright(c) 2017 Travis Weidenbenner
+ * Copyright (c) 2017 Travis Weidenbenner
  * MIT Licensed
  */
 
