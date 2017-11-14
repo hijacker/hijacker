@@ -52,6 +52,15 @@ describe('Integration Tests', () => {
     nock.cleanAll()
   })
 
+  it('should return 204 for favicon', (done) => {
+    axios.get('http://localhost:3000/favicon.ico')
+      .then((response) => {
+        expect(response.status).toBe(204)
+
+        done()
+      })
+  })
+
   it('should return api result if no matching rule', (done) => {
     nockServer.get('/cars')
       .reply(200, {
@@ -122,6 +131,24 @@ describe('Integration Tests', () => {
     axios.put('http://localhost:3000/cars')
       .catch((err) => {
         expect(err.response.status).toBe(418)
+
+        done()
+      })
+  })
+
+  it('should forward error from server correctly', (done) => {
+    nockServer.put('/error')
+      .reply(404, {
+        error: 'Not Found'
+      })
+
+    axios.put('http://localhost:3000/error')
+      .catch((err) => {
+        expect(err.response.status).toBe(404)
+        expect(err.response.data).toEqual({
+          error: 'Not Found'
+        })
+
         done()
       })
   })
