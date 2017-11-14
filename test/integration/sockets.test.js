@@ -10,7 +10,7 @@ describe('Integration Tests', () => {
   beforeAll(() => {
     const config = {
       base_url: 'http://hijacker.testing.com',
-      port: 3000,
+      port: 4000,
       rules: [
         {
           path: '/cars',
@@ -45,7 +45,7 @@ describe('Integration Tests', () => {
   })
 
   beforeEach(() => {
-    socket = io('http://localhost:3000')
+    socket = io('http://localhost:4000')
   })
 
   afterEach(() => {

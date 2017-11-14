@@ -52,15 +52,6 @@ describe('Integration Tests', () => {
     nock.cleanAll()
   })
 
-  it('should return 204 for favicon', (done) => {
-    axios.get('http://localhost:3000/favicon.ico')
-      .then((response) => {
-        expect(response.status).toBe(204)
-
-        done()
-      })
-  })
-
   it('should return api result if no matching rule', (done) => {
     nockServer.get('/cars')
       .reply(200, {
