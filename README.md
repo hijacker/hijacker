@@ -1,5 +1,6 @@
 # Hijacker
 [![Build Status](https://travis-ci.org/travis-w/hijacker.svg?branch=master)](https://travis-ci.org/travis-w/hijacker)
+[![Coverage Status](https://coveralls.io/repos/github/travis-w/hijacker/badge.svg?branch=master)](https://coveralls.io/github/travis-w/hijacker?branch=master)
 
 Hijacker can be used as an API relay to assist with front end development. It can intercept requests and responses between the client and the API server.
 
