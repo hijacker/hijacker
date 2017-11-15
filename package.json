@@ -18,6 +18,7 @@
     "uuid": "^3.1.0"
   },
   "devDependencies": {
+    "coveralls": "^3.0.0",
     "eslint": "^4.7.1",
     "eslint-config-airbnb-standard": "^1.4.1",
     "jest": "^21.1.0",
@@ -26,8 +27,9 @@
     "socket.io-client": "^2.0.4"
   },
   "scripts": {
-    "start": "nodemon ./bin/index.js",
-    "test": "jest --coverage",
-    "lint": "eslint -- ext .js lib/backend/ index.js test"
+    "coveralls": "coveralls < test/coverage/lcov.info",
+    "lint": "eslint -- ext .js lib/backend/ index.js test",
+    "start": "nodemon bin/index.js",
+    "test": "jest --coverage"
   }
 }
