@@ -5,9 +5,9 @@ const io = require('socket.io-client')
 const hijacker = require('../..')
 
 describe('Integration Tests', () => {
+  const { CancelToken } = axios
   let hijackerServer
   let socket
-  let CancelToken
 
   beforeAll(() => {
     const config = {
@@ -36,7 +36,6 @@ describe('Integration Tests', () => {
     }
 
     hijackerServer = hijacker(config)
-    CancelToken = axios.CancelToken
   })
 
   afterAll(() => {
