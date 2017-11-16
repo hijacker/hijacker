@@ -82,9 +82,47 @@ describe('Integration Tests', () => {
       .catch(() => {})
   })
 
-  it('should allow modifying data in interceptRequest')
+  it('should allow modifying data in interceptRequest', (done) => {
+    socket.on('intercept', (data) => {
+      let newObj = data
+      expect(typeof newObj).toBe('object')
 
-  it('should allow modifying data in interceptResponse')
+      newObj.rule.body = {
+        body: 'intercepted'
+      }
+
+      socket.emit(newObj.intercept.id, newObj)
+    })
+
+    axios.get('http://localhost:2000/cars')
+      .then((response) => {
+        expect(response.data).toEqual({
+          body: 'intercepted'
+        })
+        done()
+      })
+  })
+
+  it('should allow modifying data in interceptResponse', (done) => {
+    socket.on('intercept', (data) => {
+      let newObj = data
+      expect(typeof newObj).toBe('object')
+
+      newObj.response.body = {
+        body: 'intercepted'
+      }
+
+      socket.emit(newObj.intercept.id, newObj)
+    })
+
+    axios.get('http://localhost:2000/posts')
+      .then((response) => {
+        expect(response.data).toEqual({
+          body: 'intercepted'
+        })
+        done()
+      })
+  })
 
   it('should only listen for one reponse from client per intercept')
 })
