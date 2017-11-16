@@ -53,7 +53,7 @@ describe('Integration Tests', () => {
   })
 
   it('should send a socket event on interceptRequest and continue on emit', (done) => {
-    let source = CancelToken.source()
+    const source = CancelToken.source()
 
     socket.on('intercept', (data) => {
       source.cancel()
@@ -68,7 +68,7 @@ describe('Integration Tests', () => {
   })
 
   it('should send a socket event on interceptResponse and continue on emit', (done) => {
-    let source = CancelToken.source()
+    const source = CancelToken.source()
 
     socket.on('intercept', (data) => {
       source.cancel()
@@ -84,7 +84,7 @@ describe('Integration Tests', () => {
 
   it('should allow modifying data in interceptRequest', (done) => {
     socket.on('intercept', (data) => {
-      let newObj = data
+      const newObj = data
       expect(typeof newObj).toBe('object')
 
       newObj.rule.body = {
@@ -105,7 +105,7 @@ describe('Integration Tests', () => {
 
   it('should allow modifying data in interceptResponse', (done) => {
     socket.on('intercept', (data) => {
-      let newObj = data
+      const newObj = data
       expect(typeof newObj).toBe('object')
 
       newObj.response.body = {
