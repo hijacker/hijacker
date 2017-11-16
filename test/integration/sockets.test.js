@@ -1,6 +1,8 @@
 /* eslint-env jest */
 
+const axios = require('axios')
 const io = require('socket.io-client')
+
 const hijacker = require('../..')
 
 describe('Integration Tests', () => {
@@ -14,8 +16,8 @@ describe('Integration Tests', () => {
       rules: [
         {
           path: '/cars',
-          skipApi: false,
-          method: 'POST',
+          skipApi: true,
+          method: 'GET',
           body: {
             test: 'testing'
           }
@@ -56,6 +58,63 @@ describe('Integration Tests', () => {
     socket.on('settings', (data) => {
       expect(data.rules.length).toBe(3)
       done()
+    })
+  })
+
+  it('should add a new rule when ADD_RULE event sent', (done) => {
+    axios.get('http://localhost:4000/error')
+      .catch(() => {
+        expect(true).toBe(true)
+      })
+      .then(() => {
+        socket.emit('ADD_RULE', {
+          path: '/error',
+          skipApi: true,
+          method: 'GET',
+          statusCode: 200,
+          body: {
+            error: 'works'
+          }
+        })
+
+        return axios.get('http://localhost:4000/error')
+      })
+      .then((response) => {
+        expect(response.data).toEqual({
+          error: 'works'
+        })
+
+        done()
+      })
+  })
+
+  it('should update a new rule when UPDATE_RULE event sent', (done) => {
+    let ruleList
+
+    socket.on('settings', (data) => {
+      ruleList = data.rules
+
+      axios.get('http://localhost:4000/cars')
+        .then((response) => {
+          expect(response.data).toEqual({
+            test: 'testing'
+          })
+
+          ruleList[0].body = {
+            new: 'body'
+          }
+
+          socket.emit('UPDATE_RULE', ruleList[0])
+
+          return axios.get('http://localhost:4000/cars')
+        })
+        .then((response) => {
+          expect(response.data).toEqual({
+            new: 'body'
+          })
+
+          done()
+        })
     })
   })
 })

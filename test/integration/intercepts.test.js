@@ -2,6 +2,7 @@
 
 const axios = require('axios')
 const io = require('socket.io-client')
+
 const hijacker = require('../..')
 
 describe('Integration Tests', () => {
