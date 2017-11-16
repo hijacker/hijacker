@@ -7,6 +7,7 @@ const hijacker = require('../..')
 describe('Integration Tests', () => {
   let hijackerServer
   let socket
+  let CancelToken
 
   beforeAll(() => {
     const config = {
@@ -35,6 +36,7 @@ describe('Integration Tests', () => {
     }
 
     hijackerServer = hijacker(config)
+    CancelToken = axios.CancelToken
   })
 
   afterAll(() => {
@@ -51,25 +53,33 @@ describe('Integration Tests', () => {
   })
 
   it('should send a socket event on interceptRequest and continue on emit', (done) => {
+    let source = CancelToken.source()
+
     socket.on('intercept', (data) => {
-      socket.emit(data.intercept.id, data)
+      source.cancel()
+      done()
     })
 
-    axios.get('http://localhost:2000/cars')
-      .then((response) => {
-        done()
+    axios.get('http://localhost:2000/cars', { cancelToken: source.token })
+      .then(() => {
+        expect(true).toBe(false)
       })
+      .catch(() => {})
   })
 
   it('should send a socket event on interceptResponse and continue on emit', (done) => {
+    let source = CancelToken.source()
+
     socket.on('intercept', (data) => {
-      socket.emit(data.intercept.id, data)
+      source.cancel()
+      done()
     })
 
-    axios.get('http://localhost:2000/posts')
-      .then((response) => {
-        done()
+    axios.get('http://localhost:2000/posts', { cancelToken: source.token })
+      .then(() => {
+        expect(true).toBe(false)
       })
+      .catch(() => {})
   })
 
   it('should allow modifying data in interceptRequest')
