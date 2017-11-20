@@ -1,7 +1,7 @@
 /* eslint-env jest */
 
-const nock = require('nock')
 const axios = require('axios')
+const nock = require('nock')
 
 const hijacker = require('../..')
 
