@@ -117,4 +117,47 @@ describe('Integration Tests', () => {
         })
     })
   })
+
+  it('should send updated rule list on ADD_RULE', (done) => {
+    let ruleList
+
+    socket.on('UPDATE_RULE_LIST', (data) => {
+      expect(data.length).toBe(ruleList.length + 1)
+      done()
+    })
+
+    socket.on('settings', (data) => {
+      ruleList = data.rules
+
+      socket.emit('ADD_RULE', {
+        path: '/error',
+        skipApi: true,
+        method: 'GET',
+        statusCode: 200
+      })
+    })
+  })
+
+  it('should send updated rule list on UPDATE_RULE', (done) => {
+    let ruleList
+
+    socket.on('UPDATE_RULE_LIST', (data) => {
+      expect(data[0].body).toEqual({
+        updated: 'rule'
+      })
+      done()
+    })
+
+    socket.on('settings', (data) => {
+      ruleList = data.rules
+
+      const newRule = Object.assign({}, ruleList[0], {
+        body: {
+          updated: 'rule'
+        }
+      })
+
+      socket.emit('UPDATE_RULE', newRule)
+    })
+  })
 })
