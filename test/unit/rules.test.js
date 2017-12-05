@@ -13,6 +13,42 @@ describe('Rule module', () => {
     expect(readRule).toHaveProperty('id')
   })
 
+  it('should not change the id when keepId flag set to true', () => {
+    const rule = {
+      path: '/test-route'
+    }
+
+    const readRule = rules.read(rule)
+    const tempId = readRule.id
+    const newRule = rules.read(readRule, true)
+
+    expect(newRule.id).toBe(tempId)
+  })
+
+  it('should change the id when keepId flag set to false', () => {
+    const rule = {
+      path: '/test-route'
+    }
+
+    const readRule = rules.read(rule)
+    const tempId = rule.id
+    const newRule = rules.read(readRule, false)
+
+    expect(newRule.id).not.toBe(tempId)
+  })
+
+  it('should change the id when keepId flag not set', () => {
+    const rule = {
+      path: '/test-route'
+    }
+
+    const readRule = rules.read(rule)
+    const tempId = rule.id
+    const newRule = rules.read(readRule)
+
+    expect(newRule.id).not.toBe(tempId)
+  })
+
   it('should fill in default values for properties not in rule', () => {
     const rule = {
       path: '/test-route'
