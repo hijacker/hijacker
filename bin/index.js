@@ -4,7 +4,7 @@ const path = require('path')
 const program = require('commander')
 
 const pkg = require('../package')
-const hijacker = require('../lib/hijacker')
+const Hijacker = require('../lib/hijacker')
 
 // Define CLI
 program
@@ -24,7 +24,7 @@ try {
   console.error('No config file found: Please set up a config file and start again')
   process.exit(1)
 }
-const server = hijacker(rc)
+const server = new Hijacker(rc)
 server.on('started', (port) => {
   console.log(`Application is listening on port ${port}`)
 })
