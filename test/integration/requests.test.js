@@ -3,7 +3,7 @@
 const axios = require('axios')
 const nock = require('nock')
 
-const hijacker = require('../..')
+const Hijacker = require('../..')
 
 describe('Integration Tests', () => {
   let hijackerServer
@@ -39,7 +39,7 @@ describe('Integration Tests', () => {
       ]
     }
 
-    hijackerServer = hijacker(config)
+    hijackerServer = new Hijacker(config)
     nockServer = nock('http://hijacker.testing.com')
   })
 

@@ -3,7 +3,7 @@
 const axios = require('axios')
 const io = require('socket.io-client')
 
-const hijacker = require('../..')
+const Hijacker = require('../..')
 
 describe('Integration Tests', () => {
   let hijackerServer
@@ -39,7 +39,7 @@ describe('Integration Tests', () => {
       ]
     }
 
-    hijackerServer = hijacker(config)
+    hijackerServer = new Hijacker(config)
   })
 
   afterAll(() => {
