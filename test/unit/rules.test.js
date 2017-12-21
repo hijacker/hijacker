@@ -147,6 +147,27 @@ describe('Rule module', () => {
     expect(rules.match(ruleList, reqFive)).toEqual(ruleList[0])
   })
 
+  it('should match all methods if method equals ALL', () => {
+    const ruleList = [
+      {
+        method: 'ALL',
+        path: '/test-route'
+      }
+    ]
+
+    const reqOne = { originalUrl: '/test-route', method: 'POST' }
+    const reqTwo = { originalUrl: '/test-route', method: 'GET' }
+    const reqThree = { originalUrl: '/test-route', method: 'DELETE' }
+    const reqFour = { originalUrl: '/test-route', method: 'PUT' }
+    const reqFive = { originalUrl: '/test-route', method: 'PATCH' }
+
+    expect(rules.match(ruleList, reqOne)).toEqual(ruleList[0])
+    expect(rules.match(ruleList, reqTwo)).toEqual(ruleList[0])
+    expect(rules.match(ruleList, reqThree)).toEqual(ruleList[0])
+    expect(rules.match(ruleList, reqFour)).toEqual(ruleList[0])
+    expect(rules.match(ruleList, reqFive)).toEqual(ruleList[0])
+  })
+
   it('should return default rule if no match', () => {
     const ruleList = [
       {
