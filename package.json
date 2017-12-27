@@ -6,9 +6,8 @@
   "license": "MIT",
   "repository": "travis-w/hijacker",
   "homepage": "http://hijacker.io",
-  "bin": {
-    "hijacker": "./bin/index.js"
-  },
+  "bin": "bin/hijacker.js",
+  "main": "lib/hijacker.js",
   "dependencies": {
     "axios": "^0.16.2",
     "body-parser": "^1.17.2",
@@ -57,8 +56,8 @@
     "coveralls": "coveralls < test/coverage/lcov.info",
     "lint": "npm run lint:frontend && npm run lint:server",
     "lint:frontend": "eslint --ext .js --ext .vue src/",
-    "lint:server": "eslint --ext .js lib/backend/ index.js test",
-    "start": "nodemon bin/index.js",
+    "lint:server": "eslint --ext .js lib/backend/ test",
+    "start": "nodemon bin/hijacker.js",
     "test": "jest --coverage",
     "semantic-release": "semantic-release",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
