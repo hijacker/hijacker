@@ -58,3 +58,4 @@ typings/
 .env
 
 hijacker.config.json
+lib/frontend/*
