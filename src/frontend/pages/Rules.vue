@@ -90,6 +90,7 @@ export default {
   methods: {
     addRule() {
       this.$store.commit('ADD_NEW_RULE')
+      this.cancelNewRule()
     },
     updateBody(val) {
       this.$store.commit(types.UPDATE_BODY, val)
