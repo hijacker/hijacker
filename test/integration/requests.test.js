@@ -12,6 +12,7 @@ describe('Integration Tests', () => {
   beforeAll(() => {
     const config = {
       base_url: 'http://hijacker.testing.com',
+      logger: { disabled: true },
       port: 3000,
       rules: [
         {

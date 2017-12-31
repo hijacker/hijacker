@@ -8,6 +8,7 @@ describe('Events Tests', () => {
   beforeAll(() => {
     config = {
       base_url: 'http://hijacker.testing.com',
+      logger: { disabled: true },
       port: 5000,
       rules: [
         {
