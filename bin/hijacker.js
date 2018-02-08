@@ -8,7 +8,7 @@ const Hijacker = require('../lib/hijacker')
 
 // Define CLI
 program
-  // .option('-c, --config <path>', 'set path to hijacker configuration')
+  .option('-c, --config <path>', 'set path to hijacker configuration', `${pkg.name}.config`)
   .version(pkg.version)
   .parse(process.argv)
 
@@ -17,8 +17,13 @@ let rc = {}
 
 // TODO: Figure out a better way to read in rules (and watch?)
 try {
+  let configPath = program.config;
+
+  if (!path.isAbsolute(program.config)) {
+    configPath = path.join(process.cwd(), configPath)
+  }
   // eslint-disable-next-line
-  rc = require(path.join(process.cwd(), `${pkg.name}.config`))
+  rc = require(configPath)
 } catch (e) {
   // No config file. Create and start again
   console.error('No config file found: Please set up a config file and start again')
