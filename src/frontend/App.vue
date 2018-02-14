@@ -22,8 +22,7 @@ export default {
 </script>
 
 <style lang="scss">
-  @import './vendor/scss/normalize';
-  @import './vendor/scss/skeleton';
+  @import '../../node_modules/vuetify/dist/vuetify.min.css';
 
   @import './scss/globals';
 
