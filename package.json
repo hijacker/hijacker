@@ -22,6 +22,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-env": "^1.6.0",
     "commitizen": "^2.9.6",
+    "concurrently": "^3.5.1",
     "coveralls": "^3.0.0",
     "cross-env": "^3.0.0",
     "css-loader": "^0.28.7",
@@ -53,16 +54,17 @@
     "webpack-dev-server": "^2.9.1"
   },
   "scripts": {
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "commit": "git-cz",
     "coveralls": "coveralls < test/coverage/lcov.info",
+    "dev:back": "nodemon bin/hijacker.js",
+    "dev:front": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
     "lint": "npm run lint:frontend && npm run lint:server",
     "lint:frontend": "eslint --ext .js --ext .vue src/",
     "lint:server": "eslint --ext .js lib/backend/ test",
-    "start": "nodemon bin/hijacker.js",
-    "test": "jest --coverage",
     "semantic-release": "semantic-release",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "start": "concurrently \"npm run dev:front\" \"npm run dev:back\"",
+    "test": "jest --coverage"
   },
   "files": [
     "bin/",
