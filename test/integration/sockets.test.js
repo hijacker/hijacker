@@ -2,11 +2,13 @@
 
 const axios = require('axios')
 const io = require('socket.io-client')
+const nock = require('nock')
 
 const Hijacker = require('../..')
 
 describe('Integration Tests', () => {
   let hijackerServer
+  let nockServer
   let socket
 
   beforeAll(() => {
@@ -41,6 +43,7 @@ describe('Integration Tests', () => {
     }
 
     hijackerServer = new Hijacker(config)
+    nockServer = nock('http://hijacker.testing.com')
   })
 
   afterAll(() => {
@@ -53,6 +56,7 @@ describe('Integration Tests', () => {
 
   afterEach(() => {
     socket.close()
+    nock.cleanAll()
   })
 
   it('should send list of rules on socket connect', (done) => {
@@ -63,6 +67,8 @@ describe('Integration Tests', () => {
   })
 
   it('should add a new rule when ADD_RULE event sent', (done) => {
+    nockServer.get('/error').reply(400)
+
     axios.get('http://localhost:4000/error')
       .catch(() => {
         expect(true).toBe(true)
