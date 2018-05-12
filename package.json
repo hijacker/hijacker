@@ -30,7 +30,7 @@
     "lodash.isequal": "^4.5.0",
     "nock": "^9.1.0",
     "nodemon": "^1.11.0",
-    "semantic-release": "^11.0.2",
+    "semantic-release": "^15.4.1",
     "socket.io-client": "^2.0.3"
   },
   "scripts": {
