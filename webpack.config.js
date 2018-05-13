@@ -1,4 +1,5 @@
 const path = require('path')
+
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
@@ -22,6 +23,16 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader'
+      },
+
+      // Transpile Sass
+      {
+        test: /\.scss$/,
+        use: [
+          'vue-style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
       }
     ]
   },
@@ -33,6 +44,11 @@ module.exports = {
     alias: {
       "@": path.resolve(__dirname, "src/frontend")
     }
+  },
+  devServer: {
+    historyApiFallback: true,
+    noInfo: true,
+    overlay: true
   },
   plugins: [
     // Move index.html to dist folder and add buldled script
