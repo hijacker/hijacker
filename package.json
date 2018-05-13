@@ -29,6 +29,9 @@
     "nodemon": "^1.11.0",
     "semantic-release": "^15.4.1",
     "socket.io-client": "^2.0.3",
+    "vue": "^2.5.16",
+    "vue-loader": "^15.0.10",
+    "vue-template-compiler": "^2.5.16",
     "webpack": "^4.8.3",
     "webpack-cli": "^2.1.3"
   },
