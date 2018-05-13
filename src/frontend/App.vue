@@ -9,7 +9,7 @@ export default {
   name: 'hijacker',
   data () {
     return {
-      title: "Hello World"
+      title: 'Hello World'
     }
   }
 }

@@ -52,7 +52,7 @@
     "coveralls": "coveralls < test/coverage/lcov.info",
     "dev:back": "nodemon bin/hijacker.js",
     "dev:front": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
-    "lint": "npm run lint:frontend && npm run lint:server",
+    "lint": "npm run lint:front && npm run lint:back",
     "lint:front": "eslint --ext .js --ext .vue src/",
     "lint:back": "eslint --ext .js lib/backend/ test/",
     "semantic-release": "semantic-release",
