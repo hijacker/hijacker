@@ -1,23 +1,15 @@
 <template>
   <div class="app">
-    {{ title }}
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'hijacker',
-  data () {
-    return {
-      title: 'Hello World'
-    }
-  }
+  name: 'hijacker'
 }
 </script>
 
 <style lang="scss">
-.app {
-  background-color: red;
-  color: white;
-}
+
 </style>
