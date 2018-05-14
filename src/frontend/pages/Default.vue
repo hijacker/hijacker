@@ -10,8 +10,18 @@
  * Dashboard for viewing/modifying/adding rules
  *
  */
+
+import { mapGetters } from 'vuex'
+
+import * as types from '@/store/types'
+
 export default {
-  name: 'default'
+  name: 'default',
+  computed: {
+    ...mapGetters({
+      rules: types.GET_ALL_RULES
+    })
+  }
 }
 </script>
 
