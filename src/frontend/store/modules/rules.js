@@ -1,7 +1,10 @@
 import * as types from '@/store/types'
 
 // Initial State
-const initialState = []
+const initialState = [{
+  id: 1,
+  name: 'Rule 1'
+}]
 
 // Actions
 const actions = {
