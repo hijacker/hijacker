@@ -5,12 +5,14 @@ const initialState = [
   {
     id: 1,
     name: 'Rule 1',
-    path: '/test'
+    path: '/test',
+    disabled: false
   },
   {
     id: 2,
     name: 'Rule 2',
-    path: '/cars'
+    path: '/cars',
+    disabled: false
   }
 ]
 
@@ -33,7 +35,7 @@ const mutations = {
 
   [types.UPDATE_RULE] (state, rule) {
     const index = state.findIndex(r => r.id === rule.id)
-    state[index] = rule
+    state.splice(index, 1, rule)
   }
 }
 

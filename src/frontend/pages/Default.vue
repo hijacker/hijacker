@@ -1,6 +1,11 @@
 <template>
   <div id="default">
-    <rule v-for="rule in rules" :initial-rule="rule" :key="rule.id"></rule>
+    <rule
+      v-for="rule in rules"
+      :initial-rule="rule"
+      :key="rule.id"
+      @change="updateRule">
+    </rule>
   </div>
 </template>
 
@@ -11,7 +16,7 @@
  *
  */
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 import * as types from '@/store/types'
 import Rule from '@/components/Rule'
@@ -24,6 +29,11 @@ export default {
   computed: {
     ...mapGetters({
       rules: types.GET_RULES
+    })
+  },
+  methods: {
+    ...mapMutations({
+      updateRule: types.UPDATE_RULE
     })
   }
 }
