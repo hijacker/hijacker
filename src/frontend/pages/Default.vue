@@ -1,6 +1,6 @@
 <template>
   <div id="default">
-    Testing
+    <rule v-for="rule in rules" :initial-rule="rule" :key="rule.id"></rule>
   </div>
 </template>
 
@@ -14,12 +14,16 @@
 import { mapGetters } from 'vuex'
 
 import * as types from '@/store/types'
+import Rule from '@/components/Rule'
 
 export default {
   name: 'default',
+  components: {
+    Rule
+  },
   computed: {
     ...mapGetters({
-      rules: types.GET_ALL_RULES
+      rules: types.GET_RULES
     })
   }
 }

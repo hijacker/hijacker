@@ -1,5 +1,5 @@
 // Rule Getters
-export const GET_ALL_RULES  = 'GET_ALL_RULES'
+export const GET_RULES      = 'GET_RULES'
 export const GET_RULE_BY_ID = 'GET_RULE_BY_ID'
 
 // Rule Mutations
