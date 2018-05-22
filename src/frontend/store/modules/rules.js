@@ -1,10 +1,18 @@
 import * as types from '@/store/types'
 
 // Initial State
-const initialState = [{
-  id: 1,
-  name: 'Rule 1'
-}]
+const initialState = [
+  {
+    id: 1,
+    name: 'Rule 1',
+    path: '/test'
+  },
+  {
+    id: 2,
+    name: 'Rule 2',
+    path: '/cars'
+  }
+]
 
 // Actions
 const actions = {
@@ -13,13 +21,8 @@ const actions = {
 
 // Getters
 const getters = {
-  [types.GET_ALL_RULES] (state) {
-    return state
-  },
-
-  [types.GET_RULE_BY_ID] (state, id) {
-    return state.find(r => r.id === id)
-  }
+  [types.GET_RULES]: state => state,
+  [types.GET_RULE_BY_ID]: state => id => state.find(r => r.id === id)
 }
 
 // Mutations
