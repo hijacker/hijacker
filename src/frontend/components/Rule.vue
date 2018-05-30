@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { cloneDeep, isEqual } from 'lodash'
 
 export default {
   name: 'rule',
@@ -21,24 +22,23 @@ export default {
   data() {
     return {
       open: false,
-      // TODO: Deep clone
-      rule: {
-        ...this.initialRule
-      }
+      rule: cloneDeep(this.initialRule),
+      lastEmitted: null
     }
   },
   watch: {
     initialRule: {
-      handler() {
-        // TODO: Update rule if different from initialRule
-        // Update properties only if different
-        console.log("TEST")
+      handler(newVal) {
+        if (!isEqual(this.lastEmitted, newVal)) {
+          this.rule = cloneDeep(newVal)
+        }
       },
       deep: true
     },
     rule: {
       handler() {
-        this.$emit('change', this.rule)
+        this.lastEmitted = cloneDeep(this.rule)
+        this.$emit('change', this.lastEmitted)
       },
       deep: true
     }
