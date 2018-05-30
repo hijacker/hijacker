@@ -33,6 +33,7 @@
     "eslint-plugin-html": "^4.0.3",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^22.4.3",
+    "lodash": "^4.17.10",
     "nock": "^9.1.0",
     "node-sass": "^4.9.0",
     "nodemon": "^1.11.0",
