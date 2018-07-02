@@ -2,7 +2,7 @@
 
 const Hijacker = require('../..')
 
-describe('Events Tests', () => {
+describe('Event Tests', () => {
   let config
 
   beforeAll(() => {

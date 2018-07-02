@@ -5,7 +5,7 @@ const nock = require('nock')
 
 const Hijacker = require('../..')
 
-describe('Integration Tests', () => {
+describe('Request Tests', () => {
   let hijackerServer
   let nockServer
 
@@ -153,4 +153,7 @@ describe('Integration Tests', () => {
         done()
       })
   })
+
+  it('should remove all hopbyhop headers before returning response to client')
+  it('should forward rest of headers from api')
 })
