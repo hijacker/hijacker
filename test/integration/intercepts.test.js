@@ -5,7 +5,7 @@ const io = require('socket.io-client')
 
 const Hijacker = require('../..')
 
-describe('Integration Tests', () => {
+describe('Intercept Tests', () => {
   const { CancelToken } = axios
   let hijackerServer
   let socket

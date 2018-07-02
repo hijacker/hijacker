@@ -6,7 +6,7 @@ const nock = require('nock')
 
 const Hijacker = require('../..')
 
-describe('Integration Tests', () => {
+describe('Socket Tests', () => {
   let hijackerServer
   let nockServer
   let socket
