@@ -2,6 +2,7 @@
     "extends": "airbnb-standard",
     "rules": {
       "semi": [2, "never"],
-      "no-console": "off"
+      "no-console": "off",
+      "quote-props": [2, "consistent-as-needed"]
     }
 }

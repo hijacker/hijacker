@@ -25,17 +25,17 @@ describe('Util module', () => {
 
   it('should filter hop by hop filters out of headers', () => {
     const headers = {
-      connection: 'close, test-header',
-      te: 'testing',
-      trailer: 'trailer',
-      upgrade: 'upgrade',
       'content-type': 'application/json',
       'content-length': 348,
+      'connection': 'close, test-header',
+      'te': 'testing',
       'transfer-encoding': 'test1',
       'test-header': 'test-header',
       'keep-alive': 'keep-alive',
       'proxy-authorization': 'proxy-authorization',
-      'proxy-authentication': 'proxy-authentication'
+      'proxy-authentication': 'proxy-authentication',
+      'trailer': 'trailer',
+      'upgrade': 'upgrade'
     }
 
     const filteredHeaders = util.filterResponseHeaders(headers)
