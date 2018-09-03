@@ -110,11 +110,6 @@ export default {
       },
       deep: true
     }
-  },
-  methods: {
-    alert () {
-      console.log('testing')
-    }
   }
 }
 </script>
