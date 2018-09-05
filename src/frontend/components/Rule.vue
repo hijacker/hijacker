@@ -54,8 +54,13 @@
 <script>
 import { cloneDeep, isEqual } from 'lodash'
 
+import AceEditor from './AceEditor'
+
 export default {
   name: 'rule',
+  components: {
+    AceEditor
+  },
   props: {
     initialRule: {
       type: Object,
@@ -127,6 +132,7 @@ export default {
 
   .body {
     overflow: hidden;
+    width: 100%;
   }
 
   .content {
@@ -137,6 +143,10 @@ export default {
       display: flex;
       flex-direction: column;
 
+      &:not(:first-of-type) {
+        margin-left: 20px;
+      }
+
       select, input:not([type="checkbox"]) {
         float: right;
         box-sizing: border-box;
@@ -145,6 +155,10 @@ export default {
 
       label {
         font-weight: 600;
+
+        &:not(:first-of-type) {
+          margin-top: 10px;
+        }
       }
     }
   }
