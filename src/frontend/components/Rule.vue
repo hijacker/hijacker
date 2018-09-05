@@ -7,44 +7,55 @@
     </div>
     <transition name="slide">
       <div class="body" v-if="open">
-        <div class="navigation">Section Headers here</div>
+        <div class="navigation">
+          <span @click="activeTab = 0">General</span>
+          <span @click="activeTab = 1">Request</span>
+          <span @click="activeTab = 2">Response</span>
+          <span @click="activeTab = 3">Source</span>
+        </div>
         <div class="content">
-          <div>
-            <label>
-              Path
-              <input v-model="rule.path" type="text" />
-            </label>
-            <label>
-              Method
-              <select v-model="selectedMethod">
-                <option v-for="method in methods">{{ method }}</option>
-              </select>
-            </label>
-            <label>
-              Status Code
-              <input v-model.number="rule.statusCode" type="number" />
-            </label>
-            <label>
-              Syntax Highlighting
-              <select v-model="selectedSyntax">
-                <option v-for="syntax in syntaxTypes">{{ syntax }}</option>
-              </select>
-            </label>
-          </div>
-          <div>
-            <label>
-              <input type="checkbox" v-model="rule.skipApi" />
-              Skip API
-            </label>
-            <label>
-              <input type="checkbox" v-model="rule.interceptRequest" />
-              Intercept Request
-            </label>
-            <label>
-              <input type="checkbox" v-model="rule.interceptResponse" />
-              Intercept Response
-            </label>
-          </div>
+          <!-- General Tab -->
+          <template v-if="activeTab === 0">
+            <div>
+              <label>
+                Path
+                <input v-model="rule.path" type="text" />
+              </label>
+              <label>
+                Method
+                <select v-model="selectedMethod">
+                  <option v-for="method in methods">{{ method }}</option>
+                </select>
+              </label>
+              <label>
+                Status Code
+                <input v-model.number="rule.statusCode" type="number" />
+              </label>
+              <label>
+                Syntax Highlighting
+                <select v-model="selectedSyntax">
+                  <option v-for="syntax in syntaxTypes">{{ syntax }}</option>
+                </select>
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" v-model="rule.skipApi" />
+                Skip API
+              </label>
+              <label>
+                <input type="checkbox" v-model="rule.interceptRequest" />
+                Intercept Request
+              </label>
+              <label>
+                <input type="checkbox" v-model="rule.interceptResponse" />
+                Intercept Response
+              </label>
+            </div>
+          </template>
+
+          <!-- Source Tab -->
+          <AceEditor v-if="activeTab === 3" v-model="editorSource" lang="json" />
         </div>
       </div>
     </transition>
@@ -73,6 +84,7 @@ export default {
   data() {
     return {
       open: false,
+      activeTab: 0,
       rule: cloneDeep(this.initialRule),
       syntaxTypes: ['json', 'text', 'xml'],
       methods: ['ALL', 'GET', 'POST', 'PUT', 'DELETE'],
@@ -96,6 +108,19 @@ export default {
 
       set(val) {
         this.$set(this.rule, 'syntax', val)
+      }
+    },
+    editorSource: {
+      get() {
+        return JSON.stringify(this.rule, null, 2)
+      },
+
+      set(val) {
+        try {
+          this.rule = JSON.parse(val)
+        } catch (e) {
+          // Invalid data in editor, do nothing
+        }
       }
     }
   },
@@ -138,8 +163,9 @@ export default {
   .content {
     display: flex;
 
-    div {
+    & > div {
       flex-basis: 50%;
+      flex-grow: 1;
       display: flex;
       flex-direction: column;
 
