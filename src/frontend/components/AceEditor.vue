@@ -4,9 +4,10 @@
 
 <script>
 import ace from 'brace'
-require('brace/mode/json')
-require('brace/mode/xml')
-require('brace/theme/chrome')
+
+import 'brace/mode/json'
+import 'brace/mode/xml'
+import 'brace/theme/chrome'
 
 export default {
   name: 'AceEditor',
@@ -45,7 +46,6 @@ export default {
   mounted() {
     const self = this
     const lang = this.lang || 'text'
-    const beautify = ace.acequire('ace/ext/beautify')
 
     self.editor = ace.edit(this.$el)
 
