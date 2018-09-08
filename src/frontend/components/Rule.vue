@@ -1,8 +1,8 @@
 <template>
-  <div class="rule">
+  <div class="rule" :class="[rule.method ? rule.method.toLowerCase() : '', { 'disabled': rule.disabled }]">
     <div class="header" @click="open = !open">
-      <span>{{ rule.method || 'ALL' }}</span>
-      <span>{{ rule.path }}</span>
+      <span class="method">{{ rule.method || 'ALL' }}</span>
+      <span class="path">{{ rule.path }}</span>
       <input type="checkbox" v-model="rule.disabled" @click.stop />
     </div>
     <transition name="slide">
@@ -145,11 +145,50 @@ export default {
 </script>
 
 <style lang="scss">
+@import '../scss/mixins';
+
+$default-color: #ebf3fb;
+$default-border: #b6d9fd;
+$get-color: #e8f6f0;
+$get-border: #bbebd5;
+$post-color: #fbf1e6;
+$post-border: #fca130;
+
 .rule {
   width: 100%;
   margin-top: 10px;
+  padding: 5px;
+  box-sizing: border-box;
+  background-color: $default-color;
+  border: 2px solid $default-border;
+
+  @include http-method('get', $get-color, $get-border)
+  @include http-method('post', $post-color, $post-border)
+  @include http-method('put', #f4e7fd, #b346ff)
+  @include http-method('delete', #fbe7e7, #f93e3e)
+
+  &.disabled {
+    background-color: #f9f9f9;
+    border-color: #f0f0f0;
+
+    .method, .navigation > span {
+      background-color: #f0f0f0;
+    }
+
+    .path {
+      color: #828590;
+      text-decoration: line-through;
+    }
+  }
+
+  .method {
+    padding: 3px 6px;
+    background-color: $default-border;
+  }
 
   .header {
+    padding: 5px 0;
+
     input {
       float: right;
     }
@@ -158,6 +197,17 @@ export default {
   .body {
     overflow: hidden;
     width: 100%;
+  }
+
+  .navigation {
+    margin: 5px 0 10px;
+
+    span {
+      display: inline-block;
+      background-color: $default-border;
+      padding: 2px 5px;
+      cursor: pointer;
+    }
   }
 
   .content {
