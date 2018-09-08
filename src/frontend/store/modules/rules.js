@@ -5,6 +5,7 @@ const initialState = [
   {
     id: 1,
     name: 'Rule 1',
+    method: 'GET',
     path: '/test',
     disabled: false
   },
