@@ -153,6 +153,12 @@ $get-color: #e8f6f0;
 $get-border: #bbebd5;
 $post-color: #fbf1e6;
 $post-border: #fca130;
+$put-color: #f4e7fd;
+$put-border: #b346ff;
+$delete-color: #fbe7e7;
+$delete-border: #f93e3e;
+$disabled-color: #f9f9f9;
+$disabled-border: #f0f0f0;
 
 .rule {
   width: 100%;
@@ -162,24 +168,11 @@ $post-border: #fca130;
   background-color: $default-color;
   border: 2px solid $default-border;
 
-  @include http-method('get', $get-color, $get-border)
-  @include http-method('post', $post-color, $post-border)
-  @include http-method('put', #f4e7fd, #b346ff)
-  @include http-method('delete', #fbe7e7, #f93e3e)
-
-  &.disabled {
-    background-color: #f9f9f9;
-    border-color: #f0f0f0;
-
-    .method, .navigation > span {
-      background-color: #f0f0f0;
-    }
-
-    .path {
-      color: #828590;
-      text-decoration: line-through;
-    }
-  }
+  @include http-method('get', $get-color, $get-border);
+  @include http-method('post', $post-color, $post-border);
+  @include http-method('put', $put-color, $put-border);
+  @include http-method('delete', $delete-color, $delete-border);
+  @include http-method('disabled', $disabled-color, $disabled-border);
 
   .method {
     padding: 3px 6px;
