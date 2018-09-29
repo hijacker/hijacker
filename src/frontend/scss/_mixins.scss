@@ -6,5 +6,12 @@
     .method, .navigation > span {
       background-color: $border-color;
     }
+
+    @if $name == 'disabled' {
+      .path {
+        color: #828590;
+        text-decoration: line-through;
+      }
+    }
   }
 }
