@@ -60,7 +60,7 @@ describe('Socket Tests', () => {
   })
 
   it('should send list of rules on socket connect', (done) => {
-    socket.on('settings', (data) => {
+    socket.on('SETTINGS', (data) => {
       expect(data.rules.length).toBe(3)
       done()
     })
@@ -98,7 +98,7 @@ describe('Socket Tests', () => {
   it('should update a new rule when UPDATE_RULE event sent', (done) => {
     let ruleList
 
-    socket.on('settings', (data) => {
+    socket.on('SETTINGS', (data) => {
       ruleList = data.rules
 
       axios.get('http://localhost:4000/cars')
@@ -128,12 +128,12 @@ describe('Socket Tests', () => {
   it('should send updated rule list on ADD_RULE', (done) => {
     let ruleList
 
-    socket.on('UPDATE_RULE_LIST', (data) => {
+    socket.on('UPDATE_RULES', (data) => {
       expect(data.length).toBe(ruleList.length + 1)
       done()
     })
 
-    socket.on('settings', (data) => {
+    socket.on('SETTINGS', (data) => {
       ruleList = data.rules
 
       socket.emit('ADD_RULE', {
@@ -148,14 +148,14 @@ describe('Socket Tests', () => {
   it('should send updated rule list on UPDATE_RULE', (done) => {
     let ruleList
 
-    socket.on('UPDATE_RULE_LIST', (data) => {
+    socket.on('UPDATE_RULES', (data) => {
       expect(data[0].body).toEqual({
         updated: 'rule'
       })
       done()
     })
 
-    socket.on('settings', (data) => {
+    socket.on('SETTINGS', (data) => {
       ruleList = data.rules
 
       const newRule = Object.assign({}, ruleList[0], {
