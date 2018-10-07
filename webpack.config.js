@@ -2,6 +2,9 @@ const path = require('path')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const webpack = require('webpack')
+
+const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
   mode: process.env.NODE_ENV || 'development',
@@ -62,6 +65,10 @@ module.exports = {
     }),
 
     // Vue Loader Plugin (https://vue-loader.vuejs.org/guide/#manual-configuration)
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+
+    new webpack.DefinePlugin({
+      SOCKET_HOST: isProd ? '' : JSON.stringify('http://localhost:3005')
+    })
   ]
 }
