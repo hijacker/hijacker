@@ -8,8 +8,7 @@ export default socket => {
     })
 
     socket.on('UPDATE_RULES', data => {
-      // eslint-disable-next-line no-console, no-undef
-      console.log('UPDATE_RULES', data)
+      store.commit(types.SET_RULES, data)
     })
 
     // Request Lifecyle
@@ -24,20 +23,26 @@ export default socket => {
     })
 
     socket.on('intercept', data => {
+      // eslint-disable-next-line no-console, no-undef
+      console.log('INTERCEPT', data)
       switch (data.intercept.type) {
         case 'request':
           // Request Intercept
+          socket.emit(data.intercept.id, data)
           break
         case 'response':
           // Response Intercept
+          socket.emit(data.intercept.id, data)
           break
       }
     })
 
     store.subscribe(mutation => {
-      // LIsten to mutations to send data back to server
-      // eslint-disable-next-line no-console, no-undef
-      console.log(mutation)
+      switch (mutation.type) {
+        case types.UPDATE_RULE:
+          socket.emit('UPDATE_RULE', mutation.payload)
+          break
+      }
     })
   }
 }
