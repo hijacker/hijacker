@@ -55,7 +55,7 @@
           </template>
 
           <!-- Source Tab -->
-          <AceEditor v-if="activeTab === 3" v-model="editorSource" lang="json" />
+          <Editor v-if="activeTab === 3" v-model="editorSource" lang="json" />
         </div>
       </div>
     </transition>
@@ -65,12 +65,12 @@
 <script>
 import { cloneDeep, isEqual } from 'lodash'
 
-import AceEditor from './AceEditor'
+import Editor from './Editor'
 
 export default {
   name: 'rule',
   components: {
-    AceEditor
+    Editor
   },
   props: {
     initialRule: {
@@ -205,6 +205,7 @@ $disabled-border: #f0f0f0;
 
   .content {
     display: flex;
+    position: relative;
 
     & > div {
       flex-basis: 50%;
