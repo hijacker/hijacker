@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import CodeFlask from 'codeflask';
+import CodeFlask from 'codeflask'
 
 export default {
   name: 'Editor',
