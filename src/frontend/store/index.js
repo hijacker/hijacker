@@ -4,6 +4,7 @@ import io from 'socket.io-client'
 
 import createWebSocketPlugin from '@/store/sockets'
 
+import InterceptModule from '@/store/modules/intercepts'
 import RuleModule from '@/store/modules/rules'
 
 Vue.use(Vuex)
@@ -13,6 +14,7 @@ const socketPlugin = createWebSocketPlugin(io(SOCKET_HOST))
 
 export default new Vuex.Store({
   modules: {
+    intercepts: InterceptModule,
     rules: RuleModule
   },
   plugins: [socketPlugin],

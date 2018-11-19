@@ -56,7 +56,7 @@ describe('Intercept Tests', () => {
   it('should send a socket event on interceptRequest and continue on emit', (done) => {
     const source = CancelToken.source()
 
-    socket.on('intercept', (data) => {
+    socket.on('INTERCEPT', (data) => {
       source.cancel()
       done()
     })
@@ -71,7 +71,7 @@ describe('Intercept Tests', () => {
   it('should send a socket event on interceptResponse and continue on emit', (done) => {
     const source = CancelToken.source()
 
-    socket.on('intercept', (data) => {
+    socket.on('INTERCEPT', (data) => {
       source.cancel()
       done()
     })
@@ -84,7 +84,7 @@ describe('Intercept Tests', () => {
   })
 
   it('should allow modifying data in interceptRequest', (done) => {
-    socket.on('intercept', (data) => {
+    socket.on('INTERCEPT', (data) => {
       const newObj = data
       expect(typeof newObj).toBe('object')
 
@@ -105,7 +105,7 @@ describe('Intercept Tests', () => {
   })
 
   it('should allow modifying data in interceptResponse', (done) => {
-    socket.on('intercept', (data) => {
+    socket.on('INTERCEPT', (data) => {
       const newObj = data
       expect(typeof newObj).toBe('object')
 

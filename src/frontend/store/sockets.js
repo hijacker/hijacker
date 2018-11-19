@@ -22,25 +22,17 @@ export default socket => {
       console.log('CLIENT_RESPONSE', data)
     })
 
-    socket.on('intercept', data => {
-      // eslint-disable-next-line no-console, no-undef
-      console.log('INTERCEPT', data)
-      switch (data.intercept.type) {
-        case 'request':
-          // Request Intercept
-          socket.emit(data.intercept.id, data)
-          break
-        case 'response':
-          // Response Intercept
-          socket.emit(data.intercept.id, data)
-          break
-      }
+    socket.on('INTERCEPT', data => {
+      store.commit(types.ADD_INTERCEPT, data)
     })
 
     store.subscribe(mutation => {
       switch (mutation.type) {
         case types.UPDATE_RULE:
           socket.emit('UPDATE_RULE', mutation.payload)
+          break
+        case types.REMOVE_INTERCEPT:
+          socket.emit(mutation.payload.intercept.id, mutation.payload)
           break
       }
     })
