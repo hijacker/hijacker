@@ -55,7 +55,7 @@
           </template>
 
           <!-- Source Tab -->
-          <Editor v-if="activeTab === 3" v-model="editorSource" lang="json" />
+          <Editor v-if="activeTab === 3" v-model="editorSource" />
         </div>
       </div>
     </transition>
