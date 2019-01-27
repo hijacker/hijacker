@@ -30,7 +30,7 @@ module.exports = {
 
       // Transpile Sass
       {
-        test: /\.scss$/,
+        test: /\.s?css$/,
         use: [
           'vue-style-loader',
           'css-loader',

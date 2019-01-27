@@ -1,9 +1,13 @@
 <template>
-  <div style="width: 100%; height: 200px;"></div>
+  <textarea></textarea>
 </template>
 
 <script>
-import CodeFlask from 'codeflask'
+import CodeMirror from 'codemirror'
+
+// Support JS and XML
+import 'codemirror/mode/javascript/javascript.js'
+import 'codemirror/mode/xml/xml.js'
 
 export default {
   name: 'Editor',
@@ -12,49 +16,63 @@ export default {
       type: String,
       required: true
     },
-    lang: String
+    options: {
+      type: Object,
+      default: () => ({
+        lineNumbers: true,
+        mode: 'javascript',
+        theme: 'neat'
+      })
+    }
   },
   data() {
     return {
-      editor: null,
-      contentBackup: ''
+      editor: null
     }
   },
   watch: {
-    value(val) {
-      if (this.contentBackup !== val)  {
-        this.editor.updateCode(val)
-        // Remove when CodeFlask update published
-        this.editor.setLineNumber()
-        this.contentBackup = val
+    options: {
+      deep: true,
+      handler(options) {
+        for (const key in options) {
+          this.editor.setOption(key, options[key])
+        }
       }
     },
-    lang(val) {
-      this.editor.updateLanguage(val)
-    }
+    value(newVal) {
+      const editorVal = this.editor.getValue()
+
+      if (newVal !== editorVal) {
+        const scrollInfo = this.editor.getScrollInfo()
+        this.editor.setValue(newVal)
+        this.editor.scrollTo(scrollInfo.left, scrollInfo.top)
+      }
+    },
   },
   mounted() {
-    const self = this
-    const lang = this.lang || 'text'
+    this.editor = CodeMirror.fromTextArea(this.$el, this.options)
+    this.editor.setValue(this.value)
 
-    self.editor = new CodeFlask(this.$el, {
-      language: lang,
-      lineNumbers: true
+    this.editor.on('change', cm => {
+      this.$emit('input', cm.getValue())
     })
 
-    self.editor.updateCode(self.value)
-    // Remove when CodeFlask update published
-    self.editor.setLineNumber()
-    self.contentBackup = self.value
+    this.$emit('ready', this.editor)
 
-    self.editor.onUpdate((code) => {
-      self.$emit('input', code)
-      self.contentBackup = code
+    this.$nextTick(() => {
+      this.editor.refresh()
     })
+  },
+  beforeDestroy() {
+    // TODO: Find a better way to destroy to work with animations
+    const element = this.editor.doc.cm.getWrapperElement()
+    element.remove
+    element.remove()
   }
 }
 </script>
 
 <style lang="scss">
-
+  @import '~codemirror/lib/codemirror.css';
+  @import '~codemirror/theme/neat.css';
 </style>
