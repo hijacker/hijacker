@@ -24,7 +24,7 @@
               <label>
                 Method
                 <select v-model="selectedMethod">
-                  <option v-for="method in methods">{{ method }}</option>
+                  <option v-for="method in methods" :key="method">{{ method }}</option>
                 </select>
               </label>
               <label>
@@ -34,7 +34,7 @@
               <label>
                 Syntax Highlighting
                 <select v-model="selectedSyntax">
-                  <option v-for="syntax in syntaxTypes">{{ syntax }}</option>
+                  <option v-for="syntax in syntaxTypes" :key="syntax">{{ syntax }}</option>
                 </select>
               </label>
             </div>

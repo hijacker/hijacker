@@ -1,8 +1,10 @@
 {
-  "plugins": ["html"],
-  "extends": "eslint:recommended",
+  "extends": [
+    "eslint:recommended",
+    "plugin:vue/recommended"
+  ],
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 9,
     "sourceType": "module",
     "ecmaFeatures": {
       "modules": true,
