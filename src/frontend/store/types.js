@@ -14,3 +14,11 @@ export const GET_INTERCEPTS = 'GET_INTERCEPTS'
 // Intercept Mutations
 export const ADD_INTERCEPT    = 'ADD_INTERCEPT'
 export const REMOVE_INTERCEPT = 'REMOVE_INTERCEPT'
+
+
+// History Getters
+export const GET_HISTORY = 'GET_HISTORY'
+
+// History Mutations
+export const ADD_HISTORY_ITEM = 'ADD_HISTORY_ITEM'
+export const CLEAR_HISTORY    = 'CLEAR_HISTORY'

@@ -6,6 +6,7 @@ import createWebSocketPlugin from '@/store/sockets'
 
 import InterceptModule from '@/store/modules/intercepts'
 import RuleModule from '@/store/modules/rules'
+import HistoryModule from '@/store/modules/history'
 
 Vue.use(Vuex)
 
@@ -15,7 +16,8 @@ const socketPlugin = createWebSocketPlugin(io(SOCKET_HOST))
 export default new Vuex.Store({
   modules: {
     intercepts: InterceptModule,
-    rules: RuleModule
+    rules: RuleModule,
+    history: HistoryModule
   },
   plugins: [socketPlugin],
   // eslint-disable-next-line no-undef

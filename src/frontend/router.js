@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 // Import Pages
 import Default from '@/pages/Default'
+import History from '@/pages/History'
 
 Vue.use(VueRouter)
 
@@ -13,6 +14,10 @@ export default new VueRouter({
     {
       path: '/',
       component: Default
+    },
+    {
+      path: '/history',
+      component: History
     }
   ]
 })

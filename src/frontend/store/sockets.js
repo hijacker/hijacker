@@ -13,17 +13,25 @@ export default socket => {
 
     // Request Lifecyle
     socket.on('CLIENT_REQUEST', data => {
-      // eslint-disable-next-line no-console, no-undef
-      console.log('CLIENT_REQUEST', data)
+      store.commit(types.ADD_HISTORY_ITEM, {
+        stage: 'CLIENT_REQUEST',
+        item: data
+      })
     })
 
     socket.on('CLIENT_RESPONSE', data => {
-      // eslint-disable-next-line no-console, no-undef
-      console.log('CLIENT_RESPONSE', data)
+      store.commit(types.ADD_HISTORY_ITEM, {
+        stage: 'CLIENT_RESPONSE',
+        item: data
+      })
     })
 
     socket.on('INTERCEPT', data => {
       store.commit(types.ADD_INTERCEPT, data)
+      store.commit(types.ADD_HISTORY_ITEM, {
+        stage: `INTERCEPT_${data.intercept.type.toUpperCase()}`,
+        item: data
+      })
     })
 
     store.subscribe(mutation => {
