@@ -1,11 +1,11 @@
 <template>
   <div id="default">
-    <rule
+    <Rule
       v-for="rule in rules"
-      :initial-rule="rule"
       :key="rule.id"
-      @change="updateRule">
-    </rule>
+      :initial-rule="rule"
+      @change="updateRule"
+    />
   </div>
 </template>
 
@@ -22,7 +22,7 @@ import * as types from '@/store/types'
 import Rule from '@/components/Rule'
 
 export default {
-  name: 'default',
+  name: 'Default',
   components: {
     Rule
   },

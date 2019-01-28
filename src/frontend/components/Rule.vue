@@ -3,10 +3,10 @@
     <div class="header" @click="open = !open">
       <span class="method">{{ rule.method || 'ALL' }}</span>
       <span class="path">{{ rule.path }}</span>
-      <input type="checkbox" v-model="rule.disabled" @click.stop />
+      <input v-model="rule.disabled" type="checkbox" @click.stop />
     </div>
     <transition name="slide">
-      <div class="body" v-if="open">
+      <div v-if="open" class="body">
         <div class="navigation">
           <span @click="activeTab = 0">General</span>
           <span @click="activeTab = 1">Request</span>
@@ -40,15 +40,15 @@
             </div>
             <div>
               <label>
-                <input type="checkbox" v-model="rule.skipApi" />
+                <input v-model="rule.skipApi" type="checkbox" />
                 Skip API
               </label>
               <label>
-                <input type="checkbox" v-model="rule.interceptRequest" />
+                <input v-model="rule.interceptRequest" type="checkbox" />
                 Intercept Request
               </label>
               <label>
-                <input type="checkbox" v-model="rule.interceptResponse" />
+                <input v-model="rule.interceptResponse" type="checkbox" />
                 Intercept Response
               </label>
             </div>
@@ -68,7 +68,7 @@ import { cloneDeep, isEqual } from 'lodash'
 import Editor from './Editor'
 
 export default {
-  name: 'rule',
+  name: 'Rule',
   components: {
     Editor
   },
