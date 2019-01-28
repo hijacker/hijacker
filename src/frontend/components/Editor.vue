@@ -1,5 +1,5 @@
 <template>
-  <textarea></textarea>
+  <textarea />
 </template>
 
 <script>
