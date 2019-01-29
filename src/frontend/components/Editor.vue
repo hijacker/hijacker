@@ -18,16 +18,21 @@ export default {
     },
     options: {
       type: Object,
-      default: () => ({
-        lineNumbers: true,
-        mode: 'javascript',
-        theme: 'neat'
-      })
+      default: () => ({})
+    },
+    readOnly: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      editor: null
+      editor: null,
+      defaultOptions: {
+        lineNumbers: true,
+        mode: 'javascript',
+        theme: 'neat'
+      }
     }
   },
   watch: {
@@ -38,6 +43,10 @@ export default {
           this.editor.setOption(key, options[key])
         }
       }
+    },
+    readOnly(newValue) {
+      console.log(newValue)
+      this.editor.setOption('readOnly', newValue)
     },
     value(newVal) {
       const editorVal = this.editor.getValue()
@@ -50,7 +59,12 @@ export default {
     },
   },
   mounted() {
-    this.editor = CodeMirror.fromTextArea(this.$el, this.options)
+    this.editor = CodeMirror.fromTextArea(this.$el, {
+      ...this.defaultOptions,
+      ...this.options,
+      readOnly: this.readOnly
+    })
+
     this.editor.setValue(this.value)
 
     this.editor.on('change', cm => {
