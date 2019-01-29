@@ -39,8 +39,11 @@ export default socket => {
         case types.UPDATE_RULE:
           socket.emit('UPDATE_RULE', mutation.payload)
           break
-        case types.REMOVE_INTERCEPT:
-          socket.emit(mutation.payload.intercept.id, mutation.payload)
+        case types.COMPLETE_REQ_INTERCEPT:
+          socket.emit(mutation.payload.INTERCEPT_REQUEST.intercept.id, mutation.payload.INTERCEPT_REQUEST)
+          break
+        case types.COMPLETE_RES_INTERCEPT:
+          socket.emit(mutation.payload.INTERCEPT_RESPONSE.intercept.id, mutation.payload.INTERCEPT_RESPONSE)
           break
       }
     })

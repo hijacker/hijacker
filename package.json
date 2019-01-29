@@ -74,6 +74,9 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
+  "nodemonConfig": {
+    "ignore": ["test/*", "src/*"]
+  },
   "release": {
     "branch": "master"
   }
