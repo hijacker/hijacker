@@ -9,7 +9,7 @@ Vue.use(VueRouter)
 
 export default new VueRouter({
   base: '/hijacker',
-  mode: 'history',
+  // mode: 'history',
   routes: [
     {
       path: '/',
