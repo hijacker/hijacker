@@ -41,7 +41,7 @@
     "node-sass": "^4.9.0",
     "nodemon": "^1.11.0",
     "sass-loader": "^7.0.1",
-    "semantic-release": "^15.4.1",
+    "semantic-release": "^16.0.0-beta.18",
     "socket.io-client": "^2.0.3",
     "vue": "^2.5.16",
     "vue-loader": "^15.0.10",
@@ -75,9 +75,9 @@
     }
   },
   "nodemonConfig": {
-    "ignore": ["test/*", "src/*"]
-  },
-  "release": {
-    "branch": "master"
+    "ignore": [
+      "test/*",
+      "src/*"
+    ]
   }
 }

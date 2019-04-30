@@ -45,7 +45,6 @@ export default {
       }
     },
     readOnly(newValue) {
-      console.log(newValue)
       this.editor.setOption('readOnly', newValue)
     },
     value(newVal) {
