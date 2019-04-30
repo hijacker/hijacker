@@ -166,7 +166,9 @@ $disabled-border: #f0f0f0;
   padding: 5px;
   box-sizing: border-box;
   background-color: $default-color;
-  border: 2px solid $default-border;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  border: 1px solid #eaeaea;
+  border-left: 4px solid $default-border;
 
   @include http-method('get', $get-color, $get-border);
   @include http-method('post', $post-color, $post-border);

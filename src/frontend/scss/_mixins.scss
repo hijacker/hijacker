@@ -1,7 +1,7 @@
 @mixin http-method($name, $back-color, $border-color) {
   &.#{$name} {
-    background-color: $back-color;
-    border-color: $border-color;
+    background-color: #ffffff;
+    // border-color: $border-color;
 
     .method, .navigation > span {
       background-color: $border-color;
