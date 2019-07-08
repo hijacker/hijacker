@@ -1,8 +1,8 @@
 language: node_js
 node_js:
-  - '6'
   - '8'
   - '10'
+  - '12'
 
 before_script:
  - npm run lint
@@ -11,11 +11,7 @@ before_script:
 jobs:
   include:
     - stage: test
-      name: 'Tests'
-      script: npm test
-    - stage: coverage
-      name: 'Code Coverage'
-      script: npm run coveralls
+      script: npm test && npm run coveralls
     - stage: deploy
       name: 'Semantic Release'
       node_js: '10'
