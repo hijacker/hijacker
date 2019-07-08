@@ -8,10 +8,14 @@ before_script:
  - npm run lint
  - npm run build
 
+script:
+ - npm test
+
+after_success:
+ - npm run coveralls
+
 jobs:
   include:
-    - stage: test
-      script: npm test && npm run coveralls
     - stage: deploy
       name: 'Semantic Release'
       node_js: '10'
