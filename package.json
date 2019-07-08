@@ -4,7 +4,7 @@
   "description": "Frontend development tool for intercepting and mocking api requests",
   "author": "Travis Weidenbenner <travis@thetravisw.com>",
   "license": "MIT",
-  "repository": "travis-w/hijacker",
+  "repository": "https://github.com/travis-w/hijacker",
   "homepage": "http://hijacker.io",
   "bin": "bin/hijacker.js",
   "main": "lib/hijacker.js",
