@@ -10,9 +10,13 @@ before_script:
 
 jobs:
   include:
-    stage: test
-    script: npm test
-    stage: coverage
-    script: script: npm run coveralls
-    stage: deploy
-    script: npm run semantic-release
+    - stage: test
+      name: 'Tests'
+      script: npm test
+    - stage: coverage
+      name: 'Code Coverage'
+      script: npm run coveralls
+    - stage: deploy
+      name: 'Semantic Release'
+      node_js: '10'
+      script: npm run semantic-release
