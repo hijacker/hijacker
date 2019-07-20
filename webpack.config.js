@@ -68,7 +68,7 @@ module.exports = {
     new VueLoaderPlugin(),
 
     new webpack.DefinePlugin({
-      SOCKET_HOST: isProd ? '' : JSON.stringify('http://localhost:3005')
+      SOCKET_HOST: isProd ? '' : JSON.stringify('http://localhost:3000')
     })
   ]
 }

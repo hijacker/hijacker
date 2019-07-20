@@ -13,11 +13,13 @@ export default new VueRouter({
   routes: [
     {
       path: '/',
-      component: Default
+      component: Default,
+      name: 'home'
     },
     {
       path: '/history',
-      component: History
+      component: History,
+      name: 'history'
     }
   ]
 })

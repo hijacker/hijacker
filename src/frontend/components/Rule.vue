@@ -1,64 +1,66 @@
 <template>
-  <div class="rule" :class="[rule.method ? rule.method.toLowerCase() : '', { 'disabled': rule.disabled }]">
-    <div class="header" @click="open = !open">
-      <span class="method">{{ rule.method || 'ALL' }}</span>
-      <span class="path">{{ rule.path }}</span>
-      <input v-model="rule.disabled" type="checkbox" @click.stop />
-    </div>
-    <transition name="slide">
-      <div v-if="open" class="body">
-        <div class="navigation">
-          <span @click="activeTab = 0">General</span>
-          <span @click="activeTab = 1">Request</span>
-          <span @click="activeTab = 2">Response</span>
-          <span @click="activeTab = 3">Source</span>
-        </div>
-        <div class="content">
-          <!-- General Tab -->
-          <template v-if="activeTab === 0">
-            <div>
-              <label>
-                Path
-                <input v-model="rule.path" type="text" />
-              </label>
-              <label>
-                Method
-                <select v-model="selectedMethod">
-                  <option v-for="method in methods" :key="method">{{ method }}</option>
-                </select>
-              </label>
-              <label>
-                Status Code
-                <input v-model.number="rule.statusCode" type="number" />
-              </label>
-              <label>
-                Syntax Highlighting
-                <select v-model="selectedSyntax">
-                  <option v-for="syntax in syntaxTypes" :key="syntax">{{ syntax }}</option>
-                </select>
-              </label>
-            </div>
-            <div>
-              <label>
-                <input v-model="rule.skipApi" type="checkbox" />
-                Skip API
-              </label>
-              <label>
-                <input v-model="rule.interceptRequest" type="checkbox" />
-                Intercept Request
-              </label>
-              <label>
-                <input v-model="rule.interceptResponse" type="checkbox" />
-                Intercept Response
-              </label>
-            </div>
-          </template>
-
-          <!-- Source Tab -->
-          <Editor v-if="activeTab === 3" v-model="editorSource" />
-        </div>
+  <div class="rule-container">
+    <div class="rule" :class="[rule.method ? rule.method.toLowerCase() : '', { 'disabled': rule.disabled }]">
+      <div class="header" @click="open = !open">
+        <span class="method">{{ rule.method || 'ALL' }}</span>
+        <span class="path">{{ rule.path }}</span>
+        <input v-model="rule.disabled" type="checkbox" @click.stop />
       </div>
-    </transition>
+      <transition name="slide">
+        <div v-if="open" class="body">
+          <div class="navigation">
+            <span @click="activeTab = 0" :class="{ 'active': activeTab === 0 }">General</span>
+            <span @click="activeTab = 1" :class="{ 'active': activeTab === 1 }">Request</span>
+            <span @click="activeTab = 2" :class="{ 'active': activeTab === 2 }">Response</span>
+            <span @click="activeTab = 3" :class="{ 'active': activeTab === 3 }">Source</span>
+          </div>
+          <div class="content">
+            <!-- General Tab -->
+            <template v-if="activeTab === 0">
+              <div>
+                <label>
+                  Path
+                  <input v-model="rule.path" type="text" />
+                </label>
+                <label>
+                  Method
+                  <select v-model="selectedMethod">
+                    <option v-for="method in methods" :key="method">{{ method }}</option>
+                  </select>
+                </label>
+                <label>
+                  Status Code
+                  <input v-model.number="rule.statusCode" type="number" />
+                </label>
+                <label>
+                  Syntax Highlighting
+                  <select v-model="selectedSyntax">
+                    <option v-for="syntax in syntaxTypes" :key="syntax">{{ syntax }}</option>
+                  </select>
+                </label>
+              </div>
+              <div>
+                <label>
+                  <input v-model="rule.skipApi" type="checkbox" />
+                  Skip API
+                </label>
+                <label>
+                  <input v-model="rule.interceptRequest" type="checkbox" />
+                  Intercept Request
+                </label>
+                <label>
+                  <input v-model="rule.interceptResponse" type="checkbox" />
+                  Intercept Response
+                </label>
+              </div>
+            </template>
+
+            <!-- Source Tab -->
+            <Editor v-if="activeTab === 3" v-model="editorSource" />
+          </div>
+        </div>
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -147,8 +149,8 @@ export default {
 <style lang="scss">
 @import '../scss/mixins';
 
-$default-color: #ebf3fb;
-$default-border: #b6d9fd;
+$default-color: #fff;
+$default-border: #3179B4;
 $get-color: #e8f6f0;
 $get-border: #bbebd5;
 $post-color: #fbf1e6;
@@ -160,15 +162,17 @@ $delete-border: #f93e3e;
 $disabled-color: #f9f9f9;
 $disabled-border: #f0f0f0;
 
+.rule-container {
+  border: 1px solid #f4f4f4;
+  border-left: 0;
+}
+
 .rule {
   width: 100%;
-  margin-top: 10px;
-  padding: 5px;
+  padding: 10px;
   box-sizing: border-box;
   background-color: $default-color;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  border: 1px solid #eaeaea;
-  border-left: 4px solid $default-border;
+  border-left: 8px solid $default-border;
 
   @include http-method('get', $get-color, $get-border);
   @include http-method('post', $post-color, $post-border);
@@ -177,12 +181,14 @@ $disabled-border: #f0f0f0;
   @include http-method('disabled', $disabled-color, $disabled-border);
 
   .method {
-    padding: 3px 6px;
-    background-color: $default-border;
+    color: $default-border;
+    font-weight: bold;
+    margin-right: 5px;
   }
 
   .header {
     padding: 5px 0;
+    cursor: pointer;
 
     input {
       float: right;
@@ -199,9 +205,15 @@ $disabled-border: #f0f0f0;
 
     span {
       display: inline-block;
-      background-color: $default-border;
-      padding: 2px 5px;
       cursor: pointer;
+
+      &:not(:last-of-type) {
+        margin-right: 15px;
+      }
+
+      &.active {
+        font-weight: 500;
+      }
     }
   }
 
