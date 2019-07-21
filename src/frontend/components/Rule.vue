@@ -152,19 +152,20 @@ export default {
 $default-color: #fff;
 $default-border: #3179B4;
 $get-color: #e8f6f0;
-$get-border: #bbebd5;
+$get-border: #2D8643;
 $post-color: #fbf1e6;
-$post-border: #fca130;
+$post-border: #E69624;
 $put-color: #f4e7fd;
 $put-border: #b346ff;
 $delete-color: #fbe7e7;
-$delete-border: #f93e3e;
+$delete-border: #D93A3A;
 $disabled-color: #f9f9f9;
 $disabled-border: #f0f0f0;
 
 .rule-container {
-  border: 1px solid #f4f4f4;
+  border: 1px solid #EFF0EC;
   border-left: 0;
+  //     background: linear-gradient(to right,#39aa56 0,#39aa56 10px,#fff 10px,#fff 100%) no-repeat;
 }
 
 .rule {
