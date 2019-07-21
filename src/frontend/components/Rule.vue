@@ -9,10 +9,10 @@
       <transition name="slide">
         <div v-if="open" class="body">
           <div class="navigation">
-            <span @click="activeTab = 0" :class="{ 'active': activeTab === 0 }">General</span>
-            <span @click="activeTab = 1" :class="{ 'active': activeTab === 1 }">Request</span>
-            <span @click="activeTab = 2" :class="{ 'active': activeTab === 2 }">Response</span>
-            <span @click="activeTab = 3" :class="{ 'active': activeTab === 3 }">Source</span>
+            <span :class="{ 'active': activeTab === 0 }" @click="activeTab = 0">General</span>
+            <span :class="{ 'active': activeTab === 1 }" @click="activeTab = 1">Request</span>
+            <span :class="{ 'active': activeTab === 2 }" @click="activeTab = 2">Response</span>
+            <span :class="{ 'active': activeTab === 3 }" @click="activeTab = 3">Source</span>
           </div>
           <div class="content">
             <!-- General Tab -->
