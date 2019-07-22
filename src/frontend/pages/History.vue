@@ -3,7 +3,7 @@
     <button @click="clearHistory">Clear</button>
     <div class="container">
       <div class="history-list">
-        <HistoryList :history="items"  v-model="activeItemId" />
+        <HistoryList v-model="activeItemId" :history="items" />
       </div>
       <div class="active-item">
         <HistoryItem v-if="activeItem" :item="activeItem" />
@@ -36,10 +36,10 @@ export default {
     }),
     activeItem() {
       if (this.activeItemId) {
-        return this.items.find(x => x.id === this.activeItemId);
+        return this.items.find(x => x.id === this.activeItemId)
       }
 
-      return;
+      return false
     }
   },
   methods: {

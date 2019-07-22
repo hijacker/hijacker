@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <textarea ref="el"/>
+    <textarea ref="el" />
   </div>
 </template>
 
@@ -60,7 +60,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.$refs);
     this.editor = CodeMirror.fromTextArea(this.$refs.el, {
       ...this.defaultOptions,
       ...this.options,
