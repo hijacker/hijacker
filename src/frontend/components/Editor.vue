@@ -1,5 +1,7 @@
 <template>
-  <textarea />
+  <div class="wrapper">
+    <textarea ref="el"/>
+  </div>
 </template>
 
 <script>
@@ -58,7 +60,8 @@ export default {
     },
   },
   mounted() {
-    this.editor = CodeMirror.fromTextArea(this.$el, {
+    console.log(this.$refs);
+    this.editor = CodeMirror.fromTextArea(this.$refs.el, {
       ...this.defaultOptions,
       ...this.options,
       readOnly: this.readOnly
@@ -85,7 +88,23 @@ export default {
 }
 </script>
 
-<style lang="scss">
-  @import '~codemirror/lib/codemirror.css';
-  @import '~codemirror/theme/neat.css';
+<style lang="scss" scoped>
+@import '~codemirror/lib/codemirror.css';
+@import '~codemirror/theme/neat.css';
+
+.wrapper {
+  position: relative;
+  height: 300px;
+
+  /deep/ .CodeMirror {
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    height:100%;
+  }
+}
+
+
 </style>

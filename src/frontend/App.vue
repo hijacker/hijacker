@@ -31,4 +31,8 @@ select {
   padding: 5px 2px;
   font-family: 'Roboto', sans-serif;
 }
+
+.center {
+  text-align: center !important;
+}
 </style>

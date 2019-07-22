@@ -1,7 +1,14 @@
 <template>
   <div>
     <button @click="clearHistory">Clear</button>
-    <HistoryItem v-for="item in items" :key="item.id" :item="item" />
+    <div class="container">
+      <div class="history-list">
+        <HistoryList :history="items"  v-model="activeItemId" />
+      </div>
+      <div class="active-item">
+        <HistoryItem v-if="activeItem" :item="activeItem" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -10,16 +17,30 @@ import { mapGetters, mapMutations } from 'vuex'
 
 import * as types from '@/store/types'
 import HistoryItem from '@/components/HistoryItem'
+import HistoryList from '@/components/HistoryList'
 
 export default {
   name: 'History',
   components: {
-    HistoryItem
+    HistoryItem,
+    HistoryList
+  },
+  data() {
+    return {
+      activeItemId: undefined
+    }
   },
   computed: {
     ...mapGetters({
       items: types.GET_HISTORY
-    })
+    }),
+    activeItem() {
+      if (this.activeItemId) {
+        return this.items.find(x => x.id === this.activeItemId);
+      }
+
+      return;
+    }
   },
   methods: {
     ...mapMutations({
@@ -29,6 +50,21 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: auto;
+  grid-template-areas: "list active";
+  grid-column-gap: 10px;
+
+  .history-list {
+    grid-area: list;
+  }
+
+  .active-item {
+    grid-area: active;
+  }
+}
 
 </style>
