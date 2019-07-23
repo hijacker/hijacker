@@ -21,7 +21,7 @@
       <div class="section">
         <h4>Headers</h4>
         <div class="details">
-          <div class="item" v-for="[key, val] in Object.entries(item.CLIENT_REQUEST.request.headers)">
+          <div v-for="[key, val] in Object.entries(item.CLIENT_REQUEST.request.headers)" :key="key" class="item">
             <strong>{{ key }}:</strong> {{ val }}
           </div>
         </div>
@@ -29,7 +29,7 @@
       <div class="section">
         <h4>Body</h4>
         <div class="details">
-          <div class="item" v-for="[key, val] in Object.entries(item.CLIENT_REQUEST.request.body)">
+          <div v-for="[key, val] in Object.entries(item.CLIENT_REQUEST.request.body)" :key="key" class="item">
             <strong>{{ key }}:</strong> {{ val }}
           </div>
         </div>
@@ -56,12 +56,12 @@
 import { mapMutations } from 'vuex'
 
 import * as types from '@/store/types'
-import Editor from './Editor'
+// import Editor from './Editor'
 
 export default {
   name: 'HistoryItem',
   components: {
-    Editor
+    // Editor
   },
   props: {
     item: {
