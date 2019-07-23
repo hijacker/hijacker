@@ -1,6 +1,5 @@
 <template>
   <div class="history-item">
-    <div class="path">{{ item.CLIENT_REQUEST.request.originalUrl }}</div>
     <div class="body">
       <div class="navigation">
         <span v-if="item.CLIENT_REQUEST" @click="activeTab = 0">Client Request</span>
@@ -8,7 +7,34 @@
         <span v-if="item.INTERCEPT_RESPONSE" @click="activeTab = 4">Intercept Response</span>
         <span v-if="item.CLIENT_RESPONSE" @click="activeTab = 5">Client Response</span>
       </div>
-      <div v-if="activeTab === 0">
+      <div class="section">
+        <h3>Request</h3>
+        <div class="details">
+          <div class="item">
+            Date: {{ item.CLIENT_REQUEST.reqTime }}
+          </div>
+          <div class="item">
+            Path: {{ item.CLIENT_REQUEST.request.originalUrl }}
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <h4>Headers</h4>
+        <div class="details">
+          <div class="item" v-for="[key, val] in Object.entries(item.CLIENT_REQUEST.request.headers)">
+            <strong>{{ key }}:</strong> {{ val }}
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <h4>Body</h4>
+        <div class="details">
+          <div class="item" v-for="[key, val] in Object.entries(item.CLIENT_REQUEST.request.body)">
+            <strong>{{ key }}:</strong> {{ val }}
+          </div>
+        </div>
+      </div>
+      <!-- <div v-if="activeTab === 0">
         <Editor :value="formatJson(item.CLIENT_REQUEST)" :read-only="true" />
       </div>
       <div v-if="activeTab === 1">
@@ -21,7 +47,7 @@
       </div>
       <div v-if="activeTab === 5">
         <Editor :value="formatJson(item.CLIENT_RESPONSE)" :read-only="true" />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -95,5 +121,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  h3, h4 {
+    margin: 5px 0;
+  }
 
+  h4 {
+    opacity: 0.8;
+  }
 </style>
