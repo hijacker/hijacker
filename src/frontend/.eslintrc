@@ -4,18 +4,17 @@
     "plugin:vue/recommended"
   ],
   "parserOptions": {
-    "ecmaVersion": 9,
+    "ecmaVersion": 2019,
     "sourceType": "module",
     "ecmaFeatures": {
-      "modules": true,
-      "experimentalObjectRestSpread": true
+      "modules": true
     }
   },
   "rules": {
     "semi": ["error", "never"],
     "quotes": ["error", "single"],
-    "vue/max-attributes-per-line": false,
-    "vue/singleline-html-element-content-newline": false,
+    "vue/max-attributes-per-line": 0,
+    "vue/singleline-html-element-content-newline": 0,
     "vue/html-self-closing": ["error", {
       "html": {
         "void": "always",
