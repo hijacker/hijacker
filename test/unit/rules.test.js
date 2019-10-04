@@ -88,6 +88,40 @@ describe('Rule module', () => {
     expect(rules.match(ruleList, reqThree)).toEqual(ruleList[2])
   })
 
+  it('should match the correct rule with parameters', () => {
+    const ruleList = [
+      {
+        path: '/test-route/:id',
+        method: 'POST'
+      },
+      {
+        path: '/search?q=:search',
+        method: 'GET'
+      },
+      {
+        path: '/route/:id/test',
+        method: 'DELETE'
+      }
+    ]
+
+    // Mock requests just need originalUrl and method
+    const reqOne = { originalUrl: '/test-route/1', method: 'POST' }
+    const reqTwo = { originalUrl: '/test-route/12', method: 'POST' }
+    const reqThree = { originalUrl: '/test-route', method: 'POST' }
+    const reqFour = { originalUrl: '/search?q=hijacker', method: 'GET' }
+    const reqFive = { originalUrl: '/search', method: 'GET' }
+    const reqSix = { originalUrl: '/route/12312/test', method: 'DELETE' }
+    const reqSeven = { originalUrl: '/route/12312', method: 'DELETE' }
+
+    expect(rules.match(ruleList, reqOne)).toEqual(ruleList[0])
+    expect(rules.match(ruleList, reqTwo)).toEqual(ruleList[0])
+    expect(rules.match(ruleList, reqThree)).toEqual(rules.DEFAULT_RULE)
+    expect(rules.match(ruleList, reqFour)).toEqual(ruleList[1])
+    expect(rules.match(ruleList, reqFive)).toEqual(rules.DEFAULT_RULE)
+    expect(rules.match(ruleList, reqSix)).toEqual(ruleList[2])
+    expect(rules.match(ruleList, reqSeven)).toEqual(rules.DEFAULT_RULE)
+  })
+
   it('should match first result if multiple match', () => {
     const ruleList = [
       {
