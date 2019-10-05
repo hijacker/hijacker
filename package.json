@@ -40,7 +40,7 @@
     "jest": "^24.9.0",
     "lodash": "^4.17.15",
     "nock": "^11.3.6",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.12.0",
     "nodemon": "^1.19.3",
     "sass-loader": "^8.0.0",
     "semantic-release": "^16.0.0-beta.25",
