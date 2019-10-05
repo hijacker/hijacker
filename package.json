@@ -44,7 +44,7 @@
     "nodemon": "^1.19.3",
     "sass-loader": "^8.0.0",
     "semantic-release": "^16.0.0-beta.25",
-    "socket.io-client": "^2.0.3",
+    "socket.io-client": "^2.3.0",
     "vue": "^2.5.16",
     "vue-loader": "^15.0.10",
     "vue-router": "^3.0.1",
