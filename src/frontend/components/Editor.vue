@@ -95,7 +95,7 @@ export default {
   position: relative;
   height: 300px;
 
-  /deep/ .CodeMirror {
+  ::v-deep .CodeMirror {
     position:absolute;
     top:0;
     bottom:0;
