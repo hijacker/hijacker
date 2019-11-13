@@ -9,7 +9,7 @@
   "bin": "bin/hijacker.js",
   "main": "lib/hijacker.js",
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "^0.18.1",
     "body-parser": "^1.17.2",
     "commander": "^2.11.0",
     "express": "^4.15.3",
