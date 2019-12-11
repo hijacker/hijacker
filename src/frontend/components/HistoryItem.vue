@@ -2,10 +2,10 @@
   <div class="history-item">
     <div class="body">
       <div class="navigation">
-        <span v-if="item.CLIENT_REQUEST" @click="activeTab = 0">Client Request</span>
-        <span v-if="item.INTERCEPT_REQUEST" @click="activeTab = 1">Intercept Request</span>
-        <span v-if="item.INTERCEPT_RESPONSE" @click="activeTab = 4">Intercept Response</span>
-        <span v-if="item.CLIENT_RESPONSE" @click="activeTab = 5">Client Response</span>
+        <div v-if="item.CLIENT_REQUEST" @click="setActiveTab(0)">Client Request</div>
+        <div v-if="item.INTERCEPT_REQUEST" @click="setActiveTab(1)">Intercept Request</div>
+        <div v-if="item.INTERCEPT_RESPONSE" @click="setActiveTab(4)">Intercept Response</div>
+        <div v-if="item.CLIENT_RESPONSE" @click="setActiveTab(5)">Client Response</div>
       </div>
       <div class="section">
         <h3>Request</h3>
@@ -115,6 +115,9 @@ export default {
     }),
     formatJson(val) {
       return JSON.stringify(val, null, 2)
+    },
+    setActiveTab(tab) {
+      this.activeTab = tab;
     }
   }
 }
