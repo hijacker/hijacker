@@ -117,7 +117,7 @@ export default {
       return JSON.stringify(val, null, 2)
     },
     setActiveTab(tab) {
-      this.activeTab = tab;
+      this.activeTab = tab
     }
   }
 }
