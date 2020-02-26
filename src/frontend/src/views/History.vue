@@ -25,7 +25,7 @@ export default {
     HistoryItem,
     HistoryList
   },
-  data() {
+  data () {
     return {
       activeItemId: undefined
     }
@@ -34,7 +34,7 @@ export default {
     ...mapGetters({
       items: types.GET_HISTORY
     }),
-    activeItem() {
+    activeItem () {
       if (this.activeItemId) {
         return this.items.find(x => x.id === this.activeItemId)
       }

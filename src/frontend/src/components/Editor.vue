@@ -8,8 +8,8 @@
 import CodeMirror from 'codemirror'
 
 // Support JS and XML
-import 'codemirror/mode/javascript/javascript.js'
-import 'codemirror/mode/xml/xml.js'
+import 'codemirror/mode/javascript/javascript'
+import 'codemirror/mode/xml/xml'
 
 export default {
   name: 'Editor',
@@ -27,7 +27,7 @@ export default {
       default: false
     }
   },
-  data() {
+  data () {
     return {
       editor: null,
       defaultOptions: {
@@ -40,16 +40,16 @@ export default {
   watch: {
     options: {
       deep: true,
-      handler(options) {
-        for (const key in options) {
+      handler (options) {
+        Object.keys(options).forEach((key) => {
           this.editor.setOption(key, options[key])
-        }
+        })
       }
     },
-    readOnly(newValue) {
+    readOnly (newValue) {
       this.editor.setOption('readOnly', newValue)
     },
-    value(newVal) {
+    value (newVal) {
       const editorVal = this.editor.getValue()
 
       if (newVal !== editorVal) {
@@ -57,9 +57,9 @@ export default {
         this.editor.setValue(newVal)
         this.editor.scrollTo(scrollInfo.left, scrollInfo.top)
       }
-    },
+    }
   },
-  mounted() {
+  mounted () {
     this.editor = CodeMirror.fromTextArea(this.$refs.el, {
       ...this.defaultOptions,
       ...this.options,
@@ -68,7 +68,7 @@ export default {
 
     this.editor.setValue(this.value)
 
-    this.editor.on('change', cm => {
+    this.editor.on('change', (cm) => {
       this.$emit('input', cm.getValue())
     })
 
@@ -78,10 +78,9 @@ export default {
       this.editor.refresh()
     })
   },
-  beforeDestroy() {
+  beforeDestroy () {
     // TODO: Find a better way to destroy to work with animations
     const element = this.editor.doc.cm.getWrapperElement()
-    element.remove
     element.remove()
   }
 }
@@ -104,6 +103,5 @@ export default {
     height:100%;
   }
 }
-
 
 </style>

@@ -1,6 +1,10 @@
 <template>
   <div class="history-list">
-    <div v-for="item in history" :key="item.id" class="history-item" @click="$emit('input', item.id)">
+    <div
+      v-for="item in history"
+      :key="item.id" class="history-item"
+      @click="$emit('input', item.id)"
+    >
       <span>{{ item.CLIENT_REQUEST.reqTime | date }}</span>
       <span class="method">{{ item.CLIENT_REQUEST.request.method }}</span>
       <span>{{ item.CLIENT_REQUEST.request.originalUrl }}</span>
@@ -17,7 +21,7 @@ import { DateTime } from 'luxon'
 export default {
   name: 'HistoryList',
   filters: {
-    date(val) {
+    date (val) {
       return DateTime.fromMillis(val).toFormat('yyyy/MM/d HH:mm:ss')
     }
   },
