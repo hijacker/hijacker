@@ -1,6 +1,9 @@
 <template>
   <div class="rule-container">
-    <div class="rule" :class="[rule.method ? rule.method.toLowerCase() : '', { 'disabled': rule.disabled }]">
+    <div
+      class="rule"
+      :class="[rule.method ? rule.method.toLowerCase() : '', { 'disabled': rule.disabled }]"
+    >
       <div class="header" @click="open = !open">
         <span class="method">{{ rule.method || 'ALL' }}</span>
         <span class="path">{{ rule.path }}</span>
@@ -78,12 +81,12 @@ export default {
     initialRule: {
       type: Object,
       required: true,
-      validator(value) {
-        return value.hasOwnProperty('path')
+      validator (value) {
+        return Object.prototype.hasOwnProperty.call(value, 'path')
       }
     }
   },
-  data() {
+  data () {
     return {
       open: false,
       activeTab: 0,
@@ -95,29 +98,29 @@ export default {
   },
   computed: {
     selectedMethod: {
-      get() {
+      get () {
         return this.rule.method || 'ALL'
       },
 
-      set(val) {
+      set (val) {
         this.$set(this.rule, 'method', val)
       }
     },
     selectedSyntax: {
-      get() {
+      get () {
         return this.rule.syntax || 'json'
       },
 
-      set(val) {
+      set (val) {
         this.$set(this.rule, 'syntax', val)
       }
     },
     editorSource: {
-      get() {
+      get () {
         return JSON.stringify(this.rule, null, 2)
       },
 
-      set(val) {
+      set (val) {
         try {
           this.rule = JSON.parse(val)
         } catch (e) {
@@ -128,7 +131,7 @@ export default {
   },
   watch: {
     initialRule: {
-      handler(newVal) {
+      handler (newVal) {
         if (!isEqual(this.lastEmitted, newVal)) {
           this.rule = cloneDeep(newVal)
         }
@@ -136,7 +139,7 @@ export default {
       deep: true
     },
     rule: {
-      handler() {
+      handler () {
         this.lastEmitted = cloneDeep(this.rule)
         this.$emit('change', this.lastEmitted)
       },
@@ -147,7 +150,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../scss/mixins';
+@import '~@/assets/scss/mixins';
 
 $default-color: #fff;
 $default-border: #3179B4;

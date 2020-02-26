@@ -21,7 +21,11 @@
       <div class="section">
         <h4>Headers</h4>
         <div class="details">
-          <div v-for="[key, val] in Object.entries(item.CLIENT_REQUEST.request.headers)" :key="key" class="item">
+          <div
+            v-for="[key, val] in Object.entries(item.CLIENT_REQUEST.request.headers)"
+            :key="key"
+            class="item"
+          >
             <strong>{{ key }}:</strong> {{ val }}
           </div>
         </div>
@@ -29,7 +33,11 @@
       <div class="section">
         <h4>Body</h4>
         <div class="details">
-          <div v-for="[key, val] in Object.entries(item.CLIENT_REQUEST.request.body)" :key="key" class="item">
+          <div
+            v-for="[key, val] in Object.entries(item.CLIENT_REQUEST.request.body)"
+            :key="key"
+            class="item"
+          >
             <strong>{{ key }}:</strong> {{ val }}
           </div>
         </div>
@@ -69,17 +77,17 @@ export default {
       required: true
     }
   },
-  data() {
+  data () {
     return {
       activeTab: 0
     }
   },
   computed: {
     interceptReq: {
-      get() {
+      get () {
         return this.formatJson(this.item.INTERCEPT_REQUEST)
       },
-      set(val) {
+      set (val) {
         try {
           this.addHistoryItem({
             stage: 'INTERCEPT_REQUEST',
@@ -92,10 +100,10 @@ export default {
     },
 
     interceptRes: {
-      get() {
+      get () {
         return this.formatJson(this.item.INTERCEPT_RESPONSE)
       },
-      set(val) {
+      set (val) {
         try {
           this.addHistoryItem({
             stage: 'INTERCEPT_RESPONSE',
@@ -113,10 +121,10 @@ export default {
       completeResInt: types.COMPLETE_RES_INTERCEPT,
       addHistoryItem: types.ADD_HISTORY_ITEM
     }),
-    formatJson(val) {
+    formatJson (val) {
       return JSON.stringify(val, null, 2)
     },
-    setActiveTab(tab) {
+    setActiveTab (tab) {
       this.activeTab = tab
     }
   }
