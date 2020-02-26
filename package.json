@@ -2,12 +2,27 @@
   "name": "hijacker",
   "version": "0.0.0-development",
   "description": "Frontend development tool for intercepting and mocking api requests",
-  "author": "Travis Weidenbenner <travis@thetravisw.com>",
-  "license": "MIT",
-  "repository": "https://github.com/travis-w/hijacker",
-  "homepage": "http://hijacker.io",
-  "bin": "bin/hijacker.js",
+  "author": "Travis Weidenbenner <travis@travisw.dev>",
+  "scripts": {
+    "build": "vue-cli-service build",
+    "lint": "npm run lint:front && npm run lint:back",
+    "commit": "git-cz",
+    "coveralls": "coveralls < test/coverage/lcov.info",
+    "dev:back": "nodemon bin/hijacker.js",
+    "dev:front": "vue-cli-service serve",
+    "lint:back": "eslint --ext .js lib/ test/",
+    "lint:front": "eslint --ext .js --ext .vue src/",
+    "semantic-release": "semantic-release",
+    "start": "concurrently \"npm run dev:front\" \"npm run dev:back\"",
+    "storybook:build": "vue-cli-service storybook:build -c config/storybook",
+    "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook",
+    "test": "jest --coverage"
+  },
   "main": "lib/hijacker.js",
+  "files": [
+    "bin/",
+    "lib/"
+  ],
   "dependencies": {
     "body-parser": "^1.19.0",
     "commander": "^4.0.1",
@@ -20,6 +35,12 @@
     "uuid": "^3.3.3"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^5.3.14",
+    "@storybook/addon-docs": "^5.3.14",
+    "@storybook/addon-knobs": "^5.3.14",
+    "@storybook/addon-links": "^5.3.14",
+    "@storybook/addon-notes": "^5.3.14",
+    "@storybook/vue": "^5.3.14",
     "@vue/cli-plugin-babel": "~4.2.0",
     "@vue/cli-plugin-router": "~4.2.0",
     "@vue/cli-plugin-vuex": "~4.2.0",
@@ -45,40 +66,28 @@
     "semantic-release": "^16.0.0-beta.25",
     "socket.io-client": "^2.3.0",
     "vue": "^2.6.11",
+    "vue-cli-plugin-storybook": "^1.2.1",
     "vue-router": "^3.1.5",
     "vue-template-compiler": "^2.6.11",
     "vuex": "^3.1.2"
   },
-  "scripts": {
-    "build": "vue-cli-service build",
-    "commit": "git-cz",
-    "coveralls": "coveralls < test/coverage/lcov.info",
-    "dev:back": "nodemon bin/hijacker.js",
-    "dev:front": "vue-cli-service serve",
-    "lint": "npm run lint:front && npm run lint:back",
-    "lint:front": "eslint --ext .js --ext .vue src/",
-    "lint:back": "eslint --ext .js lib/ test/",
-    "semantic-release": "semantic-release",
-    "start": "concurrently \"npm run dev:front\" \"npm run dev:back\"",
-    "test": "jest --coverage"
-  },
-  "files": [
-    "bin/",
-    "lib/"
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
   ],
+  "bin": "bin/hijacker.js",
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
+  "homepage": "http://hijacker.io",
+  "license": "MIT",
   "nodemonConfig": {
     "ignore": [
       "test/*",
       "src/*"
     ]
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ]
+  "repository": "https://github.com/travis-w/hijacker"
 }
