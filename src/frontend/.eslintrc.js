@@ -20,6 +20,10 @@ module.exports = {
         'acc', // for reduce accumulators
         'e', // for e.returnvalue
       ],
-    }]
+    }],
+    // Disable some jsx stuff for storybook
+    'react/react-in-jsx-scope': 'off',
+    'react/jsx-filename-extension': 'off',
+    'react/no-this-in-sfc': 'off'
   },
 };

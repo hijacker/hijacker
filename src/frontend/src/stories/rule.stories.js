@@ -1,7 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
-import { action } from '@storybook/addon-actions'
-import { linkTo } from '@storybook/addon-links'
-
 import Rule from '../components/Rule'
 
 export default {
@@ -14,15 +10,15 @@ export const basic = () => ({
     rule: {
       type: Object,
       default: () => ({
-        path: "/cars",
+        path: '/cars',
         skipApi: true,
         body: {
-          Hello: "World"
+          Hello: 'World'
         }
       })
     }
   },
-  render() {
-    return <Rule initial-rule={this.rule} />;
+  render () {
+    return <Rule initial-rule={this.rule} />
   }
 })
