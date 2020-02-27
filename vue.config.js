@@ -1,10 +1,11 @@
-const path = require('path');
+const path = require('path')
+const CopyPlugin = require('copy-webpack-plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
   publicPath: '/hijacker/',
-  outputDir: 'lib/frontend',
+  outputDir: './lib/frontend',
   chainWebpack: config => {
     config
       .entry('app')
@@ -23,5 +24,32 @@ module.exports = {
           SOCKET_HOST: isProd ? '' : JSON.stringify('http://localhost:3000')
         }]
       })
+
+    // Fix html template plugin
+    config
+      .plugin('html')
+      .tap(args => {
+        return [{
+          ...args[0],
+          template: './src/frontend/public/index.html'
+        }]
+      })
+
+    // Move Public Folder
+    config
+      .plugin('copy')
+      .use(CopyPlugin, [
+        [{
+          from: './src/frontend/public',
+          toType: 'dir',
+          ignore: [
+            '.DS_Store',
+            {
+              glob: 'index.html',
+              matchBase: false
+            }
+          ]
+        }]
+      ])
   }
-};
+}
