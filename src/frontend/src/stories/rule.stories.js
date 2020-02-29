@@ -1,3 +1,5 @@
+import { object } from '@storybook/addon-knobs'
+
 import Rule from '../components/Rule'
 
 export default {
@@ -9,13 +11,13 @@ export const basic = () => ({
   props: {
     rule: {
       type: Object,
-      default: () => ({
+      default: () => (object('Rule', {
         path: '/cars',
         skipApi: true,
         body: {
           Hello: 'World'
         }
-      })
+      }))
     }
   },
   render () {
