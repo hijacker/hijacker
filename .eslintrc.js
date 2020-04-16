@@ -8,6 +8,7 @@ module.exports = {
     'no-console': 'off',
     'quote-props': [2, 'consistent-as-needed'],
     'linebreak-style': 'off',
-    'no-underscore-dangle': 'off'
+    'no-underscore-dangle': 'off',
+    'import/extensions': 'off'
   },
 };
