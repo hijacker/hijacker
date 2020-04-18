@@ -8,13 +8,16 @@
         <div v-if="item.CLIENT_RESPONSE" @click="setActiveTab(5)">Client Response</div>
       </div>
       <div class="section">
-        <h3>Request</h3>
+        <h3>General</h3>
         <div class="details">
           <div class="item">
             Date: {{ item.CLIENT_REQUEST.reqTime }}
           </div>
           <div class="item">
             Path: {{ item.CLIENT_REQUEST.request.originalUrl }}
+          </div>
+          <div class="item">
+            Method: {{ item.CLIENT_REQUEST.request.method }}
           </div>
         </div>
       </div>

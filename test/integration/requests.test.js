@@ -12,7 +12,7 @@ describe('Request Tests', () => {
   beforeAll(() => {
     const config = {
       base_url: 'http://hijacker.testing.com',
-      logger: { disabled: true },
+      logger: { silent: true },
       port: 3000,
       rules: [
         {
