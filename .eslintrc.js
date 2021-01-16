@@ -1,8 +1,8 @@
 module.exports = {
   root: true,
-  extends: [
-    'airbnb-standard'
-  ],
+  parserOptions: {
+    ecmaVersion: 2020
+  },
   rules: {
     'semi': [2, 'never'],
     'no-console': 'off',
@@ -11,4 +11,4 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'import/extensions': 'off'
   },
-};
+}

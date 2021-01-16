@@ -26,4 +26,4 @@ module.exports = {
     'react/jsx-filename-extension': 'off',
     'react/no-this-in-sfc': 'off'
   },
-};
+}
