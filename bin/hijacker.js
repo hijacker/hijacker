@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const path = require('path')
-const program = require('commander')
+const { program } = require('commander')
 
 const pkg = require('../package')
 const Hijacker = require('../lib/hijacker')
@@ -12,14 +12,16 @@ program
   .version(pkg.version)
   .parse(process.argv)
 
+const options = program.opts();
+
 // TODO: Restructure to take in options as argument
 let rc = {}
 
 // TODO: Figure out a better way to read in rules (and watch?)
 try {
-  let configPath = program.config;
+  let configPath = options.config;
 
-  if (!path.isAbsolute(program.config)) {
+  if (!path.isAbsolute(options.config)) {
     configPath = path.join(process.cwd(), configPath)
   }
   // eslint-disable-next-line
