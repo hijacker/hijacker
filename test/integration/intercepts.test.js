@@ -44,7 +44,7 @@ describe('Intercept Tests', () => {
     socket = io('http://localhost:2000')
 
     socket.on("connect", () => {
-      done();
+      done()
     })
   })
 
