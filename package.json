@@ -32,8 +32,8 @@
     "luxon": "^1.25.0",
     "route-matcher": "^0.1.0",
     "socket.io": "^2.3.0",
-    "uuid": "^8.1.0",
-    "winston": "^3.2.1"
+    "uuid": "^8.3.2",
+    "winston": "^3.3.3"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^6.1.14",
@@ -43,7 +43,7 @@
     "@vue/cli-plugin-router": "^4.5.10",
     "@vue/cli-plugin-vuex": "^4.5.10",
     "@vue/cli-service": "^4.5.10",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "babel-eslint": "^10.1.0",
     "codemirror": "^5.59.1",
     "commitizen": "^4.2.3",
