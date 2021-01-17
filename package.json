@@ -37,7 +37,6 @@
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^6.1.14",
-    "@storybook/addon-knobs": "^6.1.14",
     "@storybook/vue": "^6.1.14",
     "@vue/cli-plugin-babel": "^4.5.10",
     "@vue/cli-plugin-router": "^4.5.10",
