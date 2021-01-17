@@ -40,17 +40,21 @@ describe('Intercept Tests', () => {
     hijackerServer = new Hijacker(config)
   })
 
-  afterAll(() => {
-    socket.close()
-    hijackerServer.close()
-  })
-
-  beforeEach(() => {
+  beforeEach((done) => {
     socket = io('http://localhost:2000')
+
+    socket.on("connect", () => {
+      done();
+    })
   })
 
   afterEach(() => {
     socket.close()
+  })
+
+  afterAll(() => {
+    socket.close()
+    hijackerServer.close()
   })
 
   it('should send a socket event on interceptRequest and continue on emit', (done) => {

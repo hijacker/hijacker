@@ -69,30 +69,33 @@ describe('Socket Tests', () => {
   it('should add a new rule when ADD_RULE event sent', (done) => {
     nockServer.get('/error').reply(400)
 
-    axios.get('http://localhost:4000/error')
-      .catch(() => {
-        expect(true).toBe(true)
-      })
-      .then(() => {
-        socket.emit('ADD_RULE', {
-          path: '/error',
-          skipApi: true,
-          method: 'GET',
-          statusCode: 200,
-          body: {
+    setTimeout(() => {
+      axios.get('http://localhost:4000/error')
+        .catch(() => {
+          expect(true).toBe(true)
+        })
+        .then(() => {
+          socket.emit('ADD_RULE', {
+            path: '/error',
+            skipApi: true,
+            method: 'GET',
+            statusCode: 200,
+            body: {
+              error: 'works'
+            }
+          })
+
+          return axios.get('http://localhost:4000/error')
+        })
+        .then((response) => {
+          expect(response.data).toEqual({
             error: 'works'
-          }
-        })
+          })
 
-        return axios.get('http://localhost:4000/error')
-      })
-      .then((response) => {
-        expect(response.data).toEqual({
-          error: 'works'
+          done()
         })
-
-        done()
-      })
+    }, 100)
+    
   })
 
   it('should update a new rule when UPDATE_RULE event sent', (done) => {
