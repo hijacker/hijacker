@@ -35,6 +35,13 @@ jobs:
         run: npm run lint
       - name: Run Tests
         run: npm test
+  
+  coveralls:
+    name: Coveralls
+    needs: test
+
+    steps:
+      - run: npm run coveralls
 
   release:
     name: Release
@@ -43,16 +50,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.x
-      - name: Install Dependencies
-        run: npm i
-      - name: Build Project
-        run: npm run build
+      # - name: Checkout
+      #   uses: actions/checkout@v2
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v1
+      #   with:
+      #     node-version: 14.x
+      # - name: Install Dependencies
+      #   run: npm i
+      # - name: Build Project
+      #   run: npm run build
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
