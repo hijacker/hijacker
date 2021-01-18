@@ -1,12 +1,11 @@
 name: Testing and Release
 
+# Run on push to all branches. But only PRs to master
 on:
-  # Run on push to any branch
   push:
     branches:
       - '*'
 
-  # Only run on PRs to master
   pull_request:
     branches:
       - 'master'
@@ -58,4 +57,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm run semantic-release -- --dryRun
+        run: npm run semantic-release
