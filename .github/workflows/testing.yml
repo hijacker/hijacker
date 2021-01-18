@@ -4,12 +4,12 @@ on:
   # Run on push to any branch
   push:
     branches:
-      - *
+      - '*'
 
   # Only run on PRs to master
   pull_request:
     branches:
-      - master
+      - 'master'
 
 jobs:
   build:
