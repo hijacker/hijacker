@@ -40,6 +40,8 @@ jobs:
     name: Coveralls
     needs: test
 
+    runs-on: ubuntu-latest
+    
     steps:
       - run: npm run coveralls
 
