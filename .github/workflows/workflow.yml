@@ -54,6 +54,7 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.github_token }}
+          path-to-lcov: './test/coverage/lcov.info'
           parallel-finished: true
 
 
