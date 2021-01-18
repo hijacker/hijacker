@@ -13,6 +13,8 @@ on:
 
 jobs:
   test:
+    name: Test
+
     runs-on: ubuntu-latest
 
     strategy:
@@ -36,6 +38,7 @@ jobs:
         run: npm test
 
   release:
+    name: Release
     needs: test
     
     runs-on: ubuntu-latest
@@ -52,4 +55,7 @@ jobs:
       - name: Build Project
         run: npm run build
       - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm run semantic-release -- --dryRun
