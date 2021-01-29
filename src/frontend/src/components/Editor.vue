@@ -1,15 +1,9 @@
 <template>
-  <div class="wrapper">
-    <textarea ref="el" />
-  </div>
+  <div ref="elem"></div>
 </template>
 
 <script>
-import CodeMirror from 'codemirror'
-
-// Support JS and XML
-import 'codemirror/mode/javascript/javascript'
-import 'codemirror/mode/xml/xml'
+import * as monaco from 'monaco-editor'
 
 export default {
   name: 'Editor',
@@ -27,81 +21,45 @@ export default {
       default: false
     }
   },
-  data () {
+  data() {
     return {
       editor: null,
-      defaultOptions: {
-        lineNumbers: true,
-        mode: 'javascript',
-        theme: 'neat'
-      }
+      bindedVal: this.value,
     }
   },
   watch: {
-    options: {
-      deep: true,
-      handler (options) {
-        Object.keys(options).forEach((key) => {
-          this.editor.setOption(key, options[key])
-        })
+    value(newVal) {
+      if (newVal !== this.bindedVal) {
+        this.editor.getModel().setValue(newVal)
       }
     },
-    readOnly (newValue) {
-      this.editor.setOption('readOnly', newValue)
-    },
-    value (newVal) {
-      const editorVal = this.editor.getValue()
 
-      if (newVal !== editorVal) {
-        const scrollInfo = this.editor.getScrollInfo()
-        this.editor.setValue(newVal)
-        this.editor.scrollTo(scrollInfo.left, scrollInfo.top)
+    bindedVal(newVal) {
+      if (newVal !== this.value) {
+        this.$emit('input', newVal)
       }
     }
   },
-  mounted () {
-    this.editor = CodeMirror.fromTextArea(this.$refs.el, {
-      ...this.defaultOptions,
-      ...this.options,
-      readOnly: this.readOnly
+  mounted() {
+    this.editor = monaco.editor.create(this.$refs.elem, {
+      value: this.value,
+      language: 'json',
+      minimap: { enabled: false },
+      contextmenu: false,
+      tabSize: 2,
+      readOnly: this.readOnly,
+      scrollBeyondLastLine: !this.readOnly,
     })
 
-    this.editor.setValue(this.value)
-
-    this.editor.on('change', (cm) => {
-      this.$emit('input', cm.getValue())
+    this.editor.onDidChangeModelContent(() => {
+      this.bindedVal = this.editor.getValue()
     })
-
-    this.$emit('ready', this.editor)
-
-    this.$nextTick(() => {
-      this.editor.refresh()
-    })
-  },
-  beforeDestroy () {
-    // TODO: Find a better way to destroy to work with animations
-    const element = this.editor.doc.cm.getWrapperElement()
-    element.remove()
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import '~codemirror/lib/codemirror.css';
-@import '~codemirror/theme/neat.css';
-
-.wrapper {
-  position: relative;
+div {
   height: 300px;
-
-  ::v-deep .CodeMirror {
-    position:absolute;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
-    height:100%;
-  }
 }
-
 </style>
