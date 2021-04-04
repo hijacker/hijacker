@@ -2,10 +2,7 @@
   <div class="history-item">
     <div class="body">
       <div class="navigation">
-        <div v-if="item.CLIENT_REQUEST" @click="setActiveTab(0)">Client Request</div>
-        <div v-if="item.INTERCEPT_REQUEST" @click="setActiveTab(1)">Intercept Request</div>
-        <div v-if="item.INTERCEPT_RESPONSE" @click="setActiveTab(4)">Intercept Response</div>
-        <div v-if="item.CLIENT_RESPONSE" @click="setActiveTab(5)">Client Response</div>
+        <RequestPath :items="tabs" @item-click="setActiveTab" />
       </div>
       <div class="section">
         <h3>General</h3>
@@ -22,28 +19,10 @@
         </div>
       </div>
       <div class="section">
-        <h4>Headers</h4>
-        <div class="details">
-          <div
-            v-for="[key, val] in Object.entries(item.CLIENT_REQUEST.request.headers)"
-            :key="key"
-            class="item"
-          >
-            <strong>{{ key }}:</strong> {{ val }}
-          </div>
-        </div>
+        <ObjectDisplay title="Headers" :item="item.CLIENT_REQUEST.request.headers" />
       </div>
       <div class="section">
-        <h4>Body</h4>
-        <div class="details">
-          <div
-            v-for="[key, val] in Object.entries(item.CLIENT_REQUEST.request.body)"
-            :key="key"
-            class="item"
-          >
-            <strong>{{ key }}:</strong> {{ val }}
-          </div>
-        </div>
+        <ObjectDisplay title="Body" :item="item.CLIENT_REQUEST.request.body" />
       </div>
       <!-- <div v-if="activeTab === 0">
         <Editor :value="formatJson(item.CLIENT_REQUEST)" :read-only="true" />
@@ -67,12 +46,15 @@
 import { mapMutations } from 'vuex'
 
 import * as types from '@/store/types'
-// import Editor from './Editor'
+
+import RequestPath from './RequestPath'
+import ObjectDisplay from './ObjectDisplay'
 
 export default {
   name: 'HistoryItem',
   components: {
-    // Editor
+    RequestPath,
+    ObjectDisplay
   },
   props: {
     item: {
@@ -82,7 +64,14 @@ export default {
   },
   data () {
     return {
-      activeTab: 0
+      activeTab: 0,
+      showHeaders: false,
+      tabs: [
+        { text: "Client Request", value: 0 },
+        { text: "Intercept Request", value: 1 },
+        { text: "Intercept Response", value: 2 },
+        { text: "Client Response", value: 3 }
+      ]
     }
   },
   computed: {
