@@ -34,7 +34,7 @@
     "file-loader": "^1.1.4",
     "html-webpack-plugin": "^2.29.0",
     "jest": "^21.1.0",
-    "jsoneditor": "^5.11.0",
+    "jsoneditor": "^9.5.6",
     "lodash.isequal": "^4.5.0",
     "nock": "^9.1.0",
     "node-sass": "^4.5.3",
