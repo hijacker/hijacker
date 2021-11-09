@@ -5,13 +5,14 @@ const nock = require('nock')
 
 const Hijacker = require('../..')
 
-describe('Integration Tests', () => {
+describe('Request Tests', () => {
   let hijackerServer
   let nockServer
 
   beforeAll(() => {
     const config = {
       base_url: 'http://hijacker.testing.com',
+      logger: { silent: true },
       port: 3000,
       rules: [
         {
@@ -99,6 +100,25 @@ describe('Integration Tests', () => {
       })
   })
 
+  it('should make sure body is sent correctly', (done) => {
+    // Only reply if body matches
+    nockServer.post('/cars', { color: 'red' })
+      .reply(200, {
+        id: 1,
+        make: 'Ford',
+        model: 'Mustang'
+      })
+
+    axios.post('http://localhost:3000/cars', { color: 'red' })
+      .then((response) => {
+        expect(response.data).toEqual({
+          test: 'testing'
+        })
+
+        done()
+      })
+  })
+
   it('should not hit api if skipApi enabled', (done) => {
     const nockReq = nockServer.get('/posts')
       .reply(200, {
@@ -152,4 +172,7 @@ describe('Integration Tests', () => {
         done()
       })
   })
+
+  it.todo('should remove all hopbyhop headers before returning response to client')
+  it.todo('should forward rest of headers from api')
 })

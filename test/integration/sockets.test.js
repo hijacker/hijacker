@@ -2,16 +2,19 @@
 
 const axios = require('axios')
 const io = require('socket.io-client')
+const nock = require('nock')
 
 const Hijacker = require('../..')
 
-describe('Integration Tests', () => {
+describe('Socket Tests', () => {
   let hijackerServer
+  let nockServer
   let socket
 
   beforeAll(() => {
     const config = {
       base_url: 'http://hijacker.testing.com',
+      logger: { silent: true },
       port: 4000,
       rules: [
         {
@@ -40,6 +43,7 @@ describe('Integration Tests', () => {
     }
 
     hijackerServer = new Hijacker(config)
+    nockServer = nock('http://hijacker.testing.com')
   })
 
   afterAll(() => {
@@ -52,46 +56,52 @@ describe('Integration Tests', () => {
 
   afterEach(() => {
     socket.close()
+    nock.cleanAll()
   })
 
   it('should send list of rules on socket connect', (done) => {
-    socket.on('settings', (data) => {
+    socket.on('SETTINGS', (data) => {
       expect(data.rules.length).toBe(3)
       done()
     })
   })
 
   it('should add a new rule when ADD_RULE event sent', (done) => {
-    axios.get('http://localhost:4000/error')
-      .catch(() => {
-        expect(true).toBe(true)
-      })
-      .then(() => {
-        socket.emit('ADD_RULE', {
-          path: '/error',
-          skipApi: true,
-          method: 'GET',
-          statusCode: 200,
-          body: {
+    nockServer.get('/error').reply(400)
+
+    setTimeout(() => {
+      axios.get('http://localhost:4000/error')
+        .catch(() => {
+          expect(true).toBe(true)
+        })
+        .then(() => {
+          socket.emit('ADD_RULE', {
+            path: '/error',
+            skipApi: true,
+            method: 'GET',
+            statusCode: 200,
+            body: {
+              error: 'works'
+            }
+          })
+
+          return axios.get('http://localhost:4000/error')
+        })
+        .then((response) => {
+          expect(response.data).toEqual({
             error: 'works'
-          }
-        })
+          })
 
-        return axios.get('http://localhost:4000/error')
-      })
-      .then((response) => {
-        expect(response.data).toEqual({
-          error: 'works'
+          done()
         })
-
-        done()
-      })
+    }, 100)
+    
   })
 
   it('should update a new rule when UPDATE_RULE event sent', (done) => {
     let ruleList
 
-    socket.on('settings', (data) => {
+    socket.on('SETTINGS', (data) => {
       ruleList = data.rules
 
       axios.get('http://localhost:4000/cars')
@@ -121,12 +131,12 @@ describe('Integration Tests', () => {
   it('should send updated rule list on ADD_RULE', (done) => {
     let ruleList
 
-    socket.on('UPDATE_RULE_LIST', (data) => {
+    socket.on('UPDATE_RULES', (data) => {
       expect(data.length).toBe(ruleList.length + 1)
       done()
     })
 
-    socket.on('settings', (data) => {
+    socket.on('SETTINGS', (data) => {
       ruleList = data.rules
 
       socket.emit('ADD_RULE', {
@@ -141,14 +151,14 @@ describe('Integration Tests', () => {
   it('should send updated rule list on UPDATE_RULE', (done) => {
     let ruleList
 
-    socket.on('UPDATE_RULE_LIST', (data) => {
+    socket.on('UPDATE_RULES', (data) => {
       expect(data[0].body).toEqual({
         updated: 'rule'
       })
       done()
     })
 
-    socket.on('settings', (data) => {
+    socket.on('SETTINGS', (data) => {
       ruleList = data.rules
 
       const newRule = Object.assign({}, ruleList[0], {

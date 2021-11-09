@@ -5,7 +5,7 @@ const io = require('socket.io-client')
 
 const Hijacker = require('../..')
 
-describe('Integration Tests', () => {
+describe('Intercept Tests', () => {
   const { CancelToken } = axios
   let hijackerServer
   let socket
@@ -13,6 +13,7 @@ describe('Integration Tests', () => {
   beforeAll(() => {
     const config = {
       base_url: 'http://hijacker.testing.com',
+      logger: { silent: true },
       port: 2000,
       rules: [
         {
@@ -39,23 +40,27 @@ describe('Integration Tests', () => {
     hijackerServer = new Hijacker(config)
   })
 
-  afterAll(() => {
-    socket.close()
-    hijackerServer.close()
-  })
-
-  beforeEach(() => {
+  beforeEach((done) => {
     socket = io('http://localhost:2000')
+
+    socket.on("connect", () => {
+      done()
+    })
   })
 
   afterEach(() => {
     socket.close()
   })
 
+  afterAll(() => {
+    socket.close()
+    hijackerServer.close()
+  })
+
   it('should send a socket event on interceptRequest and continue on emit', (done) => {
     const source = CancelToken.source()
 
-    socket.on('intercept', (data) => {
+    socket.on('INTERCEPT', (data) => {
       source.cancel()
       done()
     })
@@ -70,7 +75,7 @@ describe('Integration Tests', () => {
   it('should send a socket event on interceptResponse and continue on emit', (done) => {
     const source = CancelToken.source()
 
-    socket.on('intercept', (data) => {
+    socket.on('INTERCEPT', (data) => {
       source.cancel()
       done()
     })
@@ -83,7 +88,7 @@ describe('Integration Tests', () => {
   })
 
   it('should allow modifying data in interceptRequest', (done) => {
-    socket.on('intercept', (data) => {
+    socket.on('INTERCEPT', (data) => {
       const newObj = data
       expect(typeof newObj).toBe('object')
 
@@ -104,7 +109,7 @@ describe('Integration Tests', () => {
   })
 
   it('should allow modifying data in interceptResponse', (done) => {
-    socket.on('intercept', (data) => {
+    socket.on('INTERCEPT', (data) => {
       const newObj = data
       expect(typeof newObj).toBe('object')
 
@@ -124,5 +129,5 @@ describe('Integration Tests', () => {
       })
   })
 
-  it('should only listen for one reponse from client per intercept')
+  it.todo('should only listen for one reponse from client per intercept')
 })
