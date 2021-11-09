@@ -35,8 +35,8 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^6.2.9",
-    "@storybook/vue": "^6.2.9",
+    "@storybook/addon-essentials": "^6.3.7",
+    "@storybook/vue": "^6.3.7",
     "@vue/cli-plugin-babel": "^4.5.13",
     "@vue/cli-plugin-router": "^4.5.13",
     "@vue/cli-plugin-vuex": "^4.5.13",
