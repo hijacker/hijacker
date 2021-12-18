@@ -9,7 +9,7 @@ describe('Event Tests', () => {
     config = {
       base_url: 'http://hijacker.testing.com',
       logger: { silent: true },
-      port: 5000,
+      port: 5001,
       rules: [
         {
           path: '/cars',

@@ -16,7 +16,7 @@
     "start": "concurrently \"npm run dev:front\" \"npm run dev:back\"",
     "test": "jest --coverage"
   },
-  "main": "lib/hijacker.js",
+  "main": "output/hijacker.js",
   "files": [
     "bin/",
     "lib/"

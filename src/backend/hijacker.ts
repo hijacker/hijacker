@@ -9,10 +9,11 @@ import {
   applyMixins,
   EventMixin
 } from './mixins';
+import { Rule } from '../types/Rule';
 
 interface HijackerConfig {
   port: number;
-  rules: any[];
+  rules: Rule[];
 };
 
 export class Hijacker {
@@ -33,6 +34,10 @@ export class Hijacker {
     this.server.listen(config.port, () => {
       this._emit('started', config.port);
     });
+  }
+
+  close () {
+    this.server.close()
   }
 }
 
