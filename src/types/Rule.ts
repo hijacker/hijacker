@@ -1,14 +1,14 @@
 export enum HttpMethod {
-  GET,
-  HEAD,
-  POST,
-  PUT,
-  DELETE,
-  CONNECT,
-  OPTIONS,
-  TRACE,
-  PATCH,
-  ALL
+  GET = "GET",
+  HEAD = "HEAD",
+  POST = "POST",
+  PUT = "PUT",
+  DELETE = "DELETE",
+  CONNECT = "CONNECT",
+  OPTIONS = "OPTIONS",
+  TRACE = "TRACE",
+  PATCH = "PATCH",
+  ALL = "ALL"
 }
 
 export class Rule {
@@ -21,6 +21,7 @@ export class Rule {
   method: HttpMethod;
   path: string;
   statusCode?: number;
+  type?: string;
 
   constructor() {
     this.disabled = false;
@@ -29,5 +30,6 @@ export class Rule {
     this.skipApi = false;
     this.method = HttpMethod.ALL;
     this.path = '';
+    this.type = 'http';
   }
 }

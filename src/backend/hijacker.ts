@@ -9,18 +9,13 @@ import {
   applyMixins,
   EventMixin
 } from './mixins';
-import { Rule } from '../types/Rule';
-
-interface HijackerConfig {
-  port: number;
-  rules: Rule[];
-};
+import { Config } from '../types/Config';
 
 export class Hijacker {
   app: express.Application;
   server: Server;
 
-  constructor(config: HijackerConfig) {
+  constructor(config: Config) {
     this.app = express();
     this.server = new Server(this.app);
     this._initEvents();
