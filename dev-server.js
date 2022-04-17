@@ -21,15 +21,55 @@ const timePlugin = (name) => {
   }
 };
 
+// Very basic hot reload for backend. Just tears everything down before rebuild and starts everything back up after.
+// Would be cool to hook this up to a CLI to add new rules/manual restarts and other debug tools
+const backendRefresh = () => {
+  return {
+    name: 'backendRefresh',
+    setup(build) {
+      let hijackerModule;
+      let hijackerServer;
+
+      build.onStart(() => {
+        // Clear require cache so everything gets updated correctly
+        // Can possibly optimize this to just delete hijacker modules
+        Object.keys(require.cache).forEach((x) => {
+          delete require.cache[x];
+        });
+
+        if (hijackerServer) {
+          hijackerServer.close();
+          hijackerServer = null;
+        }
+      });
+
+      build.onEnd(() => {
+        hijackerModule = require('./output/hijacker');
+
+        hijackerServer = new hijackerModule.Hijacker({
+          port: 3000,
+          rules: []
+        });
+      })
+    }
+  }
+}
+
 (async () => {
+  const devServer = process.argv.includes('--dev');
+
   // Backend Build
   esbuild.build({
     entryPoints: await glob('src/backend/**/*.ts'),
     outdir: 'output',
     platform: 'node',
     format: 'cjs',
-    plugins: [timePlugin('Server')],
-    watch: false
+    plugins: [
+      timePlugin('Server'),
+      // Plugins to only run during dev mode
+      ...(devServer ? [backendRefresh()] : [])
+    ],
+    watch: devServer
   }).catch((e) => {
     console.log(e);
   })

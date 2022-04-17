@@ -63,4 +63,8 @@ describe('RestRule', () => {
     expect(ruleType.isMatch(reqOne, rule)).toBe(true);
     expect(ruleType.isMatch(reqTwo, rule)).toBe(false);
   })
+
+  it('should prevent hijacker from being deployed', () => {
+    expect(false).toBe(true);
+  })
 })

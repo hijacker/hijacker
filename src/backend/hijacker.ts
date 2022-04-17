@@ -24,7 +24,19 @@ export class Hijacker {
       .get('/favicon.ico', (req, res) => res.sendStatus(204))
       .use('/hijacker', express.static(path.join(__dirname, './frontend')))
       .use(bodyParser.json())
-      .use(xmlParser());
+      .use(xmlParser())
+      .use('*', (req, res) => {
+        // Set Headers Needed (TODO: Grab allow-headers from config)
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', '');
+
+        // Generate first HijackerRequest/Lifecycle OBJ and match rule
+
+        // Call ruletype handler
+
+        // Send response to server 
+        res.json({ test: 'test' });
+      });
     
     this.server.listen(config.port, () => {
       this._emit('started', config.port);

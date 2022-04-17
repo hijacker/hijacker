@@ -7,7 +7,7 @@
     "build": "vue-cli-service build",
     "lint": "npm run lint:front && npm run lint:back",
     "commit": "git-cz",
-    "dev": "node dev-server.js",
+    "dev": "node dev-server.js --dev",
     "dev:back": "nodemon bin/hijacker.js",
     "dev:front": "vue-cli-service serve",
     "lint:back": "eslint --ext .js lib/ test/",
