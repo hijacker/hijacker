@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const esbuild = require('esbuild');
 const chalk = require('chalk');
 const glob = require('tiny-glob');
@@ -11,14 +12,14 @@ const timePlugin = (name) => {
 
       build.onStart(() => {
         buildStart = +new Date();
-        console.log(`[${chalk.green(name)}] Build started`)
+        console.log(`[${chalk.green(name)}] Build started`);
       });
 
       build.onEnd(() => {
-        console.log(`[${chalk.green(name)}] Built in: ${chalk.yellow(new Date()-buildStart)}ms`)
+        console.log(`[${chalk.green(name)}] Built in: ${chalk.yellow(new Date()-buildStart)}ms`);
       });
     }
-  }
+  };
 };
 
 // Very basic hot reload for backend. Just tears everything down before rebuild and starts everything back up after.
@@ -50,10 +51,10 @@ const backendRefresh = () => {
           port: 3000,
           rules: []
         });
-      })
+      });
     }
-  }
-}
+  };
+};
 
 (async () => {
   const devServer = process.argv.includes('--dev');
@@ -72,7 +73,7 @@ const backendRefresh = () => {
     watch: devServer
   }).catch((e) => {
     console.log(e);
-  })
+  });
 
   // Frontend Build
   esbuild.build({
@@ -85,5 +86,5 @@ const backendRefresh = () => {
     loader: { '.js': 'jsx' },
   }).catch((e) => {
     console.log(e);
-  })
+  });
 })();

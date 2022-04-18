@@ -25,9 +25,9 @@ export class RuleMatcher {
         return {
           ...acc,
           [tempType.type]: tempType
-        }
+        };
       }, {})
-    }
+    };
   }
 
   match(request: express.Request, rules: Rule[]) {

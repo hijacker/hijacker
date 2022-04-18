@@ -9,4 +9,4 @@ export const applyMixins = (derivedCtor: any, constructors: any[]) => {
       );
     });
   });
-}
+};

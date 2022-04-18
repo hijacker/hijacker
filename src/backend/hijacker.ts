@@ -44,10 +44,11 @@ export class Hijacker {
   }
 
   close () {
-    this.server.close()
+    this.server.close();
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Hijacker extends EventMixin {}
 
 applyMixins(Hijacker, [EventMixin]);

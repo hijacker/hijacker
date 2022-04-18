@@ -1,5 +1,5 @@
-import express from "express";
-import { Rule } from "../../types/Rule";
+import express from 'express';
+import { Rule } from '../../types/Rule';
 
 import { RestRule } from './RestRule';
 
@@ -62,9 +62,9 @@ describe('RestRule', () => {
 
     expect(ruleType.isMatch(reqOne, rule)).toBe(true);
     expect(ruleType.isMatch(reqTwo, rule)).toBe(false);
-  })
+  });
 
   it('should prevent hijacker from being deployed', () => {
     expect(false).toBe(true);
-  })
-})
+  });
+});

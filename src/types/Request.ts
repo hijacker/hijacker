@@ -1,5 +1,5 @@
-import express from "express";
-import { Rule } from "./Rule";
+import express from 'express';
+import { Rule } from './Rule';
 
 export interface Request {
   originalReq: express.Request;

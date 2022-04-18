@@ -1,9 +1,10 @@
-import express from "express";
+import express from 'express';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore Setup type file for routeMatcher
-import { routeMatcher } from "route-matcher";
+import { routeMatcher } from 'route-matcher';
 
-import { Rule } from "../../types/Rule";
-import { RuleType } from "./RuleMatcher";
+import { Rule } from '../../types/Rule';
+import { RuleType } from './RuleMatcher';
 
 export class RestRule implements RuleType {
   type = 'rest';
@@ -13,5 +14,7 @@ export class RestRule implements RuleType {
       (!Object.prototype.hasOwnProperty.call(rule, 'method') || rule.method === request.method || rule.method === 'ALL');
   }
 
-  handler() {}
+  handler() {
+    throw new Error('Not yet implemented');
+  }
 }
