@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const esbuild = require('esbuild');
-const chalk = require('chalk');
 const glob = require('tiny-glob');
 
+// TODO: Convert to es module and bring chalk back
 // Plugin to track build time
 const timePlugin = (name) => {
   return {
@@ -12,11 +12,11 @@ const timePlugin = (name) => {
 
       build.onStart(() => {
         buildStart = +new Date();
-        console.log(`[${chalk.green(name)}] Build started`);
+        console.log(`[${name}] Build started`);
       });
 
       build.onEnd(() => {
-        console.log(`[${chalk.green(name)}] Built in: ${chalk.yellow(new Date()-buildStart)}ms`);
+        console.log(`[${name}] Built in: ${new Date()-buildStart}ms`);
       });
     }
   };
