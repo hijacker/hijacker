@@ -1,6 +1,5 @@
 import express from 'express';
 import { Rule } from '../../types/Rule';
-
 import { RestRule } from './RestRule';
 
 describe('RestRule', () => {

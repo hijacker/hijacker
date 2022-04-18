@@ -4,7 +4,7 @@ const path = require('path')
 const { program } = require('commander')
 
 const pkg = require('../package')
-const Hijacker = require('../output/hijacker')
+const { Hijacker } = require('../output/hijacker')
 
 // Define CLI
 program
