@@ -30,6 +30,6 @@ export class Rule {
     this.skipApi = false;
     this.method = HttpMethod.ALL;
     this.path = '';
-    this.type = 'http';
+    this.type = 'rest';
   }
 }

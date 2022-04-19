@@ -1,12 +1,10 @@
 import { EventEmitter } from 'events';
 
-// TODO: Remove mixin pattern. Don't like this
-export class EventMixin {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+// Wrapper for events.  Will eventually keep track of registered events.
+export class EventManager {
   private events: EventEmitter;
 
-  _initEvents() {
+  constructor() {
     this.events = new EventEmitter();
   }
 
@@ -22,7 +20,7 @@ export class EventMixin {
     this.events.off(eventName, cb);
   }
 
-  _emit(eventName: string, val: any) {
+  emit(eventName: string, val: any) {
     this.events.emit(eventName, val);
   }
 }

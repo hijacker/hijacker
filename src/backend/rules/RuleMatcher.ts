@@ -16,7 +16,7 @@ export interface RuleTypeConstructor {
 export class RuleMatcher {
   ruleTypes: Record<string, RuleType>;
 
-  constructor(ruleTypes: RuleTypeConstructor[]) {
+  constructor(ruleTypes: RuleTypeConstructor[] = []) {
     this.ruleTypes = {
       rest: new RestRule(),
       ...ruleTypes.reduce((acc, cur) => {

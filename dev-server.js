@@ -49,7 +49,13 @@ const backendRefresh = () => {
 
         hijackerServer = new hijackerModule.Hijacker({
           port: 3000,
-          rules: []
+          rules: [{
+            'path': '/cars',
+            'skipApi': true,
+            'body': {
+              'Hello': 'World'
+            }
+          }]
         });
       });
     }
