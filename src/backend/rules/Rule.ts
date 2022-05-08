@@ -30,7 +30,7 @@ export interface IRule {
   path: string;
   statusCode?: number;
   type?: string;
-};
+}
 
 export class Rule {
   @IsBoolean()

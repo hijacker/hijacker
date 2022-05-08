@@ -4,7 +4,7 @@ import { IRule, Rule } from './Rule';
 import { RestRule } from './RestRule';
 
 export class RuleType {
-  type: string = '';
+  type = '';
 
   isMatch(request: HijackerRequest, rule: IRule): boolean {
     throw new Error('Not implemented');

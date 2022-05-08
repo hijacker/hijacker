@@ -1,15 +1,15 @@
-/* eslint-env jest */
-
-const Hijacker = require('../..')
+import { Config } from '../../types/Config';
+import { Hijacker } from '../hijacker';
 
 describe('Event Tests', () => {
-  let config
+  let config: Config;
 
   beforeAll(() => {
     config = {
-      base_url: 'http://hijacker.testing.com',
-      logger: { silent: true },
       port: 5001,
+      baseRule: {
+        baseUrl: 'http://hijacker.testing.com'
+      },
       rules: [
         {
           path: '/cars',
@@ -30,16 +30,16 @@ describe('Event Tests', () => {
           }
         }
       ]
-    }
-  })
+    };
+  });
 
   it('should emit an event on server start up', (done) => {
-    const hijackerServer = new Hijacker(config)
+    const hijackerServer = new Hijacker(config);
 
-    hijackerServer.on('started', (port) => {
-      expect(port).toBe(config.port)
-      hijackerServer.close()
-      done()
-    })
-  })
-})
+    hijackerServer.on('started', (port: number) => {
+      expect(port).toBe(config.port);
+      hijackerServer.close();
+      done();
+    });
+  });
+});

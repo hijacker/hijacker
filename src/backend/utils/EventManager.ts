@@ -8,15 +8,15 @@ export class EventManager {
     this.events = new EventEmitter();
   }
 
-  on(eventName: string, cb: () => void) {
+  on(eventName: string, cb: (...args: any[]) => void) {
     this.events.on(eventName, cb);
   }
 
-  once(eventName: string, cb: () => void) {
+  once(eventName: string, cb: (...args: any[]) => void) {
     this.events.once(eventName, cb);
   }
 
-  off(eventName: string, cb: () => void) {
+  off(eventName: string, cb: (...args: any[]) => void) {
     this.events.off(eventName, cb);
   }
 

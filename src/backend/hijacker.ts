@@ -59,19 +59,19 @@ export class Hijacker {
       });
     
     this.server.listen(config.port, () => {
-      this.eventManager.emit('started', config.port);
+      this.emit('started', config.port);
     });
   }
 
-  on(eventName: string, cb: () => void) {
+  on(eventName: string, cb: (...args: any[]) => void) {
     this.eventManager.on(eventName, cb);
   }
 
-  once(eventName: string, cb: () => void) {
+  once(eventName: string, cb: (...args: any[]) => void) {
     this.eventManager.once(eventName, cb);
   }
 
-  off(eventName: string, cb: () => void) {
+  off(eventName: string, cb: (...args: any[]) => void) {
     this.eventManager.off(eventName, cb);
   }
 

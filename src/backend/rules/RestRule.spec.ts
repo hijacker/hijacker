@@ -72,8 +72,4 @@ describe('RestRule', () => {
       // expect(ruleType.handler).toThrow();
     });
   });
-  
-  it('should prevent hijacker from being deployed', () => {
-    expect(false).toBe(true);
-  });
 });

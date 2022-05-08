@@ -1,7 +1,7 @@
-import { Rule } from '../backend/rules/Rule';
+import { IRule } from '../backend/rules/Rule';
 
 export interface Config {
   port: number;
-  baseRule: Partial<Rule>;
-  rules: Rule[];
+  baseRule: Partial<IRule>;
+  rules: Partial<IRule>[];
 }

@@ -15,7 +15,7 @@ describe('Rule', () => {
       body: { hello: 'world' },
       statusCode: 200,
       type: 'graphql',
-    })
+    });
 
     expect(rule.baseUrl).toBe('http://localhost:1234');
     expect(rule.path).toBe('/123/:test');

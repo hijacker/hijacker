@@ -10,7 +10,7 @@ class NewRule implements RuleType {
   }
 
   async handler(): Promise<HijackerResponse> {
-    throw new Error('')
+    throw new Error('');
   }
 }
 

@@ -42,6 +42,6 @@ export class RestRule implements RuleType {
       body: request.matchingRule?.body ?? {},
       headers: {},
       statusCode: 200
-    }
+    };
   }
 }

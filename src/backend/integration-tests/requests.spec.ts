@@ -1,19 +1,19 @@
-/* eslint-env jest */
+import axios from 'axios';
+import nock from 'nock';
+import { Config } from '../../types/Config';
 
-const axios = require('axios')
-const nock = require('nock')
-
-const Hijacker = require('../..')
+import { Hijacker } from '../hijacker';
 
 describe('Request Tests', () => {
-  let hijackerServer
-  let nockServer
+  let hijackerServer: Hijacker;
+  let nockServer: any;
 
   beforeAll(() => {
-    const config = {
-      base_url: 'http://hijacker.testing.com',
-      logger: { silent: true },
+    const config: Config = {
       port: 3000,
+      baseRule: {
+        baseUrl: 'http://hijacker.testing.com'
+      },
       rules: [
         {
           path: '/cars',
@@ -38,29 +38,29 @@ describe('Request Tests', () => {
           statusCode: 418
         }
       ]
-    }
+    };
 
-    hijackerServer = new Hijacker(config)
-    nockServer = nock('http://hijacker.testing.com')
-  })
+    hijackerServer = new Hijacker(config);
+    nockServer = nock('http://hijacker.testing.com');
+  });
 
   afterAll(() => {
-    hijackerServer.close()
-  })
+    hijackerServer.close();
+  });
 
   afterEach(() => {
     // Cleear all intercepts incase a test fails
-    nock.cleanAll()
-  })
+    nock.cleanAll();
+  });
 
   it('should return 204 for favicon', (done) => {
     axios.get('http://localhost:3000/favicon.ico')
       .then((response) => {
-        expect(response.status).toBe(204)
+        expect(response.status).toBe(204);
 
-        done()
-      })
-  })
+        done();
+      });
+  });
 
   it('should return api result if no matching rule', (done) => {
     nockServer.get('/cars')
@@ -68,7 +68,7 @@ describe('Request Tests', () => {
         id: 1,
         make: 'Ford',
         model: 'Mustang'
-      })
+      });
 
     axios.get('http://localhost:3000/cars')
       .then((response) => {
@@ -76,11 +76,11 @@ describe('Request Tests', () => {
           id: 1,
           make: 'Ford',
           model: 'Mustang'
-        })
+        });
 
-        done()
-      })
-  })
+        done();
+      });
+  });
 
   it('should return rule body if matching rule', (done) => {
     nockServer.post('/cars')
@@ -88,17 +88,17 @@ describe('Request Tests', () => {
         id: 1,
         make: 'Ford',
         model: 'Mustang'
-      })
+      });
 
     axios.post('http://localhost:3000/cars')
       .then((response) => {
         expect(response.data).toEqual({
           test: 'testing'
-        })
+        });
 
-        done()
-      })
-  })
+        done();
+      });
+  });
 
   it('should make sure body is sent correctly', (done) => {
     // Only reply if body matches
@@ -107,17 +107,17 @@ describe('Request Tests', () => {
         id: 1,
         make: 'Ford',
         model: 'Mustang'
-      })
+      });
 
     axios.post('http://localhost:3000/cars', { color: 'red' })
       .then((response) => {
         expect(response.data).toEqual({
           test: 'testing'
-        })
+        });
 
-        done()
-      })
-  })
+        done();
+      });
+  });
 
   it('should not hit api if skipApi enabled', (done) => {
     const nockReq = nockServer.get('/posts')
@@ -125,20 +125,20 @@ describe('Request Tests', () => {
         id: 1,
         make: 'Ford',
         model: 'Mustang'
-      })
+      });
 
     axios.get('http://localhost:3000/posts')
       .then((response) => {
         expect(response.data).toEqual({
           posts: 'get'
-        })
+        });
 
         // nock intercept should be active b/c api skiped
-        expect(nockReq.isDone()).toBe(false)
+        expect(nockReq.isDone()).toBe(false);
 
-        done()
-      })
-  })
+        done();
+      });
+  });
 
   it('should set the status code if specified in rule', (done) => {
     nockServer.put('/cars')
@@ -146,33 +146,33 @@ describe('Request Tests', () => {
         id: 1,
         make: 'Ford',
         model: 'Mustang'
-      })
+      });
 
     axios.put('http://localhost:3000/cars')
       .catch((err) => {
-        expect(err.response.status).toBe(418)
+        expect(err.response.status).toBe(418);
 
-        done()
-      })
-  })
+        done();
+      });
+  });
 
   it('should forward error from server correctly', (done) => {
     nockServer.put('/error')
       .reply(404, {
         error: 'Not Found'
-      })
+      });
 
     axios.put('http://localhost:3000/error')
       .catch((err) => {
-        expect(err.response.status).toBe(404)
+        expect(err.response.status).toBe(404);
         expect(err.response.data).toEqual({
           error: 'Not Found'
-        })
+        });
 
-        done()
-      })
-  })
+        done();
+      });
+  });
 
-  it.todo('should remove all hopbyhop headers before returning response to client')
-  it.todo('should forward rest of headers from api')
-})
+  it.todo('should remove all hopbyhop headers before returning response to client');
+  it.todo('should forward rest of headers from api');
+});
