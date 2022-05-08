@@ -1,20 +1,47 @@
-import express from 'express';
+import { Agent } from 'https';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore Setup type file for routeMatcher
 import { routeMatcher } from 'route-matcher';
+import { OptionsOfTextResponseBody } from 'got';
 
-import { Rule } from '../../types/Rule';
-import { RuleType } from './RuleMatcher';
+import { HijackerRequest, HijackerResponse, Request } from '../../types/Request';
+
+import { Rule } from './Rule';
+import { RuleType } from './RuleManager';
 
 export class RestRule implements RuleType {
   type = 'rest';
 
-  isMatch(request: express.Request, rule: Rule) {
-    return !!routeMatcher(rule.path).parse(request.originalUrl) && 
+  isMatch(request: HijackerRequest, rule: Rule) {
+    return !!routeMatcher(rule.path).parse(request.path) && 
       (!Object.prototype.hasOwnProperty.call(rule, 'method') || rule.method === request.method || rule.method === 'ALL');
   }
 
-  handler() {
-    throw new Error('Not yet implemented');
+  async handler(request: Request): Promise<HijackerResponse> {
+    // const requestOptions: OptionsOfTextResponseBody = {
+    //   method: request.originalReq.method,
+    //   headers: {},
+    //   throwHttpErrors: false,
+    //   agent: {
+    //     https: new Agent({
+    //       rejectUnauthorized: false
+    //     })
+    //   },
+    //   hooks: {
+    //     beforeRequest: [
+    //       (req) => {
+    //         console.log({...req})
+    //       }
+    //     ]
+    //   }
+    // };
+
+    // await got(request.originalReq.path, requestOptions);
+
+    return {
+      body: request.matchingRule?.body ?? {},
+      headers: {},
+      statusCode: 200
+    }
   }
 }

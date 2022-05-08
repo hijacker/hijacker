@@ -8,37 +8,54 @@ import {
   EventManager
 } from './utils';
 import { Config } from '../types/Config';
-import { RuleMatcher } from './rules/RuleMatcher';
+import { RuleManager } from './rules/RuleManager';
+import { Request } from '../types/Request';
+import { HttpMethod } from './rules/Rule';
 
 export class Hijacker {
   app: express.Application;
   server: Server;
-  ruleMatcher: RuleMatcher;
+  ruleManager: RuleManager;
   eventManager: EventManager;
 
   constructor(config: Config) {
     this.app = express();
     this.server = new Server(this.app);
     this.eventManager = new EventManager();
-    this.ruleMatcher = new RuleMatcher([/* TODO: Load plugins to add matchers */]);
+    this.ruleManager = new RuleManager({
+      ruleTypes: [],
+      rules: config.rules ?? [],
+      baseRule: config.baseRule ?? {}
+    });
 
     this.app
       .get('/favicon.ico', (req, res) => res.sendStatus(204))
       .use('/hijacker', express.static(path.join(__dirname, './frontend')))
       .use(bodyParser.json())
       .use(xmlParser())
-      .use('*', (req, res) => {
+      .use('*', async (req, res) => {
         // Set Headers Needed (TODO: Grab allow-headers from config)
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Headers', '');
 
         // Generate first HijackerRequest/Lifecycle OBJ and match rule
-        console.log(this.ruleMatcher.match(req, config.rules));
+        const request: Request = {
+          originalReq: {
+            path: req.originalUrl,
+            headers: req.headers as Record<string, string>,
+            body: req.body,
+            method: req.method as HttpMethod
+          }
+        };
+
+        request.matchingRule = this.ruleManager.match(request.originalReq);
 
         // Call ruletype handler
+        const newRes = await this.ruleManager.handler(request.matchingRule?.type ?? 'rest', request);
 
-        // Send response to server 
-        res.json({ test: 'test' });
+        // Send response to server (break out into function that takes response)
+        res.set(newRes.headers);
+        res.status(newRes.statusCode).send(newRes.body);
       });
     
     this.server.listen(config.port, () => {
@@ -62,7 +79,7 @@ export class Hijacker {
     this.eventManager.emit(eventName, val);
   }
 
-  close () {
+  close() {
     this.server.close();
   }
 }

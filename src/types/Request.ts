@@ -1,9 +1,23 @@
 import express from 'express';
-import { Rule } from './Rule';
+import { HttpMethod, Rule } from '../backend/rules/Rule';
+
+// Request to hijacker from client
+export interface HijackerRequest {
+  path: string;
+  headers: Record<string, string>;
+  body: any;
+  method: HttpMethod;
+}
+
+export interface HijackerResponse {
+  statusCode: number;
+  headers: Record<string, string>;
+  body: any;
+}
 
 export interface Request {
-  originalReq: express.Request;
-  originalRes: express.Response;
-  matchingRule: Rule;
+  originalReq: HijackerRequest;
+  originalRes?: express.Response;
+  matchingRule?: Rule;
 }
 
