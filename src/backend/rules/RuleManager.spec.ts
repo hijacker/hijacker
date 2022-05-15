@@ -45,7 +45,7 @@ describe('RuleManager', () => {
           body: {
             Hello: 'World'
           }
-        } as any as Rule,
+        },
         {
           type: 'NewRule',
           name: 'NEW RULE MATCH',
@@ -54,7 +54,7 @@ describe('RuleManager', () => {
           body: {
             Hello: 'World'
           }
-        } as any as Rule,
+        },
       ],
       baseRule: {}
     });

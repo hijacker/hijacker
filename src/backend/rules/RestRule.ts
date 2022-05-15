@@ -2,7 +2,7 @@ import { Agent } from 'https';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore Setup type file for routeMatcher
 import { routeMatcher } from 'route-matcher';
-import { OptionsOfTextResponseBody } from 'got';
+import got from 'got';
 
 import { HijackerRequest, HijackerResponse, Request } from '../../types/Request';
 
@@ -18,25 +18,27 @@ export class RestRule implements RuleType {
   }
 
   async handler(request: Request): Promise<HijackerResponse> {
-    // const requestOptions: OptionsOfTextResponseBody = {
-    //   method: request.originalReq.method,
-    //   headers: {},
-    //   throwHttpErrors: false,
-    //   agent: {
-    //     https: new Agent({
-    //       rejectUnauthorized: false
-    //     })
-    //   },
-    //   hooks: {
-    //     beforeRequest: [
-    //       (req) => {
-    //         console.log({...req})
-    //       }
-    //     ]
-    //   }
-    // };
+    const requestOptions = {
+      method: request.originalReq.method,
+      headers: {},
+      throwHttpErrors: false,
+      agent: {
+        https: new Agent({
+          rejectUnauthorized: false
+        })
+      },
+      hooks: {
+        beforeRequest: [
+          (req: any) => {
+            console.log({...req})
+          }
+        ]
+      }
+    };
 
-    // await got(request.originalReq.path, requestOptions);
+    const response = await got(request.originalReq.path, requestOptions);
+
+    console.log(response);
 
     return {
       body: request.matchingRule?.body ?? {},

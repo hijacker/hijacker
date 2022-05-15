@@ -34,7 +34,7 @@ export interface IRule {
 
 export class Rule {
   @IsBoolean()
-  disabled: boolean;
+  disabled?: boolean;
 
   @IsBoolean()
   interceptRequest: boolean;
@@ -42,11 +42,11 @@ export class Rule {
   @IsBoolean()
   interceptResponse: boolean;
 
-  @IsBoolean()
+  @IsString()
   @IsOptional()
   name?: string;
 
-  @IsBoolean()
+  @IsString()
   @IsOptional()
   routeTo?: string;
 

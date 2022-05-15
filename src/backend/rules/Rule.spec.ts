@@ -41,4 +41,66 @@ describe('Rule', () => {
     expect(rule.method).toBe('ALL');
     expect(rule.type).toBe('rest');
   });
+
+  describe('Error Handling', () => {
+    it('should not have errors for a valid rule', () => {
+      const rule = new Rule({
+        baseUrl: 'http://localhost:1234',
+        path: '/123/:test',
+        disabled: true,
+        interceptRequest: true,
+        interceptResponse: true,
+        name: 'Test Rule',
+        routeTo: '/13',
+        skipApi: true,
+        method: 'GET',
+        body: { hello: 'world' },
+        statusCode: 200,
+        type: 'graphql',
+      });
+
+      expect(rule.errors.length).toBe(0);
+    });
+
+    it('errors out when baseUrl not provided', () => {
+      const rule = new Rule({
+        path: '/123/:test',
+        disabled: true,
+        interceptRequest: true,
+        interceptResponse: true,
+        name: 'Test Rule',
+        routeTo: '/13',
+        skipApi: true,
+        method: 'GET',
+        body: { hello: 'world' },
+        statusCode: 200,
+        type: 'graphql',
+      });
+
+      expect(rule.errors.length).toBe(1);
+      expect(rule.errors[0].property).toBe('baseUrl');
+      expect(rule.errors[0].constraints).toHaveProperty('isNotEmpty');
+    });
+
+    it('errors out when baseUrl incorrect type', () => {
+      const rule = new Rule({
+        baseUrl: 123 as any,
+        path: '/123/:test',
+        disabled: true,
+        interceptRequest: true,
+        interceptResponse: true,
+        name: 'Test Rule',
+        routeTo: '/13',
+        skipApi: true,
+        method: 'GET',
+        body: { hello: 'world' },
+        statusCode: 200,
+        type: 'graphql',
+      });
+
+      expect(rule.errors.length).toBe(1);
+      expect(rule.errors[0].property).toBe('baseUrl');
+      expect(rule.errors[0].constraints).toHaveProperty('isString')
+    });
+  })
 });

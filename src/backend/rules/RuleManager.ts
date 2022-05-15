@@ -6,7 +6,7 @@ import { RestRule } from './RestRule';
 export class RuleType {
   type = '';
 
-  isMatch(request: HijackerRequest, rule: IRule): boolean {
+  isMatch(request: HijackerRequest, rule: Rule): boolean {
     throw new Error('Not implemented');
   }
 

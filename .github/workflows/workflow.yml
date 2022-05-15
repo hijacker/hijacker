@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - '*'
-
   pull_request:
     branches:
       - 'master'
@@ -13,13 +12,10 @@ on:
 jobs:
   test:
     name: Test
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [14.x, 16.x, 18.x]
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -31,7 +27,7 @@ jobs:
         run: npm i --legacy-peer-deps
       - name: Build Project
         run: npm run build
-      - name: Run Litning
+      - name: Run Linting
         run: npm run lint
       - name: Run Tests
         run: npm test
@@ -47,9 +43,7 @@ jobs:
   coveralls:
     name: Coveralls
     needs: test
-
     runs-on: ubuntu-latest
-
     steps:
       - name: Coveralls Finished
         uses: coverallsapp/github-action@master
@@ -62,9 +56,7 @@ jobs:
   release:
     name: Release
     needs: test
-    
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
