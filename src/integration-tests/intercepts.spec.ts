@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { describe, beforeAll, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
 
 import axios from 'axios';

@@ -44,5 +44,5 @@ describe('Event Tests', () => {
       hijackerServer.close();
       done();
     });
-  }))
+  }));
 });

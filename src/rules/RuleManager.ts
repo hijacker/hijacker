@@ -1,7 +1,7 @@
-import { Newable } from '../../types';
-import { Request, HijackerRequest, HijackerResponse } from '../../types/Request';
-import { IRule, Rule } from './Rule';
-import { RestRule } from './RestRule';
+import { Newable } from '../../types/index.js';
+import { Request, HijackerRequest, HijackerResponse } from '../../types/Request.js';
+import { IRule, Rule } from './Rule.js';
+import { RestRule } from './RestRule.js';
 
 export class RuleType {
   type = '';

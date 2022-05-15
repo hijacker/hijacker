@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 import nock from 'nock';
 
 import { Hijacker } from '../hijacker';
-import { Config } from '../../types/Config';
+import { Config } from '../types/Config';
 
 describe('Socket Tests', () => {
   let hijackerServer: Hijacker;

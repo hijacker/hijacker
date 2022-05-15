@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const esbuild = require('esbuild');
-const glob = require('tiny-glob');
+const glob = require('glob');
 const { green, yellow } = require('colorette');
 
 // Plugin to track build time
@@ -64,15 +64,15 @@ const backendRefresh = () => {
 
 (async () => {
   const devServer = process.argv.includes('--dev');
-
+  
   // Backend Build
   esbuild.build({
-    entryPoints: await glob('src/backend/**/*.ts'),
-    outdir: 'output',
+    entryPoints: glob.sync('src/**/!(*.spec).ts', { ignore: 'src/frontend/**' }),
+    outdir: 'dist',
     platform: 'node',
-    format: 'cjs',
+    format: 'esm',
     plugins: [
-      timePlugin('Server'),
+      timePlugin('server'),
       // Plugins to only run during dev mode
       ...(devServer ? [backendRefresh()] : [])
     ],
@@ -84,13 +84,30 @@ const backendRefresh = () => {
   // Frontend Build
   esbuild.build({
     entryPoints: ['src/frontend/index.js'],
-    outdir: 'output/frontend',
+    outdir: 'dist/frontend',
     platform: 'browser',
     bundle: true,
-    plugins: [timePlugin('Client')],
+    plugins: [timePlugin('client')],
     watch: false,
     loader: { '.js': 'jsx' },
   }).catch((e) => {
     console.log(e);
   });
+
+  // Dist build
+  if (!devServer) {
+    esbuild.build({
+      entryPoints: ['src/bin/hijacker.ts'],
+      outdir: 'dist/bin',
+      platform: 'node',
+      format: 'esm',
+      plugins: [timePlugin('bin')],
+      watch: false,
+      define: {
+        HIJACKER_MODULE: '\'../hijacker\''
+      }
+    }).catch((e) => {
+      console.log(e);
+    });
+  }
 })();

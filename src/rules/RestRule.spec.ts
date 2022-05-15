@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { HijackerRequest } from '../../types/Request';
+import { HijackerRequest } from '../types/Request';
 import { Rule } from './Rule';
 import { RestRule } from './RestRule';
 

@@ -2,4 +2,4 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './app.tsx';
 
-ReactDOM.render(<App />,document.querySelector('#root'));
+ReactDOM.render(<App />, document.querySelector('#root'));

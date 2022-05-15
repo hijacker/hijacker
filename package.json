@@ -4,18 +4,18 @@
   "description": "Frontend development tool for intercepting and mocking api requests",
   "author": "Travis Weidenbenner <travis@weidenbenner.com>",
   "scripts": {
-    "build": "node dev-server.js",
+    "build": "node dev-server.cjs",
     "commit": "git-cz",
-    "dev": "node dev-server.js --dev",
-    "lint": "eslint src/ .eslintrc.js dev-server.js jest.config.js",
+    "dev": "node dev-server.cjs --dev",
+    "lint": "eslint src/ .eslintrc.js dev-server.cjs vitest.config.ts",
     "semantic-release": "semantic-release",
     "start": "npm run dev",
     "test": "vitest --coverage"
   },
-  "main": "output/hijacker.js",
+  "type": "module",
+  "main": "dist/hijacker.js",
   "files": [
-    "bin/",
-    "lib/"
+    "dist/"
   ],
   "dependencies": {
     "body-parser": "^1.20.0",
@@ -45,12 +45,12 @@
     "esbuild": "^0.14.38",
     "eslint": "^8.13.0",
     "eslint-plugin-react": "^7.29.4",
+    "glob": "^8.0.3",
     "nock": "^13.2.4",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "semantic-release": "^19.0.2",
     "socket.io-client": "^4.4.1",
-    "tiny-glob": "^0.2.9",
     "typescript": "^4.6.3",
     "vitest": "^0.12.6"
   },
@@ -58,7 +58,7 @@
     "> 1%",
     "last 2 versions"
   ],
-  "bin": "bin/hijacker.js",
+  "bin": "dist/bin/hijacker.js",
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"

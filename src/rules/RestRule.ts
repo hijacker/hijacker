@@ -4,10 +4,10 @@ import { Agent } from 'https';
 import { routeMatcher } from 'route-matcher';
 import got from 'got';
 
-import { HijackerRequest, HijackerResponse, Request } from '../../types/Request';
+import { HijackerRequest, HijackerResponse, Request } from '../types/Request.js';
 
-import { Rule } from './Rule';
-import { RuleType } from './RuleManager';
+import { Rule } from './Rule.js';
+import { RuleType } from './RuleManager.js';
 
 export class RestRule implements RuleType {
   type = 'rest';
@@ -30,15 +30,15 @@ export class RestRule implements RuleType {
       hooks: {
         beforeRequest: [
           (req: any) => {
-            console.log({...req})
+            console.log({...req});
           }
         ]
       }
     };
 
-    const response = await got(request.originalReq.path, requestOptions);
+    // const response = await got(request.originalReq.path, requestOptions);
 
-    console.log(response);
+    // console.log(response);
 
     return {
       body: request.matchingRule?.body ?? {},

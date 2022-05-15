@@ -60,4 +60,4 @@ typings/
 .env
 
 hijacker.config.json
-output
+dist

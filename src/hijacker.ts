@@ -1,4 +1,5 @@
-import path from 'path';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { Server } from 'http';
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -6,11 +7,11 @@ import xmlParser from 'express-xml-bodyparser';
 
 import {
   EventManager
-} from './utils';
-import { Config } from '../types/Config';
-import { RuleManager } from './rules/RuleManager';
-import { Request } from '../types/Request';
-import { HttpMethod } from './rules/Rule';
+} from './utils/index.js';
+import { Config } from './types/Config.js';
+import { RuleManager } from './rules/RuleManager.js';
+import { Request } from './types/Request.js';
+import { HttpMethod } from './rules/Rule.js';
 
 export class Hijacker {
   app: express.Application;
@@ -30,7 +31,7 @@ export class Hijacker {
 
     this.app
       .get('/favicon.ico', (req, res) => res.sendStatus(204))
-      .use('/hijacker', express.static(path.join(__dirname, './frontend')))
+      .use('/hijacker', express.static(path.join(dirname(fileURLToPath(import.meta.url)), './frontend')))
       .use(bodyParser.json())
       .use(xmlParser())
       .use('*', async (req, res) => {

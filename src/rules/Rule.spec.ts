@@ -102,7 +102,7 @@ describe('Rule', () => {
 
       expect(rule.errors.length).toBe(1);
       expect(rule.errors[0].property).toBe('baseUrl');
-      expect(rule.errors[0].constraints).toHaveProperty('isString')
+      expect(rule.errors[0].constraints).toHaveProperty('isString');
     });
-  })
+  });
 });
