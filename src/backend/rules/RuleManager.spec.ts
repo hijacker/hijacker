@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest';
+
 import { HijackerResponse, HijackerRequest } from '../../types/Request';
 import { Rule } from './Rule';
 import { RuleManager, RuleType } from './RuleManager';

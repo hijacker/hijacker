@@ -1,3 +1,5 @@
+import { describe, beforeAll, it, expect } from 'vitest';
+
 import { Config } from '../../types/Config';
 import { Hijacker } from '../hijacker';
 
@@ -33,7 +35,8 @@ describe('Event Tests', () => {
     };
   });
 
-  it('should emit an event on server start up', (done) => {
+  it('should emit an event on server start up', () => new Promise((done) => {
+    expect.assertions(1);
     const hijackerServer = new Hijacker(config);
 
     hijackerServer.on('started', (port: number) => {
@@ -41,5 +44,5 @@ describe('Event Tests', () => {
       hijackerServer.close();
       done();
     });
-  });
+  }))
 });

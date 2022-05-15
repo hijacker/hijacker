@@ -36,7 +36,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           flag-name: run-${{ matrix.test_number }}
-          path-to-lcov: './test/coverage/lcov.info'
+          path-to-lcov: './coverage/lcov.info'
           parallel: true
 
   
@@ -49,7 +49,7 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: './test/coverage/lcov.info'
+          path-to-lcov: './coverage/lcov.info'
           parallel-finished: true
 
 

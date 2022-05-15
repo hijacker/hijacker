@@ -1,3 +1,5 @@
+import { describe, beforeAll, it, expect, afterEach, afterAll } from 'vitest';
+
 import axios from 'axios';
 import nock from 'nock';
 import { Config } from '../../types/Config';
@@ -53,16 +55,16 @@ describe('Request Tests', () => {
     nock.cleanAll();
   });
 
-  it('should return 204 for favicon', (done) => {
+  it('should return 204 for favicon', () => new Promise((done) => {
     axios.get('http://localhost:3000/favicon.ico')
       .then((response) => {
         expect(response.status).toBe(204);
 
         done();
       });
-  });
+  }));
 
-  it('should return api result if no matching rule', (done) => {
+  it('should return api result if no matching rule', () => new Promise((done) => {
     nockServer.get('/cars')
       .reply(200, {
         id: 1,
@@ -80,9 +82,9 @@ describe('Request Tests', () => {
 
         done();
       });
-  });
+  }));
 
-  it('should return rule body if matching rule', (done) => {
+  it('should return rule body if matching rule', () => new Promise((done) => {
     nockServer.post('/cars')
       .reply(200, {
         id: 1,
@@ -98,9 +100,9 @@ describe('Request Tests', () => {
 
         done();
       });
-  });
+  }));
 
-  it('should make sure body is sent correctly', (done) => {
+  it('should make sure body is sent correctly', () => new Promise((done) => {
     // Only reply if body matches
     nockServer.post('/cars', { color: 'red' })
       .reply(200, {
@@ -117,9 +119,9 @@ describe('Request Tests', () => {
 
         done();
       });
-  });
+  }));
 
-  it('should not hit api if skipApi enabled', (done) => {
+  it('should not hit api if skipApi enabled', () => new Promise((done) => {
     const nockReq = nockServer.get('/posts')
       .reply(200, {
         id: 1,
@@ -138,9 +140,9 @@ describe('Request Tests', () => {
 
         done();
       });
-  });
+  }));
 
-  it('should set the status code if specified in rule', (done) => {
+  it('should set the status code if specified in rule', () => new Promise((done) => {
     nockServer.put('/cars')
       .reply(200, {
         id: 1,
@@ -154,9 +156,9 @@ describe('Request Tests', () => {
 
         done();
       });
-  });
+  }));
 
-  it('should forward error from server correctly', (done) => {
+  it('should forward error from server correctly', () => new Promise((done) => {
     nockServer.put('/error')
       .reply(404, {
         error: 'Not Found'
@@ -171,7 +173,7 @@ describe('Request Tests', () => {
 
         done();
       });
-  });
+  }));
 
   it.todo('should remove all hopbyhop headers before returning response to client');
   it.todo('should forward rest of headers from api');

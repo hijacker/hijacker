@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
+import { describe, beforeAll, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
+
 import axios from 'axios';
 import io from 'socket.io-client';
 import { Config } from '../../types/Config';
@@ -41,13 +42,13 @@ describe('Intercept Tests', () => {
     hijackerServer = new Hijacker(config);
   });
 
-  beforeEach((done) => {
+  beforeEach(() => new Promise((done) => {
     socket = io('http://localhost:2000');
 
     socket.on('connect', () => {
       done();
     });
-  });
+  }));
 
   afterEach(() => {
     socket.close();
@@ -58,7 +59,7 @@ describe('Intercept Tests', () => {
     hijackerServer.close();
   });
 
-  it('should send a socket event on interceptRequest and continue on emit', (done) => {
+  it('should send a socket event on interceptRequest and continue on emit', () => new Promise((done) => {
     const source = CancelToken.source();
 
     socket.on('INTERCEPT', () => {
@@ -71,9 +72,9 @@ describe('Intercept Tests', () => {
         expect(true).toBe(false);
       })
       .catch(() => {});
-  });
+  }));
 
-  it('should send a socket event on interceptResponse and continue on emit', (done) => {
+  it('should send a socket event on interceptResponse and continue on emit', () => new Promise((done) => {
     const source = CancelToken.source();
 
     socket.on('INTERCEPT', () => {
@@ -86,9 +87,9 @@ describe('Intercept Tests', () => {
         expect(true).toBe(false);
       })
       .catch(() => {});
-  });
+  }));
 
-  it('should allow modifying data in interceptRequest', (done) => {
+  it('should allow modifying data in interceptRequest', () => new Promise((done) => {
     socket.on('INTERCEPT', (data: any) => {
       const newObj = data;
       expect(typeof newObj).toBe('object');
@@ -107,9 +108,9 @@ describe('Intercept Tests', () => {
         });
         done();
       });
-  });
+  }));
 
-  it('should allow modifying data in interceptResponse', (done) => {
+  it('should allow modifying data in interceptResponse', () => new Promise((done) => {
     socket.on('INTERCEPT', (data: any) => {
       const newObj = data;
       expect(typeof newObj).toBe('object');
@@ -128,7 +129,7 @@ describe('Intercept Tests', () => {
         });
         done();
       });
-  });
+  }));
 
   it.todo('should only listen for one reponse from client per intercept');
 });

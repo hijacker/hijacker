@@ -1,3 +1,5 @@
+import { describe, beforeAll, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
+
 import axios from 'axios';
 import io from 'socket.io-client';
 import nock from 'nock';
@@ -59,14 +61,14 @@ describe('Socket Tests', () => {
     nock.cleanAll();
   });
 
-  it('should send list of rules on socket connect', (done) => {
+  it('should send list of rules on socket connect', () => new Promise((done) => {
     socket.on('SETTINGS', (data: any) => {
       expect(data.rules.length).toBe(3);
       done();
     });
-  });
+  }));
 
-  it('should add a new rule when ADD_RULE event sent', (done) => {
+  it('should add a new rule when ADD_RULE event sent', () => new Promise((done) => {
     nockServer.get('/error').reply(400);
 
     setTimeout(() => {
@@ -96,9 +98,9 @@ describe('Socket Tests', () => {
         });
     }, 100);
     
-  });
+  }));
 
-  it('should update a new rule when UPDATE_RULE event sent', (done) => {
+  it('should update a new rule when UPDATE_RULE event sent', () => new Promise((done) => {
     let ruleList: any;
 
     socket.on('SETTINGS', (data: any) => {
@@ -126,9 +128,9 @@ describe('Socket Tests', () => {
           done();
         });
     });
-  });
+  }));
 
-  it('should send updated rule list on ADD_RULE', (done) => {
+  it('should send updated rule list on ADD_RULE', () => new Promise((done) => {
     let ruleList;
 
     socket.on('UPDATE_RULES', (data: any) => {
@@ -146,9 +148,9 @@ describe('Socket Tests', () => {
         statusCode: 200
       });
     });
-  });
+  }));
 
-  it('should send updated rule list on UPDATE_RULE', (done) => {
+  it('should send updated rule list on UPDATE_RULE', () => new Promise((done) => {
     let ruleList;
 
     socket.on('UPDATE_RULES', (data: any) => {
@@ -169,5 +171,5 @@ describe('Socket Tests', () => {
 
       socket.emit('UPDATE_RULE', newRule);
     });
-  });
+  }));
 });
