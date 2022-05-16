@@ -69,6 +69,8 @@ describe('Socket Tests', () => {
   }));
 
   it('should add a new rule when ADD_RULE event sent', () => new Promise((done) => {
+    expect.assertions(2);
+
     nockServer.get('/error').reply(400);
 
     setTimeout(() => {
@@ -101,6 +103,8 @@ describe('Socket Tests', () => {
   }));
 
   it('should update a new rule when UPDATE_RULE event sent', () => new Promise((done) => {
+    expect.assertions(2);
+
     let ruleList: any;
 
     socket.on('SETTINGS', (data: any) => {
@@ -131,6 +135,8 @@ describe('Socket Tests', () => {
   }));
 
   it('should send updated rule list on ADD_RULE', () => new Promise((done) => {
+    expect.assertions(1);
+
     let ruleList;
 
     socket.on('UPDATE_RULES', (data: any) => {
@@ -151,6 +157,8 @@ describe('Socket Tests', () => {
   }));
 
   it('should send updated rule list on UPDATE_RULE', () => new Promise((done) => {
+    expect.assertions(1);
+
     let ruleList;
 
     socket.on('UPDATE_RULES', (data: any) => {

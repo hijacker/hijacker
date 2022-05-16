@@ -46,6 +46,8 @@ describe('Rule', () => {
 
   describe('Error Handling', () => {
     it('should not have errors for a valid rule', () => {
+      expect.assertions(1);
+
       const rule = new Rule({
         baseUrl: 'http://localhost:1234',
         path: '/123/:test',
@@ -65,6 +67,8 @@ describe('Rule', () => {
     });
 
     it('errors out when baseUrl not provided', () => {
+      expect.assertions(3);
+
       const rule = new Rule({
         path: '/123/:test',
         disabled: true,
@@ -85,6 +89,8 @@ describe('Rule', () => {
     });
 
     it('errors out when baseUrl incorrect type', () => {
+      expect.assertions(3);
+      
       const rule = new Rule({
         baseUrl: 123 as any,
         path: '/123/:test',

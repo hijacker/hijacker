@@ -1,5 +1,5 @@
 import express from 'express';
-import { HttpMethod, Rule } from '../backend/rules/Rule';
+import { HttpMethod, Rule } from '../rules/Rule';
 
 // Request to hijacker from client
 export interface HijackerRequest {

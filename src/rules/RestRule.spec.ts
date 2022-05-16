@@ -7,6 +7,8 @@ import { RestRule } from './RestRule';
 describe('RestRule', () => {
   describe('isMatch', () => {
     it('should match correct path', () => {
+      expect.assertions(2);
+
       const ruleType = new RestRule();
   
       const rule = new Rule({
@@ -22,6 +24,8 @@ describe('RestRule', () => {
     });
   
     it('should match correct method', () => {
+      expect.assertions(2);
+
       const ruleType = new RestRule();
   
       const rule = new Rule({
@@ -37,6 +41,8 @@ describe('RestRule', () => {
     });
   
     it('should match ALL method', () => {
+      expect.assertions(2);
+
       const ruleType = new RestRule();
   
       const rule = new Rule({
@@ -52,6 +58,8 @@ describe('RestRule', () => {
     });
   
     it('should match parameters in path', () => {
+      expect.assertions(2);
+      
       const ruleType = new RestRule();
   
       const rule = new Rule({

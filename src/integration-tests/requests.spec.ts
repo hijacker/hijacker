@@ -1,6 +1,6 @@
 import { describe, beforeAll, it, expect, afterEach, afterAll } from 'vitest';
 
-import got from 'got';
+import got, { RequestError } from 'got';
 import nock from 'nock';
 
 import { Config } from '../types/Config.js';
@@ -56,12 +56,16 @@ describe('Request Tests', () => {
   });
 
   it('should return 204 for favicon', async () => {
+    expect.assertions(1);
+    
     const { statusCode } = await got.get('http://localhost:3000/favicon.ico');
     
     expect(statusCode).toBe(204);
   });
 
   it('should return api result if no matching rule', async () => {
+    expect.assertions(1);
+
     nockServer.get('/cars')
       .reply(200, {
         id: 1,
@@ -79,6 +83,8 @@ describe('Request Tests', () => {
   });
 
   it('should return rule body if matching rule', async () => {
+    expect.assertions(1);
+
     nockServer.post('/cars')
       .reply(200, {
         id: 1,
@@ -94,6 +100,8 @@ describe('Request Tests', () => {
   });
 
   it('should make sure body is sent to server correctly', async () => {
+    expect.assertions(1);
+
     // Only reply if body matches
     nockServer.post('/cars', { color: 'red' })
       .reply(200, {
@@ -112,6 +120,8 @@ describe('Request Tests', () => {
   });
 
   it('should not hit api if skipApi enabled', async () => {
+    expect.assertions(1);
+
     const nockReq = nockServer.get('/posts')
       .reply(200, {
         id: 1,
@@ -130,6 +140,8 @@ describe('Request Tests', () => {
   });
 
   it('should set the status code if specified in rule', async () => {
+    expect.assertions(1)
+    
     nockServer.put('/cars')
       .reply(200, {
         id: 1,
@@ -138,23 +150,36 @@ describe('Request Tests', () => {
       });
 
     // Might need to be caught?
-    const { statusCode } = await got.put('http://localhost:3000/cars');
-
-    expect(statusCode).toBe(418);
+    try {
+      await got.put('http://localhost:3000/cars');
+    } catch (error) {
+      if (error instanceof RequestError) {
+        expect(error.response?.statusCode).toBe(418);
+      }
+    }
   });
 
+  it.todo('should return server status code correctly');
+
   it('should forward error from server correctly', async () => {
+    expect.assertions(1);
+
     nockServer.put('/error')
       .reply(404, {
         error: 'Not Found'
       });
-
-    const { statusCode } = await got.put('http://localhost:3000/error');
-
-    expect(statusCode).toBe(404);
-    expect(statusCode).toEqual({
-      error: 'Not Found'
-    });
+    
+    try {
+      const response = await got.put('http://localhost:3000/error').json();
+    } catch (error) {
+      if (error instanceof RequestError) {
+        expect(error.response?.statusCode).toBe(404);
+        console.log(error);
+        expect(JSON.parse(error.response?.body as string ?? '')).toEqual({
+          error: 'Not Found'
+        });
+      }
+    }
   });
 
   it.todo('should remove all hopbyhop headers before returning response to client');

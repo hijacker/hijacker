@@ -1,11 +1,10 @@
+import { json } from 'body-parser';
 import { Agent } from 'https';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore Setup type file for routeMatcher
 import { routeMatcher } from 'route-matcher';
-import got from 'got';
 
 import { HijackerRequest, HijackerResponse, Request } from '../types/Request.js';
-
 import { Rule } from './Rule.js';
 import { RuleType } from './RuleManager.js';
 
@@ -43,7 +42,7 @@ export class RestRule implements RuleType {
     return {
       body: request.matchingRule?.body ?? {},
       headers: {},
-      statusCode: 200
+      statusCode: request.matchingRule?.statusCode ?? 200
     };
   }
 }

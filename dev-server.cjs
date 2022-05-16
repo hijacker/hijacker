@@ -3,8 +3,6 @@ const esbuild = require('esbuild');
 const glob = require('glob');
 const { green, yellow } = require('colorette');
 
-const package = require('./package.json');
-
 // Plugin to track build time
 const timePlugin = (name) => {
   return {
@@ -46,8 +44,8 @@ const backendRefresh = () => {
         }
       });
 
-      build.onEnd(() => {
-        hijackerModule = require('./output/hijacker');
+      build.onEnd(async () => {
+        hijackerModule = await import('./dist/hijacker.js');
 
         hijackerServer = new hijackerModule.Hijacker({
           port: 3000,

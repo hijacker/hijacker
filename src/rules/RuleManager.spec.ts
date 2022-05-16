@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { HijackerResponse, HijackerRequest } from '../../types/Request';
+import { HijackerResponse, HijackerRequest } from '../types/Request';
 import { Rule } from './Rule';
 import { RuleManager, RuleType } from './RuleManager';
 
@@ -18,6 +18,8 @@ class NewRule implements RuleType {
 
 describe('RuleManager', () => {
   it('should have default rest matcher if none provided', () => {
+    expect.assertions(1);
+
     const ruleManager = new RuleManager({
       ruleTypes: [],
       rules: [],
@@ -28,6 +30,8 @@ describe('RuleManager', () => {
   });
 
   it('should support adding custom rule type', () => {
+    expect.assertions(1);
+
     const ruleManager = new RuleManager({
       ruleTypes: [NewRule],
       rules: [],
@@ -38,6 +42,8 @@ describe('RuleManager', () => {
   });
 
   it('should match with the correct rule type', () => {
+    expect.assertions(1);
+    
     const ruleManager = new RuleManager({
       ruleTypes: [NewRule],
       rules: [
