@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { describe, beforeAll, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
 
-import axios from 'axios';
 import io from 'socket.io-client';
-import { Config } from '../../types/Config';
+import got, { CancelableRequest, Response } from 'got';
 
+import { Config } from '../types/Config';
 import { Hijacker } from '../hijacker';
+import { isDone } from 'nock/types';
 
 describe('Intercept Tests', () => {
-  const { CancelToken } = axios;
   let hijackerServer: Hijacker;
   let socket: any;
 
@@ -61,33 +61,37 @@ describe('Intercept Tests', () => {
   });
 
   it('should send a socket event on interceptRequest and continue on emit', () => new Promise((done) => {
-    const source = CancelToken.source();
+    let request: CancelableRequest<Response>;
 
     socket.on('INTERCEPT', () => {
-      source.cancel();
-      done();
+      request.cancel();
     });
 
-    axios.get('http://localhost:2000/cars', { cancelToken: source.token })
-      .then(() => {
-        expect(true).toBe(false);
-      })
-      .catch(() => {});
+    request = got.get('http://localhost:2000/cars');
+
+    request.then(() => {
+      expect(true).toBe(false);
+    }).catch(() => {
+      expect(true).toBe(true);
+      done();
+    });
   }));
 
   it('should send a socket event on interceptResponse and continue on emit', () => new Promise((done) => {
-    const source = CancelToken.source();
+    let request: CancelableRequest<Response>;
 
     socket.on('INTERCEPT', () => {
-      source.cancel();
-      done();
+      request.cancel();
     });
 
-    axios.get('http://localhost:2000/posts', { cancelToken: source.token })
-      .then(() => {
-        expect(true).toBe(false);
-      })
-      .catch(() => {});
+    request = got.get('http://localhost:2000/posts');
+
+    request.then(() => {
+      expect(true).toBe(false);
+    }).catch(() => {
+      expect(true).toBe(true);
+      done();
+    });
   }));
 
   it('should allow modifying data in interceptRequest', () => new Promise((done) => {
@@ -102,9 +106,9 @@ describe('Intercept Tests', () => {
       socket.emit(newObj.intercept.id, newObj);
     });
 
-    axios.get('http://localhost:2000/cars')
+    got.get('http://localhost:2000/cars')
       .then((response) => {
-        expect(response.data).toEqual({
+        expect(JSON.parse(response.body)).toEqual({
           body: 'intercepted'
         });
         done();
@@ -123,9 +127,9 @@ describe('Intercept Tests', () => {
       socket.emit(newObj.intercept.id, newObj);
     });
 
-    axios.get('http://localhost:2000/posts')
+    got.get('http://localhost:2000/posts')
       .then((response) => {
-        expect(response.data).toEqual({
+        expect(JSON.parse(response.body)).toEqual({
           body: 'intercepted'
         });
         done();

@@ -1,10 +1,10 @@
 import { describe, beforeAll, it, expect, afterEach, afterAll } from 'vitest';
 
-import axios from 'axios';
+import got from 'got';
 import nock from 'nock';
-import { Config } from '../../types/Config';
 
-import { Hijacker } from '../hijacker';
+import { Config } from '../types/Config.js';
+import { Hijacker } from '../hijacker.js';
 
 describe('Request Tests', () => {
   let hijackerServer: Hijacker;
@@ -55,16 +55,13 @@ describe('Request Tests', () => {
     nock.cleanAll();
   });
 
-  it('should return 204 for favicon', () => new Promise((done) => {
-    axios.get('http://localhost:3000/favicon.ico')
-      .then((response) => {
-        expect(response.status).toBe(204);
+  it('should return 204 for favicon', async () => {
+    const { statusCode } = await got.get('http://localhost:3000/favicon.ico');
+    
+    expect(statusCode).toBe(204);
+  });
 
-        done();
-      });
-  }));
-
-  it('should return api result if no matching rule', () => new Promise((done) => {
+  it('should return api result if no matching rule', async () => {
     nockServer.get('/cars')
       .reply(200, {
         id: 1,
@@ -72,19 +69,16 @@ describe('Request Tests', () => {
         model: 'Mustang'
       });
 
-    axios.get('http://localhost:3000/cars')
-      .then((response) => {
-        expect(response.data).toEqual({
-          id: 1,
-          make: 'Ford',
-          model: 'Mustang'
-        });
+    const data = await got.get('http://localhost:3000/cars').json();
 
-        done();
-      });
-  }));
+    expect(data).toEqual({
+      id: 1,
+      make: 'Ford',
+      model: 'Mustang'
+    });
+  });
 
-  it('should return rule body if matching rule', () => new Promise((done) => {
+  it('should return rule body if matching rule', async () => {
     nockServer.post('/cars')
       .reply(200, {
         id: 1,
@@ -92,17 +86,14 @@ describe('Request Tests', () => {
         model: 'Mustang'
       });
 
-    axios.post('http://localhost:3000/cars')
-      .then((response) => {
-        expect(response.data).toEqual({
-          test: 'testing'
-        });
+    const data = await got.post('http://localhost:3000/cars').json();
 
-        done();
-      });
-  }));
+    expect(data).toEqual({
+      test: 'testing'
+    });
+  });
 
-  it('should make sure body is sent correctly', () => new Promise((done) => {
+  it('should make sure body is sent to server correctly', async () => {
     // Only reply if body matches
     nockServer.post('/cars', { color: 'red' })
       .reply(200, {
@@ -111,17 +102,16 @@ describe('Request Tests', () => {
         model: 'Mustang'
       });
 
-    axios.post('http://localhost:3000/cars', { color: 'red' })
-      .then((response) => {
-        expect(response.data).toEqual({
-          test: 'testing'
-        });
+    const data = await got.post('http://localhost:3000/cars', {
+      json: { color: 'red' }
+    }).json();
 
-        done();
-      });
-  }));
+    expect(data).toEqual({
+      test: 'testing'
+    });
+  });
 
-  it('should not hit api if skipApi enabled', () => new Promise((done) => {
+  it('should not hit api if skipApi enabled', async () => {
     const nockReq = nockServer.get('/posts')
       .reply(200, {
         id: 1,
@@ -129,20 +119,17 @@ describe('Request Tests', () => {
         model: 'Mustang'
       });
 
-    axios.get('http://localhost:3000/posts')
-      .then((response) => {
-        expect(response.data).toEqual({
-          posts: 'get'
-        });
+    const data = await got.get('http://localhost:3000/posts').json();
 
-        // nock intercept should be active b/c api skiped
-        expect(nockReq.isDone()).toBe(false);
+    expect(data).toEqual({
+      posts: 'get'
+    });
 
-        done();
-      });
-  }));
+    // nock intercept should be active b/c api skiped
+    expect(nockReq.isDone()).toBe(false);
+  });
 
-  it('should set the status code if specified in rule', () => new Promise((done) => {
+  it('should set the status code if specified in rule', async () => {
     nockServer.put('/cars')
       .reply(200, {
         id: 1,
@@ -150,30 +137,25 @@ describe('Request Tests', () => {
         model: 'Mustang'
       });
 
-    axios.put('http://localhost:3000/cars')
-      .catch((err) => {
-        expect(err.response.status).toBe(418);
+    // Might need to be caught?
+    const { statusCode } = await got.put('http://localhost:3000/cars');
 
-        done();
-      });
-  }));
+    expect(statusCode).toBe(418);
+  });
 
-  it('should forward error from server correctly', () => new Promise((done) => {
+  it('should forward error from server correctly', async () => {
     nockServer.put('/error')
       .reply(404, {
         error: 'Not Found'
       });
 
-    axios.put('http://localhost:3000/error')
-      .catch((err) => {
-        expect(err.response.status).toBe(404);
-        expect(err.response.data).toEqual({
-          error: 'Not Found'
-        });
+    const { statusCode } = await got.put('http://localhost:3000/error');
 
-        done();
-      });
-  }));
+    expect(statusCode).toBe(404);
+    expect(statusCode).toEqual({
+      error: 'Not Found'
+    });
+  });
 
   it.todo('should remove all hopbyhop headers before returning response to client');
   it.todo('should forward rest of headers from api');

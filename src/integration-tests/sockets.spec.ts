@@ -1,6 +1,6 @@
 import { describe, beforeAll, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
 
-import axios from 'axios';
+import got from 'got';
 import io from 'socket.io-client';
 import nock from 'nock';
 
@@ -72,7 +72,7 @@ describe('Socket Tests', () => {
     nockServer.get('/error').reply(400);
 
     setTimeout(() => {
-      axios.get('http://localhost:4000/error')
+      got.get('http://localhost:4000/error')
         .catch(() => {
           expect(true).toBe(true);
         })
@@ -87,10 +87,10 @@ describe('Socket Tests', () => {
             }
           });
 
-          return axios.get('http://localhost:4000/error');
+          return got.get('http://localhost:4000/error');
         })
         .then((response) => {
-          expect(response.data).toEqual({
+          expect(JSON.parse(response.body)).toEqual({
             error: 'works'
           });
 
@@ -106,9 +106,9 @@ describe('Socket Tests', () => {
     socket.on('SETTINGS', (data: any) => {
       ruleList = data.rules;
 
-      axios.get('http://localhost:4000/cars')
+      got.get('http://localhost:4000/cars')
         .then((response) => {
-          expect(response.data).toEqual({
+          expect(JSON.parse(response.body)).toEqual({
             test: 'testing'
           });
 
@@ -118,10 +118,10 @@ describe('Socket Tests', () => {
 
           socket.emit('UPDATE_RULE', ruleList[0]);
 
-          return axios.get('http://localhost:4000/cars');
+          return got.get('http://localhost:4000/cars');
         })
         .then((response) => {
-          expect(response.data).toEqual({
+          expect(JSON.parse(response.body)).toEqual({
             new: 'body'
           });
 

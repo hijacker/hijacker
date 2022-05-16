@@ -1,6 +1,6 @@
 import { describe, beforeAll, it, expect } from 'vitest';
 
-import { Config } from '../../types/Config';
+import { Config } from '../types/Config';
 import { Hijacker } from '../hijacker';
 
 describe('Event Tests', () => {
