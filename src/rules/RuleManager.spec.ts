@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 
-import { HijackerResponse, HijackerRequest } from '../types/Request';
-import { Rule } from './Rule';
-import { RuleManager, RuleType } from './RuleManager';
+import { HijackerResponse, HijackerRequest } from '../types/Request.js';
+import { Rule } from './Rule.js';
+import { RuleManager, RuleType } from './RuleManager.js';
 
 class NewRule implements RuleType {
   type = 'NewRule';

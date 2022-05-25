@@ -1,4 +1,4 @@
-import { IRule } from '../backend/rules/Rule';
+import { IRule } from '../rules/Rule.js';
 
 export interface Config {
   port: number;

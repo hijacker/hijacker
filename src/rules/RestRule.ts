@@ -1,5 +1,4 @@
-import { json } from 'body-parser';
-import { Agent } from 'https';
+import { Agent } from 'node:https';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore Setup type file for routeMatcher
 import { routeMatcher } from 'route-matcher';
@@ -17,8 +16,10 @@ export class RestRule implements RuleType {
   }
 
   async handler(request: Request): Promise<HijackerResponse> {
+    const { originalReq, matchingRule } = request;
+
     const requestOptions = {
-      method: request.originalReq.method,
+      method: originalReq.method,
       headers: {},
       throwHttpErrors: false,
       agent: {
@@ -34,6 +35,8 @@ export class RestRule implements RuleType {
         ]
       }
     };
+
+    
 
     // const response = await got(request.originalReq.path, requestOptions);
 

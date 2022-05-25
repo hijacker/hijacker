@@ -1,6 +1,6 @@
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { Server } from 'http';
+import path, { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { Server } from 'node:http';
 import express from 'express';
 import bodyParser from 'body-parser';
 import xmlParser from 'express-xml-bodyparser';

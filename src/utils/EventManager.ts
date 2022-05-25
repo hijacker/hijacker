@@ -1,4 +1,4 @@
-import { EventEmitter } from 'events';
+import { EventEmitter } from 'node:events';
 
 // Wrapper for events.  Will eventually keep track of registered events.
 export class EventManager {

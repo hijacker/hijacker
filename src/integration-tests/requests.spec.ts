@@ -1,5 +1,4 @@
 import { describe, beforeAll, it, expect, afterEach, afterAll } from 'vitest';
-
 import got, { RequestError } from 'got';
 import nock from 'nock';
 

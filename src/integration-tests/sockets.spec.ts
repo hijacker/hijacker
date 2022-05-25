@@ -1,11 +1,10 @@
 import { describe, beforeAll, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
-
 import got from 'got';
 import io from 'socket.io-client';
 import nock from 'nock';
 
-import { Hijacker } from '../hijacker';
-import { Config } from '../types/Config';
+import { Hijacker } from '../hijacker.js';
+import { Config } from '../types/Config.js';
 
 describe('Socket Tests', () => {
   let hijackerServer: Hijacker;

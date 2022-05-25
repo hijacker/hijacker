@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { Rule } from './Rule';
+import { Rule } from './Rule.js';
 
 describe('Rule', () => {
   it('should create a rule with given object', () => {

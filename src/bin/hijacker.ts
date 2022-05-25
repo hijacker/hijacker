@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-
-import path from 'path';
-import fs from 'fs';
+import path from 'node:path';
+import fs from 'node:fs';
 import { program } from 'commander';
 
 // import pkg from '../../package.json';
