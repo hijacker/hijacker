@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const { green, yellow } = require('colorette');
 const esbuild = require('esbuild');
 const glob = require('glob');
-const { green, yellow } = require('colorette');
 
 // Plugin to track build time
 const timePlugin = (name) => {

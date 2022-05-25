@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-import path from 'node:path';
 import fs from 'node:fs';
+import path from 'node:path';
+
 import { program } from 'commander';
 
 // import pkg from '../../package.json';
@@ -9,7 +10,7 @@ import { Hijacker } from '../hijacker.js';
 // Define CLI
 // TODO: Read in package.json to correctly set version
 program
-  .option('-c, --config <path>', 'set path to hijacker configuration', `hijacker.config.json`)
+  .option('-c, --config <path>', 'set path to hijacker configuration', 'hijacker.config.json')
   .version('1.0.0')
   .parse(process.argv);
 

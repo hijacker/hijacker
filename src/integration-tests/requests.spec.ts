@@ -1,9 +1,9 @@
-import { describe, beforeAll, it, expect, afterEach, afterAll } from 'vitest';
 import got, { RequestError } from 'got';
 import nock from 'nock';
+import { describe, beforeAll, it, expect, afterEach, afterAll } from 'vitest';
 
-import { Config } from '../types/Config.js';
 import { Hijacker } from '../hijacker.js';
+import { Config } from '../types/Config.js';
 
 describe('Request Tests', () => {
   let hijackerServer: Hijacker;
@@ -139,7 +139,7 @@ describe('Request Tests', () => {
   });
 
   it('should set the status code if specified in rule', async () => {
-    expect.assertions(1)
+    expect.assertions(1);
     
     nockServer.put('/cars')
       .reply(200, {

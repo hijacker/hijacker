@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { describe, beforeAll, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
-import io from 'socket.io-client';
 import got, { CancelableRequest, Response } from 'got';
+import io from 'socket.io-client';
+import { describe, beforeAll, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
 
-import { Config } from '../types/Config.js';
 import { Hijacker } from '../hijacker.js';
+import { Config } from '../types/Config.js';
 
 describe('Intercept Tests', () => {
   let hijackerServer: Hijacker;

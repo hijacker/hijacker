@@ -1,17 +1,18 @@
+import { Server } from 'node:http';
 import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { Server } from 'node:http';
-import express from 'express';
+
 import bodyParser from 'body-parser';
+import express from 'express';
 import xmlParser from 'express-xml-bodyparser';
 
+import { HttpMethod } from './rules/Rule.js';
+import { RuleManager } from './rules/RuleManager.js';
+import { Config } from './types/Config.js';
+import { Request } from './types/Request.js';
 import {
   EventManager
 } from './utils/index.js';
-import { Config } from './types/Config.js';
-import { RuleManager } from './rules/RuleManager.js';
-import { Request } from './types/Request.js';
-import { HttpMethod } from './rules/Rule.js';
 
 export class Hijacker {
   app: express.Application;

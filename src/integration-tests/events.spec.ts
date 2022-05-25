@@ -1,7 +1,7 @@
 import { describe, beforeAll, it, expect } from 'vitest';
 
-import { Config } from '../types/Config.js';
 import { Hijacker } from '../hijacker.js';
+import { Config } from '../types/Config.js';
 
 describe('Event Tests', () => {
   let config: Config;

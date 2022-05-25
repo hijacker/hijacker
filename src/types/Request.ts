@@ -1,4 +1,5 @@
 import express from 'express';
+
 import { HttpMethod, Rule } from '../rules/Rule.js';
 
 // Request to hijacker from client

@@ -1,7 +1,7 @@
-import { describe, beforeAll, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
 import got from 'got';
-import io from 'socket.io-client';
 import nock from 'nock';
+import io from 'socket.io-client';
+import { describe, beforeAll, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
 
 import { Hijacker } from '../hijacker.js';
 import { Config } from '../types/Config.js';
