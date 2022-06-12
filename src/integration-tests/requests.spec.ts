@@ -5,7 +5,7 @@ import { describe, beforeAll, it, expect, afterEach, afterAll } from 'vitest';
 import { Hijacker } from '../hijacker.js';
 import { Config } from '../types/Config.js';
 
-describe('Request Tests', () => {
+describe.only('Request Tests', () => {
   let hijackerServer: Hijacker;
   let nockServer: any;
 
@@ -119,7 +119,7 @@ describe('Request Tests', () => {
   });
 
   it('should not hit api if skipApi enabled', async () => {
-    expect.assertions(1);
+    expect.assertions(2);
 
     const nockReq = nockServer.get('/posts')
       .reply(200, {
@@ -161,7 +161,7 @@ describe('Request Tests', () => {
   it.todo('should return server status code correctly');
 
   it('should forward error from server correctly', async () => {
-    expect.assertions(1);
+    expect.assertions(2);
 
     nockServer.put('/error')
       .reply(404, {
@@ -173,7 +173,6 @@ describe('Request Tests', () => {
     } catch (error) {
       if (error instanceof RequestError) {
         expect(error.response?.statusCode).toBe(404);
-        console.log(error);
         expect(JSON.parse(error.response?.body as string ?? '')).toEqual({
           error: 'Not Found'
         });

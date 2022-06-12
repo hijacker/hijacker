@@ -27,7 +27,7 @@ export class Hijacker {
     this.ruleManager = new RuleManager({
       ruleTypes: [],
       rules: config.rules ?? [],
-      baseRule: config.baseRule ?? {}
+      baseRule: config.baseRule
     });
 
     this.app

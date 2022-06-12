@@ -1,7 +1,7 @@
 import { Newable } from '../types/index.js';
 import { Request, HijackerRequest, HijackerResponse } from '../types/Request.js';
 import { RestRule } from './RestRule.js';
-import { IRule, Rule } from './Rule.js';
+import { BaseRule, IRule, Rule } from './Rule.js';
 
 export class RuleType {
   type = '';
@@ -10,7 +10,7 @@ export class RuleType {
     throw new Error('Not implemented');
   }
 
-  async handler(request: Request): Promise<HijackerResponse> {
+  async handler(request: Request, baseRule: BaseRule): Promise<HijackerResponse> {
     throw new Error('Not implemented');
   }
 }
@@ -18,13 +18,13 @@ export class RuleType {
 interface RuleManagerOptions {
   ruleTypes: Newable<RuleType>[];
   rules: Partial<IRule>[];
-  baseRule: Partial<IRule>;
+  baseRule: BaseRule;
 }
 
 export class RuleManager {
   ruleTypes: Record<string, RuleType>;
   rules: Rule[];
-  baseRule: Partial<IRule>;
+  baseRule: BaseRule;
 
   constructor({ ruleTypes, rules, baseRule}: RuleManagerOptions) {
     this.baseRule = baseRule;
@@ -61,6 +61,6 @@ export class RuleManager {
 
   async handler(requestType: string, request: Request): Promise<HijackerResponse> {
     // TODO: Check if type has been registered
-    return this.ruleTypes[requestType].handler(request);
+    return this.ruleTypes[requestType].handler(request, this.baseRule);
   }
 }

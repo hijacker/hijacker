@@ -32,6 +32,10 @@ export interface IRule {
   type?: string;
 }
 
+export interface BaseRule extends Partial<IRule> {
+  baseUrl: string;
+}
+
 export class Rule {
   @IsBoolean()
   disabled?: boolean;

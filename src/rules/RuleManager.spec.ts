@@ -23,7 +23,9 @@ describe('RuleManager', () => {
     const ruleManager = new RuleManager({
       ruleTypes: [],
       rules: [],
-      baseRule: {}
+      baseRule: {
+        baseUrl: ''
+      }
     });
 
     expect(Object.keys(ruleManager.ruleTypes)).toEqual(['rest']);
@@ -35,7 +37,9 @@ describe('RuleManager', () => {
     const ruleManager = new RuleManager({
       ruleTypes: [NewRule],
       rules: [],
-      baseRule: {}
+      baseRule: {
+        baseUrl: ''
+      }
     });
 
     expect(Object.keys(ruleManager.ruleTypes)).toEqual(['rest', 'NewRule']);
@@ -64,7 +68,9 @@ describe('RuleManager', () => {
           }
         },
       ],
-      baseRule: {}
+      baseRule: {
+        baseUrl: ''
+      }
     });
 
     // NewRule matches any rule that has name 'NEW RULE MATCH'

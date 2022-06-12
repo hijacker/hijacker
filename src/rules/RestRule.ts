@@ -1,11 +1,12 @@
 import { Agent } from 'node:https';
 
+import got, { OptionsOfTextResponseBody } from 'got';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore Setup type file for routeMatcher
 import { routeMatcher } from 'route-matcher';
 
 import { HijackerRequest, HijackerResponse, Request } from '../types/Request.js';
-import { Rule } from './Rule.js';
+import { BaseRule, Rule } from './Rule.js';
 import { RuleType } from './RuleManager.js';
 
 export class RestRule implements RuleType {
@@ -16,10 +17,17 @@ export class RestRule implements RuleType {
       (!Object.prototype.hasOwnProperty.call(rule, 'method') || rule.method === request.method || rule.method === 'ALL');
   }
 
-  async handler(request: Request): Promise<HijackerResponse> {
+  async handler(request: Request, baseRule: BaseRule): Promise<HijackerResponse> {
     const { originalReq, matchingRule } = request;
+    const activeRule = matchingRule ?? baseRule;
 
-    const requestOptions = {
+    const responseObj: HijackerResponse = {
+      body: activeRule.body ?? {},
+      headers: {},
+      statusCode: activeRule.statusCode ?? 200
+    };
+
+    const requestOptions: OptionsOfTextResponseBody = {
       method: originalReq.method,
       headers: {},
       throwHttpErrors: false,
@@ -31,22 +39,26 @@ export class RestRule implements RuleType {
       hooks: {
         beforeRequest: [
           (req: any) => {
-            console.log({...req});
+            // console.log({...req});
           }
         ]
       }
     };
 
-    
+    if (originalReq.method !== 'GET') {
+      requestOptions.body = JSON.stringify(originalReq.body);
+    }
 
-    // const response = await got(request.originalReq.path, requestOptions);
+    const url = activeRule.baseUrl + (activeRule.routeTo ?? originalReq.path);
 
-    // console.log(response);
+    if (!activeRule.skipApi) {
+      const response = await got(url, requestOptions);
 
-    return {
-      body: request.matchingRule?.body ?? {},
-      headers: {},
-      statusCode: request.matchingRule?.statusCode ?? 200
-    };
+      responseObj.body = activeRule.body ?? JSON.parse(response.body);
+      responseObj.statusCode = activeRule.statusCode ?? response.statusCode;
+      responseObj.headers = response.headers as Record<string, string> ?? {};
+    }
+
+    return responseObj;
   }
 }

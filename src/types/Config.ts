@@ -1,7 +1,7 @@
-import { IRule } from '../rules/Rule.js';
+import { BaseRule, IRule } from '../rules/Rule.js';
 
 export interface Config {
   port: number;
-  baseRule: Partial<IRule>;
+  baseRule: BaseRule;
   rules: Partial<IRule>[];
 }
