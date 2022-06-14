@@ -96,7 +96,7 @@ describe('Socket Tests', () => {
       });
 
       done();
-    }, 100)
+    }, 100);
   }));
 
   it('should update a new rule when UPDATE_RULE event sent', () => new Promise<void>((done) => {

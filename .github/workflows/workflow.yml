@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install Dependencies
-        run: npm i --legacy-peer-deps
+        run: npm i
       - name: Build Project
         run: npm run build
       - name: Run Linting
@@ -39,7 +39,6 @@ jobs:
           path-to-lcov: './coverage/lcov.info'
           parallel: true
 
-  
   coveralls:
     name: Coveralls
     needs: test
@@ -51,7 +50,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: './coverage/lcov.info'
           parallel-finished: true
-
 
   release:
     name: Release
