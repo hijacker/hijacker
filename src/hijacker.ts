@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import xmlParser from 'express-xml-bodyparser';
 
-import { HttpMethod } from './rules/Rule.js';
+import { HttpMethod, IRule } from './rules/Rule.js';
 import { RuleManager } from './rules/RuleManager.js';
 import { Config } from './types/Config.js';
 import { Request } from './types/Request.js';
@@ -23,7 +23,7 @@ export class Hijacker {
   constructor(config: Config) {
     this.app = express();
     this.server = new Server(this.app);
-    this.eventManager = new EventManager();
+    this.eventManager = new EventManager(this.server);
     this.ruleManager = new RuleManager({
       ruleTypes: [],
       rules: config.rules ?? [],
@@ -61,24 +61,41 @@ export class Hijacker {
       });
     
     this.server.listen(config.port, () => {
+      // Set up sockets
+      this.eventManager.on('connection', (socket) => {
+        socket.emit('SETTINGS', {
+          rules: this.ruleManager.rules
+        });
+
+        socket.on('UPDATE_RULE', (rule: Partial<IRule>) => {
+          this.ruleManager.updateRule(rule);
+          this.eventManager.emit('UPDATE_RULES', this.ruleManager.rules);
+        });
+
+        socket.on('ADD_RULE', (rule: Partial<IRule>) => {
+          this.ruleManager.addRule(rule);
+          this.eventManager.emit('UPDATE_RULES', this.ruleManager.rules);
+        });
+      }, 'socket');
+
       this.emit('started', config.port);
     });
   }
 
   on(eventName: string, cb: (...args: any[]) => void) {
-    this.eventManager.on(eventName, cb);
+    this.eventManager.on(eventName, cb, 'event-manager');
   }
 
   once(eventName: string, cb: (...args: any[]) => void) {
-    this.eventManager.once(eventName, cb);
+    this.eventManager.once(eventName, cb, 'event-manager');
   }
 
   off(eventName: string, cb: (...args: any[]) => void) {
-    this.eventManager.off(eventName, cb);
+    this.eventManager.off(eventName, cb, 'event-manager');
   }
 
   emit(eventName: string, val: any) {
-    this.eventManager.emit(eventName, val);
+    this.eventManager.emit(eventName, val, 'event-manager');
   }
 
   close() {

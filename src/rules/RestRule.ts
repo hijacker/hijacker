@@ -53,8 +53,13 @@ export class RestRule implements RuleType {
 
     if (!activeRule.skipApi) {
       const response = await got(url, requestOptions);
+      
+      let body = response.body;
+      try {
+        body = JSON.parse(body);
+      } catch {}
 
-      responseObj.body = activeRule.body ?? JSON.parse(response.body);
+      responseObj.body = activeRule.body ?? body;
       responseObj.statusCode = activeRule.statusCode ?? response.statusCode;
       responseObj.headers = response.headers as Record<string, string> ?? {};
     }

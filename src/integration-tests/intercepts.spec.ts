@@ -6,7 +6,7 @@ import { describe, beforeAll, it, expect, beforeEach, afterEach, afterAll } from
 import { Hijacker } from '../hijacker.js';
 import { Config } from '../types/Config.js';
 
-describe('Intercept Tests', () => {
+describe.skip('Intercept Tests', () => {
   let hijackerServer: Hijacker;
   let socket: any;
 

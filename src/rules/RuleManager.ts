@@ -51,6 +51,14 @@ export class RuleManager {
     }));
   }
 
+  updateRule(rule: Partial<IRule>) {
+    const r = this.rules.find(x => x.id === rule.id);
+
+    if (r) {
+      r.update(rule);
+    }
+  }
+
   match(request: HijackerRequest) {
     return this.rules.find(r => {
       const ruleType = r.type ?? 'rest';

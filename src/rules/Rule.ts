@@ -4,8 +4,10 @@ import {
   IsString,
   IsNumber,
   IsOptional,
-  validateSync
+  validateSync,
+  IsUUID
 } from 'class-validator';
+import { v4 as uuid } from 'uuid';
 
 export type HttpMethod =
   'GET' |
@@ -18,6 +20,7 @@ export type HttpMethod =
   'PATCH';
 
 export interface IRule {
+  id?: string;
   disabled: boolean;
   interceptRequest: boolean;
   interceptResponse: boolean;
@@ -37,6 +40,9 @@ export interface BaseRule extends Partial<IRule> {
 }
 
 export class Rule {
+  @IsUUID()
+  id: string;
+
   @IsBoolean()
   disabled?: boolean;
 
@@ -80,6 +86,7 @@ export class Rule {
   type: string;
 
   constructor(rule: Partial<IRule>) {
+    this.id = uuid();
     this.disabled = rule.disabled ?? false;
     this.interceptRequest = rule.interceptRequest ?? false;
     this.interceptResponse = rule.interceptResponse ?? false;
@@ -92,6 +99,21 @@ export class Rule {
     this.path = rule.path ?? '';
     this.statusCode = rule.statusCode;
     this.type = rule.type ?? 'rest';
+  }
+
+  update(rule: Partial<IRule>) {
+    this.disabled = rule.disabled ?? this.disabled;
+    this.interceptRequest = rule.interceptRequest ?? this.interceptRequest;
+    this.interceptResponse = rule.interceptResponse ?? this.interceptResponse;
+    this.name = rule.name ?? this.name;
+    this.routeTo = rule.routeTo ?? this.routeTo;
+    this.skipApi = rule.skipApi ?? this.skipApi;
+    this.method = rule.method ?? this.method;
+    this.body = rule.body ?? this.body;
+    this.baseUrl = rule.baseUrl ?? this.baseUrl;
+    this.path = rule.path ?? this.path;
+    this.statusCode = rule.statusCode ?? this.statusCode;
+    this.type = rule.type ?? this.type;
   }
 
   get errors() {

@@ -67,38 +67,36 @@ describe('Socket Tests', () => {
     });
   }));
 
-  it('should add a new rule when ADD_RULE event sent', () => new Promise<void>((done) => {
+  it('should add a new rule when ADD_RULE event sent', () => new Promise<void>(async (done) => {
     expect.assertions(2);
 
     nockServer.get('/error').reply(400);
 
-    setTimeout(() => {
-      got.get('http://localhost:4000/error')
-        .catch(() => {
-          expect(true).toBe(true);
-        })
-        .then(() => {
-          socket.emit('ADD_RULE', {
-            path: '/error',
-            skipApi: true,
-            method: 'GET',
-            statusCode: 200,
-            body: {
-              error: 'works'
-            }
-          });
+    try {
+      await got.get('http://localhost:4000/error');
+    } catch (e) {
+      expect(true).toBe(true);
+    }
 
-          return got.get('http://localhost:4000/error');
-        })
-        .then((response) => {
-          expect(JSON.parse(response.body)).toEqual({
-            error: 'works'
-          });
+    socket.emit('ADD_RULE', {
+      path: '/error',
+      skipApi: true,
+      method: 'GET',
+      statusCode: 200,
+      body: {
+        error: 'works'
+      }
+    });
 
-          done();
-        });
-    }, 100);
-    
+    setTimeout(async () => {
+      const response = await got.get('http://localhost:4000/error');
+
+      expect(JSON.parse(response.body)).toEqual({
+        error: 'works'
+      });
+
+      done();
+    }, 100)
   }));
 
   it('should update a new rule when UPDATE_RULE event sent', () => new Promise<void>((done) => {
@@ -106,30 +104,30 @@ describe('Socket Tests', () => {
 
     let ruleList: any;
 
-    socket.on('SETTINGS', (data: any) => {
+    socket.on('SETTINGS', async (data: any) => {
       ruleList = data.rules;
 
-      got.get('http://localhost:4000/cars')
-        .then((response) => {
-          expect(JSON.parse(response.body)).toEqual({
-            test: 'testing'
-          });
+      const response = await got.get('http://localhost:4000/cars');
 
-          ruleList[0].body = {
-            new: 'body'
-          };
+      expect(JSON.parse(response.body)).toEqual({
+        test: 'testing'
+      });
 
-          socket.emit('UPDATE_RULE', ruleList[0]);
+      ruleList[0].body = {
+        new: 'body'
+      };
 
-          return got.get('http://localhost:4000/cars');
-        })
-        .then((response) => {
-          expect(JSON.parse(response.body)).toEqual({
-            new: 'body'
-          });
+      socket.emit('UPDATE_RULE', ruleList[0]);
 
-          done();
+      setTimeout(async () => {
+        const response = await got.get('http://localhost:4000/cars');
+
+        expect(JSON.parse(response.body)).toEqual({
+          new: 'body'
         });
+
+        done();
+      }, 100);
     });
   }));
 
