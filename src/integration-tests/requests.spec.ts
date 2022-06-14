@@ -5,7 +5,7 @@ import { describe, beforeAll, it, expect, afterEach, afterAll } from 'vitest';
 import { Hijacker } from '../hijacker.js';
 import { Config } from '../types/Config.js';
 
-describe.only('Request Tests', () => {
+describe('Request Tests', () => {
   let hijackerServer: Hijacker;
   let nockServer: any;
 
