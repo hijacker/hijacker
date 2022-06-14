@@ -31,8 +31,8 @@ export class RuleManager {
     this.rules = [];
     this.ruleTypes = {
       rest: new RestRule(),
-      ...ruleTypes.reduce((acc, cur) => {
-        const tempType = new cur();
+      ...ruleTypes.reduce((acc, curRule) => {
+        const tempType = new curRule();
 
         return {
           ...acc,

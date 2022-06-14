@@ -58,7 +58,7 @@ describe('Intercept Tests', () => {
     hijackerServer.close();
   });
 
-  it('should send a socket event on interceptRequest and continue on emit', () => new Promise((done) => {
+  it('should send a socket event on interceptRequest and continue on emit', () => new Promise<void>((done) => {
     expect.assertions(1);
 
     let request: CancelableRequest<Response>;
@@ -77,7 +77,7 @@ describe('Intercept Tests', () => {
     });
   }));
 
-  it('should send a socket event on interceptResponse and continue on emit', () => new Promise((done) => {
+  it('should send a socket event on interceptResponse and continue on emit', () => new Promise<void>((done) => {
     expect.assertions(1);
     
     let request: CancelableRequest<Response>;
@@ -96,7 +96,7 @@ describe('Intercept Tests', () => {
     });
   }));
 
-  it('should allow modifying data in interceptRequest', () => new Promise((done) => {
+  it('should allow modifying data in interceptRequest', () => new Promise<void>((done) => {
     expect.assertions(2);
 
     socket.on('INTERCEPT', (data: any) => {
@@ -119,7 +119,7 @@ describe('Intercept Tests', () => {
       });
   }));
 
-  it('should allow modifying data in interceptResponse', () => new Promise((done) => {
+  it('should allow modifying data in interceptResponse', () => new Promise<void>((done) => {
     expect.assertions(2);
     
     socket.on('INTERCEPT', (data: any) => {

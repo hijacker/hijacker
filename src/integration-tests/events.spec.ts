@@ -35,7 +35,7 @@ describe('Event Tests', () => {
     };
   });
 
-  it('should emit an event on server start up', () => new Promise((done) => {
+  it('should emit an event on server start up', () => new Promise<void>((done) => {
     expect.assertions(1);
     
     const hijackerServer = new Hijacker(config);

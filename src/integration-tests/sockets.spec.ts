@@ -60,14 +60,14 @@ describe('Socket Tests', () => {
     nock.cleanAll();
   });
 
-  it('should send list of rules on socket connect', () => new Promise((done) => {
+  it('should send list of rules on socket connect', () => new Promise<void>((done) => {
     socket.on('SETTINGS', (data: any) => {
       expect(data.rules.length).toBe(3);
       done();
     });
   }));
 
-  it('should add a new rule when ADD_RULE event sent', () => new Promise((done) => {
+  it('should add a new rule when ADD_RULE event sent', () => new Promise<void>((done) => {
     expect.assertions(2);
 
     nockServer.get('/error').reply(400);
@@ -101,7 +101,7 @@ describe('Socket Tests', () => {
     
   }));
 
-  it('should update a new rule when UPDATE_RULE event sent', () => new Promise((done) => {
+  it('should update a new rule when UPDATE_RULE event sent', () => new Promise<void>((done) => {
     expect.assertions(2);
 
     let ruleList: any;
@@ -133,7 +133,7 @@ describe('Socket Tests', () => {
     });
   }));
 
-  it('should send updated rule list on ADD_RULE', () => new Promise((done) => {
+  it('should send updated rule list on ADD_RULE', () => new Promise<void>((done) => {
     expect.assertions(1);
 
     let ruleList;
@@ -155,7 +155,7 @@ describe('Socket Tests', () => {
     });
   }));
 
-  it('should send updated rule list on UPDATE_RULE', () => new Promise((done) => {
+  it('should send updated rule list on UPDATE_RULE', () => new Promise<void>((done) => {
     expect.assertions(1);
 
     let ruleList;
