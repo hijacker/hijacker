@@ -4,9 +4,9 @@
   "description": "Frontend development tool for intercepting and mocking api requests",
   "author": "Travis Weidenbenner <travis@weidenbenner.com>",
   "scripts": {
-    "build": "node dev-server.cjs",
+    "build": "node build/dev-server.cjs",
     "commit": "git-cz",
-    "dev": "node dev-server.cjs --dev",
+    "dev": "node build/dev-server.cjs --dev",
     "lint": "eslint src/ dev-server.cjs vitest.config.ts",
     "semantic-release": "semantic-release",
     "start": "npm run dev",
@@ -32,6 +32,9 @@
     "winston": "^3.7.2"
   },
   "devDependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@mui/material": "^5.8.4",
     "@types/express": "^4.17.13",
     "@types/express-xml-bodyparser": "^0.3.2",
     "@types/react": "^18.0.12",

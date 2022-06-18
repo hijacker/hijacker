@@ -59,11 +59,7 @@ export class EventManager {
     }
   }
 
-  async close() {    
+  close() {
     this.io.disconnectSockets();
-
-    return new Promise((done) => {
-      this.io.close(done);
-    });
   }
 }

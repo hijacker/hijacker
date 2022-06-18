@@ -1,4 +1,6 @@
 import React from 'react';
+import { Button } from '@mui/material';
+
 import { useConfig } from '../hooks/useConfig.js';
 
 export const HomePage: React.FC = ({ }) => {
@@ -7,13 +9,18 @@ export const HomePage: React.FC = ({ }) => {
   return (
     <div>
       {JSON.stringify(rules)}
-      <button onClick={() => {
+      <Button onClick={() => {
         addRule({
-          baseUrl: 'test'
+          baseUrl: 'test',
+          path: '/posts',
+          skipApi: true,
+          body: {
+            yolo: "World"
+          }
         })
       }}>
         Add Rule
-      </button>
+      </Button>
     </div>
   )
 }

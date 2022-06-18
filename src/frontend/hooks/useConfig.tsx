@@ -36,6 +36,8 @@ export const ConfigProvider: React.FC<ContextProviderProps> = ({ children }) => 
   const [socket, setSocket] = useState<Socket<ServerToClientEvents, ClientToServerEvents> | null>(null);
   const [rules, setRules] = useState<Partial<IRule>[]>([]);
 
+  const [resetSocket, setResetSocket] = useState<boolean>(false);
+
   useEffect(() => {
     const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
  
@@ -47,6 +49,7 @@ export const ConfigProvider: React.FC<ContextProviderProps> = ({ children }) => 
 
     newSocket.on('disconnect', () => {
       setSocket(null);
+      setResetSocket(val => !val);
     })
 
     setSocket(newSocket);
@@ -54,7 +57,7 @@ export const ConfigProvider: React.FC<ContextProviderProps> = ({ children }) => 
     return () => {
       newSocket.close() 
     };
-  }, [setSocket, setRules]);
+  }, [setSocket, setRules, resetSocket]);
 
   const addRule = (rule: Partial<IRule>) => {
     if (socket) {

@@ -33,7 +33,7 @@ export class Hijacker {
     this.app
       .get('/favicon.ico', (req, res) => res.sendStatus(204))
       .use('/hijacker/static', express.static(join(dirname(fileURLToPath(import.meta.url)), './frontend/static'), { fallthrough: false,  }))
-      .get(['/hijacker', '/hijacker/*'], (req, res) => {
+      .get(['/hijacker/*', '/hijacker'], (req, res) => {
         res.sendFile(join(dirname(fileURLToPath(import.meta.url)), './frontend', 'index.html'));
       })
       .use(bodyParser.json())
@@ -103,9 +103,9 @@ export class Hijacker {
 
   async close() {
     return new Promise<void>(async (done) => {
-      await this.eventManager.close();
+      this.eventManager.close();
       this.server.close(() => {
-        done()
+        done();
       });
     })
   }

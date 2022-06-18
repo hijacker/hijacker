@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { join, basename } = require('node:path');
 const { copyFileSync } = require('node:fs');
+const { spawn } = require('node:child_process');
 
-const { green, yellow } = require('colorette');
+const { green, yellow, red } = require('colorette');
 const esbuild = require('esbuild');
 const glob = require('glob');
 
@@ -48,40 +49,23 @@ const backendRefresh = () => {
   return {
     name: 'backendRefresh',
     setup(build) {
-      let hijackerModule;
       let hijackerServer;
 
       build.onStart(async () => {
-        // Clear require cache so everything gets updated correctly
-        // Can possibly optimize this to just delete hijacker modules
-        Object.keys(require.cache).forEach((x) => {
-          delete require.cache[x];
-        });
-
         if (hijackerServer) {
-          await hijackerServer.close();
+          hijackerServer.kill();
           hijackerServer = undefined;
-          hijackerModule = undefined;
         }
       });
 
       build.onEnd(async () => {
-        hijackerModule = await import(`./dist/hijacker.js?t=${+new Date()}`);
+        hijackerServer = spawn('node', ['build/run-hijacker.js']);
+        hijackerServer.stdout.on('data', (data) => {
+          console.log(`[${green('Hijacker')}] ${data.toString().trim()}`);
+        });
 
-        hijackerServer = new hijackerModule.Hijacker({
-          port: 3000,
-          baseRule: {
-            baseUrl: "https://jsonplaceholder.typicode.com"
-          },
-          rules: [
-            {
-              path: "/cars",
-              skipApi: true,
-              body: {
-                Hello: "World"
-              }
-            }
-          ]
+        hijackerServer.stderr.on('data', (data) => {
+          console.log(`[${red('Hijacker')}] ${data.toString().trim()}`);
         });
       });
     }
@@ -109,7 +93,7 @@ const backendRefresh = () => {
 
   // Frontend Build
   esbuild.build({
-    entryPoints: ['src/frontend/index.js'],
+    entryPoints: ['src/frontend/index.tsx'],
     outdir: 'dist/frontend/static',
     platform: 'browser',
     bundle: true,
@@ -123,7 +107,7 @@ const backendRefresh = () => {
     watch: devServer,
     loader: { '.js': 'jsx' },
   }).catch((e) => {
-    console.log(e);
+    console.log(JSON.stringify(e, null, 2));
   });
 
   // Bin build
