@@ -104,6 +104,7 @@ const backendRefresh = () => {
         htmlFile: 'src/frontend/index.html'
       })
     ],
+    inject: ['build/react-shim.js'],
     watch: devServer,
     loader: { '.js': 'jsx' },
   }).catch((e) => {

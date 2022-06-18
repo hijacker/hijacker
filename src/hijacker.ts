@@ -107,6 +107,6 @@ export class Hijacker {
       this.server.close(() => {
         done();
       });
-    })
+    });
   }
 }

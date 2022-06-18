@@ -1,10 +1,9 @@
-import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Typography, ThemeProvider, Container } from '@mui/material';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import { theme } from './styles/theme.js';
 import { ConfigProvider } from './hooks/useConfig.js';
 import { HomePage } from './pages/HomePage.js';
+import { theme } from './styles/theme.js';
 
 export const App = () => {
   return (

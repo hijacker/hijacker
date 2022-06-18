@@ -3,14 +3,14 @@ import { Hijacker } from '../dist/hijacker.js';
 const hijacker = new Hijacker({
   port: 3000,
   baseRule: {
-    baseUrl: "https://jsonplaceholder.typicode.com"
+    baseUrl: 'https://jsonplaceholder.typicode.com'
   },
   rules: [
     {
-      path: "/cars",
+      path: '/cars',
       skipApi: true,
       body: {
-        Hello: "World"
+        Hello: 'World'
       }
     }
   ]
@@ -18,4 +18,4 @@ const hijacker = new Hijacker({
 
 process.on('beforeExit', () => {
   hijacker.close();
-})
+});

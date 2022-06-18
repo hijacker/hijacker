@@ -1,9 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
-import { createContext } from "react";
-import { Socket } from "socket.io-client";
-import { io } from "socket.io-client";
+import { useContext, useEffect, useState , createContext } from 'react';
+import { Socket , io } from 'socket.io-client';
 
-import { IRule } from "../../rules/Rule.js";
+import { IRule } from '../../rules/Rule.js';
 
 interface HijackerConfig {
   rules: Partial<IRule>[];
@@ -32,7 +30,7 @@ interface ServerToClientEvents {
   UPDATE_RULES: (rules: Partial<IRule>[]) => void;
 }
 
-export const ConfigProvider: React.FC<ContextProviderProps> = ({ children }) => {
+export const ConfigProvider = ({ children }: ContextProviderProps) => {
   const [socket, setSocket] = useState<Socket<ServerToClientEvents, ClientToServerEvents> | null>(null);
   const [rules, setRules] = useState<Partial<IRule>[]>([]);
 
@@ -43,19 +41,19 @@ export const ConfigProvider: React.FC<ContextProviderProps> = ({ children }) => 
  
     newSocket.on('SETTINGS', (config) => {
       setRules(config.rules);
-    })
+    });
 
     newSocket.on('UPDATE_RULES', setRules);
 
     newSocket.on('disconnect', () => {
       setSocket(null);
       setResetSocket(val => !val);
-    })
+    });
 
     setSocket(newSocket);
 
     return () => {
-      newSocket.close() 
+      newSocket.close(); 
     };
   }, [setSocket, setRules, resetSocket]);
 
@@ -63,7 +61,7 @@ export const ConfigProvider: React.FC<ContextProviderProps> = ({ children }) => 
     if (socket) {
       socket.emit('ADD_RULE', rule);
     }
-  }
+  };
 
   return (
     <ConfigContext.Provider value={{
@@ -72,9 +70,9 @@ export const ConfigProvider: React.FC<ContextProviderProps> = ({ children }) => 
     }}>
       {children}
     </ConfigContext.Provider>
-  )
+  );
 };
 
 export const useConfig = (): ConfigContext => {
   return useContext(ConfigContext);
-}
+};
