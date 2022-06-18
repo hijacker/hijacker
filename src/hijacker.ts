@@ -1,5 +1,5 @@
 import { Server } from 'node:http';
-import path, { dirname } from 'node:path';
+import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import bodyParser from 'body-parser';
@@ -32,7 +32,10 @@ export class Hijacker {
 
     this.app
       .get('/favicon.ico', (req, res) => res.sendStatus(204))
-      .use('/hijacker', express.static(path.join(dirname(fileURLToPath(import.meta.url)), './frontend')))
+      .use('/hijacker/static', express.static(join(dirname(fileURLToPath(import.meta.url)), './frontend/static'), { fallthrough: false,  }))
+      .get(['/hijacker', '/hijacker/*'], (req, res) => {
+        res.sendFile(join(dirname(fileURLToPath(import.meta.url)), './frontend', 'index.html'));
+      })
       .use(bodyParser.json())
       .use(xmlParser())
       .use('*', async (req, res) => {
@@ -98,7 +101,12 @@ export class Hijacker {
     this.eventManager.emit(eventName, val, 'event-manager');
   }
 
-  close() {
-    this.server.close();
+  async close() {
+    return new Promise<void>(async (done) => {
+      await this.eventManager.close();
+      this.server.close(() => {
+        done()
+      });
+    })
   }
 }

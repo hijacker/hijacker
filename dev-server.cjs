@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const { join, basename } = require('node:path');
+const { copyFileSync } = require('node:fs');
+
 const { green, yellow } = require('colorette');
 const esbuild = require('esbuild');
 const glob = require('glob');
@@ -22,6 +25,23 @@ const timePlugin = (name) => {
   };
 };
 
+const htmlPlugin = ({
+  htmlFile,
+  outDir
+}) => {
+  return {
+    name: 'htmlPlugin',
+    setup(build) {
+      const src = join(process.cwd(), htmlFile);
+      const dest = join(process.cwd(), outDir, basename(htmlFile));
+
+      build.onEnd((res) => {
+        copyFileSync(src, dest);
+      })
+    }
+  }
+}
+
 // Very basic hot reload for backend. Just tears everything down before rebuild and starts everything back up after.
 // Would be cool to hook this up to a CLI to add new rules/manual restarts and other debug tools
 const backendRefresh = () => {
@@ -31,7 +51,7 @@ const backendRefresh = () => {
       let hijackerModule;
       let hijackerServer;
 
-      build.onStart(() => {
+      build.onStart(async () => {
         // Clear require cache so everything gets updated correctly
         // Can possibly optimize this to just delete hijacker modules
         Object.keys(require.cache).forEach((x) => {
@@ -39,23 +59,29 @@ const backendRefresh = () => {
         });
 
         if (hijackerServer) {
-          hijackerServer.close();
-          hijackerServer = null;
+          await hijackerServer.close();
+          hijackerServer = undefined;
+          hijackerModule = undefined;
         }
       });
 
       build.onEnd(async () => {
-        hijackerModule = await import('./dist/hijacker.js');
+        hijackerModule = await import(`./dist/hijacker.js?t=${+new Date()}`);
 
         hijackerServer = new hijackerModule.Hijacker({
           port: 3000,
-          rules: [{
-            path: '/cars',
-            skipApi: true,
-            body: {
-              hello: 'world'
+          baseRule: {
+            baseUrl: "https://jsonplaceholder.typicode.com"
+          },
+          rules: [
+            {
+              path: "/cars",
+              skipApi: true,
+              body: {
+                Hello: "World"
+              }
             }
-          }]
+          ]
         });
       });
     }
@@ -84,17 +110,23 @@ const backendRefresh = () => {
   // Frontend Build
   esbuild.build({
     entryPoints: ['src/frontend/index.js'],
-    outdir: 'dist/frontend',
+    outdir: 'dist/frontend/static',
     platform: 'browser',
     bundle: true,
-    plugins: [timePlugin('client')],
-    watch: false,
+    plugins: [
+      timePlugin('client'), 
+      htmlPlugin({
+        outDir: 'dist/frontend',
+        htmlFile: 'src/frontend/index.html'
+      })
+    ],
+    watch: devServer,
     loader: { '.js': 'jsx' },
   }).catch((e) => {
     console.log(e);
   });
 
-  // Dist build
+  // Bin build
   if (!devServer) {
     esbuild.build({
       entryPoints: ['src/bin/hijacker.ts'],

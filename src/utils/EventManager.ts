@@ -58,4 +58,12 @@ export class EventManager {
       this.io.emit(eventName, val);
     }
   }
+
+  async close() {    
+    this.io.disconnectSockets();
+
+    return new Promise((done) => {
+      this.io.close(done);
+    });
+  }
 }
