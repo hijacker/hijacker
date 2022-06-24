@@ -11,7 +11,7 @@ import { RuleManager } from './rules/RuleManager.js';
 import { Config } from './types/Config.js';
 import { Request } from './types/Request.js';
 import {
-  EventManager
+  EventManager, filterResponseHeaders
 } from './utils/index.js';
 
 export class Hijacker {
@@ -59,7 +59,8 @@ export class Hijacker {
         const newRes = await this.ruleManager.handler(request.matchingRule?.type ?? 'rest', request);
 
         // Send response to server (break out into function that takes response)
-        res.set(newRes.headers);
+        res.set(filterResponseHeaders(newRes.headers));
+
         res.status(newRes.statusCode).send(newRes.body);
       });
     
