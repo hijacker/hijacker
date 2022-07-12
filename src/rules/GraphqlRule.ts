@@ -1,20 +1,40 @@
 import { Agent } from 'node:https';
 
 import got, { OptionsOfTextResponseBody } from 'got';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore Setup type file for routeMatcher
-import { routeMatcher } from 'route-matcher';
+import { OperationDefinitionNode, parse } from 'graphql';
 
 import { HijackerRequest, HijackerResponse, Request } from '../types/Request.js';
-import { BaseRule, Rule } from './Rule.js';
+import { BaseRule, IRule, Rule } from './Rule.js';
 import { RuleType } from './RuleManager.js';
 
-export class RestRule implements RuleType {
-  type = 'rest';
+class GraphqlRuleType extends Rule {
+  operationName?: string;
 
-  isMatch(request: HijackerRequest, rule: Rule) {
-    return !!routeMatcher(rule.path).parse(request.path) && 
-      (!Object.prototype.hasOwnProperty.call(rule, 'method') || rule.method === request.method || rule.method === 'ALL');
+  constructor(rule: Partial<IRule & { operationName?: string; }>) {
+    super(rule);
+
+    this.operationName = rule.operationName;
+  }
+}
+
+export class GraphqlRule implements RuleType {
+  type = 'graphql';
+
+  ruleClass = GraphqlRuleType;
+
+  isMatch(request: HijackerRequest, rule: GraphqlRuleType): boolean {
+    try {
+      const { definitions } = parse(request.body.query);
+      const topOperation = definitions[0] as OperationDefinitionNode;
+
+      if (topOperation.name?.value === rule.operationName) {
+        return true;
+      }
+
+      return false;
+    } catch {
+      return false;
+    } 
   }
 
   async handler(request: Request, baseRule: BaseRule): Promise<HijackerResponse> {

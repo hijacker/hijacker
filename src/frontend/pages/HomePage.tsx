@@ -4,11 +4,17 @@ import { Rule } from '../components/Rule.js';
 import { useConfig } from '../hooks/useConfig.js';
 
 export const HomePage = () => {
-  const { rules, addRule } = useConfig();
+  const { rules, addRule, updateRule } = useConfig();
 
   return (
     <div>
-      {rules.map(x => <Rule rule={x} key={x.id} />)}
+      {rules.map(x => (
+        <Rule
+          rule={x}
+          key={x.id} 
+          onChange={updateRule}
+        />
+      ))}
       <Button onClick={() => {
         addRule({
           baseUrl: 'test',

@@ -1,4 +1,4 @@
-import { Typography, ThemeProvider, Container } from '@mui/material';
+import { Typography, ThemeProvider, Container, CssBaseline } from '@mui/material';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { ConfigProvider } from './hooks/useConfig.js';
@@ -11,6 +11,7 @@ export const App = () => {
       <ConfigProvider>
         <ThemeProvider theme={theme}>
           <Container>
+            <CssBaseline />
             <Typography variant="h1">Hijacker</Typography>
             <Routes>
               <Route path="/" element={<HomePage />} />

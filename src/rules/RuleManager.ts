@@ -1,10 +1,12 @@
 import { Newable } from '../types/index.js';
 import { Request, HijackerRequest, HijackerResponse } from '../types/Request.js';
+import { GraphqlRule } from './GraphqlRule.js';
 import { RestRule } from './RestRule.js';
 import { BaseRule, IRule, Rule } from './Rule.js';
 
 export class RuleType {
   type = '';
+  ruleClass?: any = undefined;
 
   isMatch(request: HijackerRequest, rule: Rule): boolean {
     throw new Error('Not implemented');
@@ -31,6 +33,7 @@ export class RuleManager {
     this.rules = [];
     this.ruleTypes = {
       rest: new RestRule(),
+      graphql: new GraphqlRule(),
       ...ruleTypes.reduce((acc, curRule) => {
         const tempType = new curRule();
 
@@ -45,7 +48,10 @@ export class RuleManager {
   }
 
   addRule(rule: Partial<IRule>) {
-    this.rules.push(new Rule({
+    const ruleType = rule.type ?? this.baseRule.type ?? 'rest';
+    const ruleClass = this.ruleTypes[ruleType]?.ruleClass ?? Rule;
+
+    this.rules.push(new ruleClass({
       ...this.baseRule,
       ...rule
     }));

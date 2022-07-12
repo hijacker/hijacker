@@ -11,6 +11,7 @@ export const filterResponseHeaders = (headers: Record<string, string>) => {
     'proxy-authentication',
     'trailer',
     'upgrade',
+    'host',
     ...connectionHeaders
   ];
 
@@ -25,4 +26,4 @@ export const filterResponseHeaders = (headers: Record<string, string>) => {
   }
 
   return filtered;
-}
+};

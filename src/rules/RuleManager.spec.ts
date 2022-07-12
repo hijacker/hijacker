@@ -17,7 +17,7 @@ class NewRule implements RuleType {
 }
 
 describe('RuleManager', () => {
-  it('should have default rest matcher if none provided', () => {
+  it('should have default rest and graphql matchers if none provided', () => {
     expect.assertions(1);
 
     const ruleManager = new RuleManager({
@@ -28,7 +28,7 @@ describe('RuleManager', () => {
       }
     });
 
-    expect(Object.keys(ruleManager.ruleTypes)).toEqual(['rest']);
+    expect(Object.keys(ruleManager.ruleTypes)).toEqual(['rest', 'graphql']);
   });
 
   it('should support adding custom rule type', () => {
@@ -42,7 +42,7 @@ describe('RuleManager', () => {
       }
     });
 
-    expect(Object.keys(ruleManager.ruleTypes)).toEqual(['rest', 'NewRule']);
+    expect(Object.keys(ruleManager.ruleTypes)).toEqual(['rest', 'graphql', 'NewRule']);
   });
 
   it('should match with the correct rule type', () => {

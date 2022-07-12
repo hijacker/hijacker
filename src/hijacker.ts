@@ -47,7 +47,7 @@ export class Hijacker {
         const request: Request = {
           originalReq: {
             path: req.originalUrl,
-            headers: req.headers as Record<string, string>,
+            headers: filterResponseHeaders(req.headers as Record<string, string>),
             body: req.body,
             method: req.method as HttpMethod
           }

@@ -182,5 +182,6 @@ describe('Request Tests', () => {
 
   // Figure out how to fail test when filterResponseHeaders not used
   it.todo('should remove all hopbyhop headers before returning response to client');
-  it.todo('should forward rest of headers from api');
+  it.todo('should forward rest of response headers from api');
+  it.todo('should forward request headers to the api');
 });

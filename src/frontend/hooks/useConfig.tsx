@@ -10,11 +10,13 @@ interface HijackerConfig {
 interface ConfigContext {
   rules: Partial<IRule>[];
   addRule: (rule: Partial<IRule>) => void;
+  updateRule: (rule: Partial<IRule>) => void;
 }
 
 const ConfigContext = createContext<ConfigContext>({
   rules: [],
-  addRule: () => {}
+  addRule: () => {},
+  updateRule: () => {}
 });
 
 interface ContextProviderProps {
@@ -23,6 +25,7 @@ interface ContextProviderProps {
 
 interface ClientToServerEvents {
   ADD_RULE: (rule: Partial<IRule>) => void;
+  UPDATE_RULE: (rule: Partial<IRule>) => void;
 }
 
 interface ServerToClientEvents {
@@ -63,10 +66,17 @@ export const ConfigProvider = ({ children }: ContextProviderProps) => {
     }
   };
 
+  const updateRule = (rule: Partial<IRule>) => {
+    if (socket) {
+      socket.emit('UPDATE_RULE', rule);
+    }
+  };
+
   return (
     <ConfigContext.Provider value={{
       rules,
-      addRule
+      addRule,
+      updateRule
     }}>
       {children}
     </ConfigContext.Provider>
