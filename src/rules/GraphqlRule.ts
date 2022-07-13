@@ -12,6 +12,12 @@ class GraphqlRuleType extends Rule {
 
     this.operationName = rule.operationName;
   }
+
+  update(rule: Partial<IRule & { operationName?: string; }>): void {
+    super.update(rule);
+
+    this.operationName = rule.operationName ?? this.operationName;
+  }
 }
 
 export class GraphqlRule extends RestRule {

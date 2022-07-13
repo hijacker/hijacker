@@ -39,29 +39,42 @@ export class Hijacker {
       .use(bodyParser.json())
       .use(xmlParser())
       .use('*', async (req, res) => {
-        // Set Headers Needed (TODO: Grab allow-headers from config)
-        res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Headers', '');
-
-        // Generate first HijackerRequest/Lifecycle OBJ and match rule
-        const request: Request = {
-          originalReq: {
-            path: req.originalUrl,
-            headers: filterResponseHeaders(req.headers as Record<string, string>),
-            body: req.body,
-            method: req.method as HttpMethod
+        try {
+          res.header('Access-Control-Allow-Origin', '*');
+          res.header('Access-Control-Allow-Headers', '');
+  
+          // Generate first HijackerRequest/Lifecycle OBJ and match rule
+          const request: Request = {
+            originalReq: {
+              path: req.originalUrl,
+              headers: filterResponseHeaders(req.headers as Record<string, string>),
+              body: req.body,
+              method: req.method as HttpMethod
+            }
+          };
+  
+          request.matchingRule = this.ruleManager.match(request.originalReq);
+  
+          // Call ruletype handler
+          const newRes = await this.ruleManager.handler(request.matchingRule?.type ?? 'rest', request);
+  
+          // Send response to server (break out into function that takes response)
+          res.set(filterResponseHeaders(newRes.headers));
+  
+          res.status(newRes.statusCode).send(newRes.body);
+        } catch (e: unknown) {
+          if (e instanceof Error) {
+            res.status(500).json({
+              message: 'There was an error with the hijacker request',
+              error: e.message,
+              stack: e.stack
+            })
+          } else {
+            res.status(500).json({
+              message: 'There was an error with the hijacker request'
+            })
           }
-        };
-
-        request.matchingRule = this.ruleManager.match(request.originalReq);
-
-        // Call ruletype handler
-        const newRes = await this.ruleManager.handler(request.matchingRule?.type ?? 'rest', request);
-
-        // Send response to server (break out into function that takes response)
-        res.set(filterResponseHeaders(newRes.headers));
-
-        res.status(newRes.statusCode).send(newRes.body);
+        }
       });
     
     this.server.listen(config.port, () => {
