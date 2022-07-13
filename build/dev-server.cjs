@@ -88,7 +88,12 @@ const backendRefresh = () => {
     ],
     watch: devServer
   }).catch((e) => {
-    console.log(e);
+    if (devServer) {
+      console.error('Error in build, save file to restart');
+      console.error(e);
+    } else {
+      throw new Error(e);
+    }
   });
 
   // Frontend Build
@@ -108,7 +113,12 @@ const backendRefresh = () => {
     watch: devServer,
     loader: { '.js': 'jsx' },
   }).catch((e) => {
-    console.log(JSON.stringify(e, null, 2));
+    if (devServer) {
+      console.error('Error in build, save file to restart');
+      console.error(e);
+    } else {
+      throw new Error(e);
+    }
   });
 
   // Bin build
@@ -124,7 +134,12 @@ const backendRefresh = () => {
         HIJACKER_MODULE: '\'../hijacker\''
       }
     }).catch((e) => {
-      console.log(e);
+      if (devServer) {
+        console.error('Error in build, save file to restart');
+        console.error(e);
+      } else {
+        throw new Error(e);
+      }
     });
   }
 })();
