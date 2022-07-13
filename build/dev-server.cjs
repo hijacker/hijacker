@@ -78,6 +78,9 @@ const backendRefresh = () => {
   // Backend Build
   esbuild.build({
     tsconfig: join(process.cwd(), 'tsconfig.json'),
+    logOverride: {
+      'different-path-case': 'silent'
+    },
     entryPoints: glob.sync('src/**/!(*.spec).ts', { ignore: 'src/frontend/**' }),
     outdir: 'dist',
     platform: 'node',
@@ -100,6 +103,9 @@ const backendRefresh = () => {
   // Frontend Build
   esbuild.build({
     tsconfig: join(process.cwd(), 'tsconfig.json'),
+    logOverride: {
+      'different-path-case': 'silent'
+    },
     entryPoints: ['src/frontend/index.tsx'],
     outdir: 'dist/frontend/static',
     platform: 'browser',
@@ -127,6 +133,9 @@ const backendRefresh = () => {
   if (!devServer) {
     esbuild.build({
       tsconfig: join(process.cwd(), 'tsconfig.json'),
+      logOverride: {
+        'different-path-case': 'silent'
+      },
       entryPoints: ['src/bin/hijacker.ts'],
       outdir: 'dist/bin',
       platform: 'node',
