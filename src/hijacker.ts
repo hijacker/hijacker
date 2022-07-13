@@ -68,11 +68,11 @@ export class Hijacker {
               message: 'There was an error with the hijacker request',
               error: e.message,
               stack: e.stack
-            })
+            });
           } else {
             res.status(500).json({
               message: 'There was an error with the hijacker request'
-            })
+            });
           }
         }
       });
