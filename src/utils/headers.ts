@@ -12,6 +12,7 @@ export const filterResponseHeaders = (headers: Record<string, string>) => {
     'trailer',
     'upgrade',
     'host',
+    'content-length',
     ...connectionHeaders
   ];
 
