@@ -5,7 +5,7 @@ export const theme = createTheme({
     MuiAccordionSummary: {
       styleOverrides: {
         content: {
-          alignItems: "center"
+          alignItems: 'center'
         }
       }
     }

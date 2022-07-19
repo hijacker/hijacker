@@ -87,7 +87,7 @@ export const Rule = (props: RuleProps) => {
               onChange({
                 ...rule,
                 disabled: !checked
-              })
+              });
             }
           }}
         />
