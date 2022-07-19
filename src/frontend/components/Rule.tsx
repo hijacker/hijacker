@@ -9,7 +9,8 @@ import {
   styled,
   Box,
   Tab,
-  Tabs
+  Tabs,
+  Switch
 } from '@mui/material';
 import CodeMirror from '@uiw/react-codemirror';
 import { debounce, isEqual } from 'lodash';
@@ -76,19 +77,28 @@ export const Rule = (props: RuleProps) => {
         id="panel1a-header"
       >
         <RuleMethod>POST</RuleMethod>
-        <RuleTitle fontWeight="600">{rule.name ?? rule.path}</RuleTitle>
+        <RuleTitle fontWeight="600" sx={{ flexGrow: 1 }}>{rule.name ?? rule.path}</RuleTitle>
+        <Switch
+          size="small"
+          checked={!rule.disabled}
+          onClick={(e) => e.stopPropagation()}
+          onChange={(e, checked) => {
+            if (onChange) {
+              onChange({
+                ...rule,
+                disabled: !checked
+              })
+            }
+          }}
+        />
       </AccordionSummary>
       <AccordionDetails>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={activeTab} onChange={handleTabChange}>
-            <Tab label="General" />
             <Tab label="Source" />
           </Tabs>
         </Box>
         <TabPanel show={activeTab === 0}>
-
-        </TabPanel>
-        <TabPanel show={activeTab === 1}>
           <CodeMirror
             value={JSON.stringify(rule, null, 2)}
             extensions={[
