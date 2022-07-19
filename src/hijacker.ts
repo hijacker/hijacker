@@ -84,8 +84,11 @@ export class Hijacker {
           rules: this.ruleManager.rules
         });
 
-        socket.on('UPDATE_RULE', (rule: Partial<IRule>) => {
-          this.ruleManager.updateRule(rule);
+        socket.on('UPDATE_RULES', (rules: Partial<IRule>[]) => {
+          rules.forEach((rule) => {
+            this.ruleManager.updateRule(rule);
+          });
+          
           this.eventManager.emit('UPDATE_RULES', this.ruleManager.rules);
         });
 

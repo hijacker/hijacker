@@ -117,7 +117,7 @@ describe('Socket Tests', () => {
         new: 'body'
       };
 
-      socket.emit('UPDATE_RULE', ruleList[0]);
+      socket.emit('UPDATE_RULES', [ruleList[0]]);
 
       setTimeout(async () => {
         const response = await got.get('http://localhost:4000/cars');
@@ -174,7 +174,7 @@ describe('Socket Tests', () => {
         }
       });
 
-      socket.emit('UPDATE_RULE', newRule);
+      socket.emit('UPDATE_RULES', [newRule]);
     });
   }));
 });

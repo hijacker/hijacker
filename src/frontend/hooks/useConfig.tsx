@@ -25,7 +25,7 @@ interface ContextProviderProps {
 
 interface ClientToServerEvents {
   ADD_RULE: (rule: Partial<IRule>) => void;
-  UPDATE_RULE: (rule: Partial<IRule>) => void;
+  UPDATE_RULES: (rule: Partial<IRule>[]) => void;
 }
 
 interface ServerToClientEvents {
@@ -68,7 +68,7 @@ export const ConfigProvider = ({ children }: ContextProviderProps) => {
 
   const updateRule = (rule: Partial<IRule>) => {
     if (socket) {
-      socket.emit('UPDATE_RULE', rule);
+      socket.emit('UPDATE_RULES', [rule]);
     }
   };
 
