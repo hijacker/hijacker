@@ -27,9 +27,14 @@ let rc = {};
     if (!path.isAbsolute(options.config)) {
       configPath = path.join(process.cwd(), configPath);
     }
+
+    const isJs = path.extname(configPath) === '.js';
     
-    // TODO: allow config to be JS file as well with dynamic import
-    rc = JSON.parse(fs.readFileSync(configPath).toString());
+    if (isJs) {
+      rc = (await import(configPath)).default;
+    } else {
+      rc = JSON.parse(fs.readFileSync(configPath).toString());
+    }
   } catch (e) {
     // No config file. Create and start again
     console.error('No config file found: Please set up a config file and start again');
