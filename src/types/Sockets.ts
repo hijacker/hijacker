@@ -1,8 +1,8 @@
-import { Socket } from "socket.io-client";
-import { Server } from "socket.io";
+import { Server } from 'socket.io';
+import { Socket } from 'socket.io-client';
 
-import { IRule } from "../rules/Rule";
-import { Config } from "./Config";
+import { IRule } from '../rules/Rule';
+import { Config } from './Config';
 
 export interface ClientToServerEvents {
   ADD_RULES: (rule: Partial<IRule>[]) => void;

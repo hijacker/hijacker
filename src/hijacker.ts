@@ -97,7 +97,7 @@ export class Hijacker {
         socket.on('DELETE_RULES', (ids: string[]) => {
           ids.forEach((id) => this.ruleManager.deleteRule(id));
           this.eventManager.emit('UPDATE_RULES', this.ruleManager.rules);
-        })
+        });
       }, 'socket');
 
       this.emit('started', config.port);

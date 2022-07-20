@@ -2,6 +2,7 @@ import { EventEmitter } from 'node:events';
 import { Server as NodeServer } from 'node:http';
 
 import { Server } from 'socket.io';
+
 import { HijackerSocketServer } from '../types/Sockets';
 
 type EventType = 'socket' | 'event-manager' | 'both';
