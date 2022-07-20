@@ -1,11 +1,8 @@
 import { useContext, useEffect, useState , createContext } from 'react';
-import { Socket , io } from 'socket.io-client';
+import { io } from 'socket.io-client';
 
 import { IRule } from '../../rules/Rule.js';
-
-interface HijackerConfig {
-  rules: Partial<IRule>[];
-}
+import { HijackerSocketClient } from '../../types/Sockets.js';
 
 interface ConfigContext {
   rules: Partial<IRule>[];
@@ -23,24 +20,14 @@ interface ContextProviderProps {
   children: JSX.Element | JSX.Element[];
 }
 
-interface ClientToServerEvents {
-  ADD_RULE: (rule: Partial<IRule>) => void;
-  UPDATE_RULES: (rule: Partial<IRule>[]) => void;
-}
-
-interface ServerToClientEvents {
-  SETTINGS: (config: HijackerConfig) => void;
-  UPDATE_RULES: (rules: Partial<IRule>[]) => void;
-}
-
 export const ConfigProvider = ({ children }: ContextProviderProps) => {
-  const [socket, setSocket] = useState<Socket<ServerToClientEvents, ClientToServerEvents> | null>(null);
+  const [socket, setSocket] = useState<HijackerSocketClient | null>(null);
   const [rules, setRules] = useState<Partial<IRule>[]>([]);
 
   const [resetSocket, setResetSocket] = useState<boolean>(false);
 
   useEffect(() => {
-    const newSocket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
+    const newSocket: HijackerSocketClient = io();
  
     newSocket.on('SETTINGS', (config) => {
       setRules(config.rules);
@@ -62,7 +49,7 @@ export const ConfigProvider = ({ children }: ContextProviderProps) => {
 
   const addRule = (rule: Partial<IRule>) => {
     if (socket) {
-      socket.emit('ADD_RULE', rule);
+      socket.emit('ADD_RULES', [rule]);
     }
   };
 

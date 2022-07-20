@@ -65,6 +65,10 @@ export class RuleManager {
     }
   }
 
+  deleteRule(id: string) {
+    this.rules = this.rules.filter(x => x.id !== id);
+  }
+
   match(request: HijackerRequest) {
     return this.rules.find(r => {
       const ruleType = r.type ?? 'rest';

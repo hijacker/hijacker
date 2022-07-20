@@ -67,7 +67,7 @@ describe('Socket Tests', () => {
     });
   }));
 
-  it('should add a new rule when ADD_RULE event sent', () => new Promise<void>(async (done) => {
+  it('should add a new rule when ADD_RULES event sent', () => new Promise<void>(async (done) => {
     expect.assertions(2);
 
     nockServer.get('/error').reply(400);
@@ -78,7 +78,7 @@ describe('Socket Tests', () => {
       expect(true).toBe(true);
     }
 
-    socket.emit('ADD_RULE', {
+    socket.emit('ADD_RULES', [{
       path: '/error',
       skipApi: true,
       method: 'GET',
@@ -86,7 +86,7 @@ describe('Socket Tests', () => {
       body: {
         error: 'works'
       }
-    });
+    }]);
 
     setTimeout(async () => {
       const response = await got.get('http://localhost:4000/error');
@@ -99,7 +99,7 @@ describe('Socket Tests', () => {
     }, 100);
   }));
 
-  it('should update a new rule when UPDATE_RULE event sent', () => new Promise<void>((done) => {
+  it('should update a new rule when UPDATE_RULES event sent', () => new Promise<void>((done) => {
     expect.assertions(2);
 
     let ruleList: any;
@@ -131,7 +131,7 @@ describe('Socket Tests', () => {
     });
   }));
 
-  it('should send updated rule list on ADD_RULE', () => new Promise<void>((done) => {
+  it('should send updated rule list on ADD_RULES', () => new Promise<void>((done) => {
     expect.assertions(1);
 
     let ruleList;
@@ -144,16 +144,16 @@ describe('Socket Tests', () => {
     socket.on('SETTINGS', (data: any) => {
       ruleList = data.rules;
 
-      socket.emit('ADD_RULE', {
+      socket.emit('ADD_RULES', [{
         path: '/error',
         skipApi: true,
         method: 'GET',
         statusCode: 200
-      });
+      }]);
     });
   }));
 
-  it('should send updated rule list on UPDATE_RULE', () => new Promise<void>((done) => {
+  it('should send updated rule list on UPDATE_RULES', () => new Promise<void>((done) => {
     expect.assertions(1);
 
     let ruleList;
@@ -175,6 +175,23 @@ describe('Socket Tests', () => {
       });
 
       socket.emit('UPDATE_RULES', [newRule]);
+    });
+  }));
+
+  it('should delete rules on DELETE_RULES', () => new Promise<void>((done) => {
+    expect.assertions(2);
+
+    const numRules = hijackerServer.ruleManager.rules.length;
+
+    socket.on('UPDATE_RULES', (data: any) => {
+      expect(data.length).toBe(numRules - 2);
+      done();
+    });
+
+    socket.on('SETTINGS', (data: any) => {
+      expect(data.rules.length).toBe(numRules);
+
+      socket.emit('DELETE_RULES', [data.rules[0].id, data.rules[1].id]);
     });
   }));
 });

@@ -2,12 +2,13 @@ import { EventEmitter } from 'node:events';
 import { Server as NodeServer } from 'node:http';
 
 import { Server } from 'socket.io';
+import { HijackerSocketServer } from '../types/Sockets';
 
 type EventType = 'socket' | 'event-manager' | 'both';
 // Wrapper for events.  Will eventually keep track of registered events.
 export class EventManager {
   private events: EventEmitter;
-  private io: Server;
+  private io: HijackerSocketServer;
 
   constructor(server: NodeServer) {
     this.events = new EventEmitter();
@@ -55,7 +56,7 @@ export class EventManager {
     }
 
     if (type === 'socket' || type === 'both') {
-      this.io.emit(eventName, val);
+      this.io.emit(eventName as any, val);
     }
   }
 

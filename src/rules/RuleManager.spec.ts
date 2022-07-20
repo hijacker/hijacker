@@ -85,4 +85,104 @@ describe('RuleManager', () => {
 
     expect(match).toEqual(ruleManager.rules[1]);
   });
+
+  it('should delete rule from rule list', () => {
+    expect.assertions(3);
+
+    const ruleManager = new RuleManager({
+      ruleTypes: [],
+      rules: [
+        {
+          path: '/cars',
+          name: 'Rule 1',
+          skipApi: true,
+          body: {
+            Hello: 'World'
+          }
+        },
+        {
+          path: '/posts',
+          name: 'Rule 2',
+          skipApi: true,
+          body: {
+            Hello: 'World'
+          }
+        },
+      ],
+      baseRule: {
+        baseUrl: ''
+      }
+    });
+
+    expect(ruleManager.rules.length).toBe(2);
+
+    ruleManager.deleteRule(ruleManager.rules[0].id);
+
+    expect(ruleManager.rules.length).toBe(1);
+    expect(ruleManager.rules[0].name).toBe('Rule 2');
+  });
+
+  it('should update rule in rule list', () => {
+    expect.assertions(2);
+
+    const ruleManager = new RuleManager({
+      ruleTypes: [],
+      rules: [
+        {
+          path: '/cars',
+          name: 'Rule 1',
+          skipApi: true,
+          body: {
+            Hello: 'World'
+          }
+        },
+        {
+          path: '/posts',
+          name: 'Rule 2',
+          skipApi: true,
+          body: {
+            Hello: 'World'
+          }
+        },
+      ],
+      baseRule: {
+        baseUrl: ''
+      }
+    });
+
+    expect(ruleManager.rules[0].name).toBe('Rule 1');
+
+    ruleManager.updateRule({
+      ...ruleManager.rules[0],
+      name: 'New Name'
+    });
+
+    expect(ruleManager.rules[0].name).toBe('New Name');
+  });
+
+  it('should add rule to rule list', () => {
+    expect.assertions(3);
+
+    const ruleManager = new RuleManager({
+      ruleTypes: [],
+      rules: [],
+      baseRule: {
+        baseUrl: ''
+      }
+    });
+
+    expect(ruleManager.rules.length).toBe(0);
+
+    ruleManager.addRule({
+      path: '/cars',
+      name: 'Rule 1',
+      skipApi: true,
+      body: {
+        Hello: 'World'
+      }
+    });
+
+    expect(ruleManager.rules[0].name).toBe('Rule 1');
+    expect(ruleManager.rules.length).toBe(1);
+  });
 });

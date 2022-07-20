@@ -85,17 +85,19 @@ export class Hijacker {
         });
 
         socket.on('UPDATE_RULES', (rules: Partial<IRule>[]) => {
-          rules.forEach((rule) => {
-            this.ruleManager.updateRule(rule);
-          });
-          
+          rules.forEach((rule) => this.ruleManager.updateRule(rule));
           this.eventManager.emit('UPDATE_RULES', this.ruleManager.rules);
         });
 
-        socket.on('ADD_RULE', (rule: Partial<IRule>) => {
-          this.ruleManager.addRule(rule);
+        socket.on('ADD_RULES', (rules: Partial<IRule>[]) => {
+          rules.forEach((rule) => this.ruleManager.addRule(rule));
           this.eventManager.emit('UPDATE_RULES', this.ruleManager.rules);
         });
+
+        socket.on('DELETE_RULES', (ids: string[]) => {
+          ids.forEach((id) => this.ruleManager.deleteRule(id));
+          this.eventManager.emit('UPDATE_RULES', this.ruleManager.rules);
+        })
       }, 'socket');
 
       this.emit('started', config.port);
