@@ -20,8 +20,8 @@ describe('RuleManager', () => {
   it('should have default rest and graphql matchers if none provided', () => {
     expect.assertions(1);
 
-    const ruleManager = new RuleManager({
-      ruleTypes: [],
+    const ruleManager = new RuleManager();
+    ruleManager.init({
       rules: [],
       baseRule: {
         baseUrl: ''
@@ -34,13 +34,14 @@ describe('RuleManager', () => {
   it('should support adding custom rule type', () => {
     expect.assertions(1);
 
-    const ruleManager = new RuleManager({
-      ruleTypes: [NewRule],
+    const ruleManager = new RuleManager();
+    ruleManager.init({
       rules: [],
       baseRule: {
         baseUrl: ''
       }
     });
+    ruleManager.addRuleTypes([new NewRule()]);
 
     expect(Object.keys(ruleManager.ruleTypes)).toEqual(['rest', 'graphql', 'NewRule']);
   });
@@ -48,8 +49,8 @@ describe('RuleManager', () => {
   it('should match with the correct rule type', () => {
     expect.assertions(1);
     
-    const ruleManager = new RuleManager({
-      ruleTypes: [NewRule],
+    const ruleManager = new RuleManager();
+    ruleManager.init({
       rules: [
         {
           path: '/cars',
@@ -72,6 +73,7 @@ describe('RuleManager', () => {
         baseUrl: ''
       }
     });
+    ruleManager.addRuleTypes([new NewRule()]);
 
     // NewRule matches any rule that has name 'NEW RULE MATCH'
     const req: HijackerRequest = {
@@ -89,8 +91,8 @@ describe('RuleManager', () => {
   it('should delete rule from rule list', () => {
     expect.assertions(3);
 
-    const ruleManager = new RuleManager({
-      ruleTypes: [],
+    const ruleManager = new RuleManager();
+    ruleManager.init({
       rules: [
         {
           path: '/cars',
@@ -125,8 +127,8 @@ describe('RuleManager', () => {
   it('should update rule in rule list', () => {
     expect.assertions(2);
 
-    const ruleManager = new RuleManager({
-      ruleTypes: [],
+    const ruleManager = new RuleManager();
+    ruleManager.init({
       rules: [
         {
           path: '/cars',
@@ -163,8 +165,8 @@ describe('RuleManager', () => {
   it('should add rule to rule list', () => {
     expect.assertions(3);
 
-    const ruleManager = new RuleManager({
-      ruleTypes: [],
+    const ruleManager = new RuleManager();
+    ruleManager.init({
       rules: [],
       baseRule: {
         baseUrl: ''

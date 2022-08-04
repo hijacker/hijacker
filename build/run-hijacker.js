@@ -15,7 +15,8 @@ const hijacker = new Hijacker({
         Hello: 'World'
       }
     }
-  ]
+  ],
+  plugins: []
 });
 
 process.on('beforeExit', () => {

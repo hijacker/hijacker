@@ -9,25 +9,40 @@ import xmlParser from 'express-xml-bodyparser';
 import { HttpMethod, IRule } from './rules/Rule.js';
 import { RuleManager } from './rules/RuleManager.js';
 import { Config } from './types/Config.js';
-import { Request } from './types/Request.js';
+import { HijackerContext } from './types/index.js';
+import { Request, HijackerRequest } from './types/Request.js';
 import {
-  EventManager, filterResponseHeaders
+  EventManager, filterResponseHeaders, HookManager
 } from './utils/index.js';
+import { PluginManager } from './utils/PluginManager.js';
 
 export class Hijacker {
   app: express.Application;
   server: Server;
-  ruleManager: RuleManager;
-  eventManager: EventManager;
+  pluginManager: PluginManager;
+  context: HijackerContext;
 
-  constructor(config: Config) {
+  constructor(startConfig: Config) {
     this.app = express();
     this.server = new Server(this.app);
-    this.eventManager = new EventManager(this.server);
-    this.ruleManager = new RuleManager({
-      ruleTypes: [],
-      rules: config.rules ?? [],
-      baseRule: config.baseRule
+    this.context = this.createContext(this.server);
+
+    const { 
+      eventManager,
+      hookManager,
+      ruleManager
+    } = this.context;
+
+    this.pluginManager = new PluginManager({
+      context: this.context,
+      plugins: startConfig.plugins
+    });
+
+    const config = hookManager.executeSyncHook<Config>('HIJACKER_START', startConfig);
+
+    ruleManager.init({
+      baseRule: config.baseRule,
+      rules: config.rules
     });
 
     this.app
@@ -44,19 +59,21 @@ export class Hijacker {
           res.header('Access-Control-Allow-Headers', '');
   
           // Generate first HijackerRequest/Lifecycle OBJ and match rule
+          const originalReq = await hookManager.executeHook<HijackerRequest>('HIJACKER_REQUEST', {
+            path: req.originalUrl,
+            headers: filterResponseHeaders(req.headers as Record<string, string>),
+            body: req.body,
+            method: req.method as HttpMethod
+          });
+
           const request: Request = {
-            originalReq: {
-              path: req.originalUrl,
-              headers: filterResponseHeaders(req.headers as Record<string, string>),
-              body: req.body,
-              method: req.method as HttpMethod
-            }
+            originalReq
           };
   
-          request.matchingRule = this.ruleManager.match(request.originalReq);
+          request.matchingRule = ruleManager.match(request.originalReq);
   
           // Call ruletype handler
-          const newRes = await this.ruleManager.handler(request.matchingRule?.type ?? 'rest', request);
+          const newRes = await ruleManager.handler(request.matchingRule?.type ?? 'rest', request, this.context);
   
           // Send response to server (break out into function that takes response)
           res.set(filterResponseHeaders(newRes.headers));
@@ -79,50 +96,59 @@ export class Hijacker {
     
     this.server.listen(config.port, () => {
       // Set up sockets
-      this.eventManager.on('connection', (socket) => {
+      eventManager.on('connection', (socket) => {
         socket.emit('SETTINGS', {
-          rules: this.ruleManager.rules
+          rules: ruleManager.rules
         });
 
         socket.on('UPDATE_RULES', (rules: Partial<IRule>[]) => {
-          rules.forEach((rule) => this.ruleManager.updateRule(rule));
-          this.eventManager.emit('UPDATE_RULES', this.ruleManager.rules);
+          rules.forEach((rule) => ruleManager.updateRule(rule));
+          eventManager.emit('UPDATE_RULES', ruleManager.rules);
         });
 
         socket.on('ADD_RULES', (rules: Partial<IRule>[]) => {
-          rules.forEach((rule) => this.ruleManager.addRule(rule));
-          this.eventManager.emit('UPDATE_RULES', this.ruleManager.rules);
+          rules.forEach((rule) => ruleManager.addRule(rule));
+          eventManager.emit('UPDATE_RULES', ruleManager.rules);
         });
 
         socket.on('DELETE_RULES', (ids: string[]) => {
-          ids.forEach((id) => this.ruleManager.deleteRule(id));
-          this.eventManager.emit('UPDATE_RULES', this.ruleManager.rules);
+          ids.forEach((id) => ruleManager.deleteRule(id));
+          eventManager.emit('UPDATE_RULES', ruleManager.rules);
         });
       }, 'socket');
 
       this.emit('started', config.port);
     });
   }
+  
+  private createContext(server: Server): HijackerContext {
+    return {
+      eventManager: new EventManager(server),
+      hookManager: new HookManager(),
+      ruleManager: new RuleManager()
+    };
+  }
 
   on(eventName: string, cb: (...args: any[]) => void) {
-    this.eventManager.on(eventName, cb, 'event-manager');
+    this.context.eventManager.on(eventName, cb, 'event-manager');
   }
 
   once(eventName: string, cb: (...args: any[]) => void) {
-    this.eventManager.once(eventName, cb, 'event-manager');
+    this.context.eventManager.once(eventName, cb, 'event-manager');
   }
 
   off(eventName: string, cb: (...args: any[]) => void) {
-    this.eventManager.off(eventName, cb, 'event-manager');
+    this.context.eventManager.off(eventName, cb, 'event-manager');
   }
 
   emit(eventName: string, val: any) {
-    this.eventManager.emit(eventName, val, 'event-manager');
+    this.context.eventManager.emit(eventName, val, 'event-manager');
   }
 
   async close() {
     return new Promise<void>(async (done) => {
-      this.eventManager.close();
+      this.context.eventManager.close();
+
       this.server.close(() => {
         done();
       });

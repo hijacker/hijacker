@@ -21,7 +21,7 @@ export const HomePage = () => {
           path: '/posts',
           skipApi: true,
           body: {
-            yolo: 'World'
+            test: 'rule'
           }
         });
       }}>

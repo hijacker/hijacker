@@ -1,50 +1,45 @@
-import { Newable } from '../types/index.js';
+import { HijackerContext } from '../types/index.js';
 import { Request, HijackerRequest, HijackerResponse } from '../types/Request.js';
 import { GraphqlRule } from './GraphqlRule.js';
 import { RestRule } from './RestRule.js';
 import { BaseRule, IRule, Rule } from './Rule.js';
 
-export class RuleType {
-  type = '';
-  ruleClass?: any = undefined;
-
-  isMatch(request: HijackerRequest, rule: Rule): boolean {
-    throw new Error('Not implemented');
-  }
-
-  async handler(request: Request, baseRule: BaseRule): Promise<HijackerResponse> {
-    throw new Error('Not implemented');
-  }
+export interface RuleType {
+  type: string;
+  ruleClass?: any;
+  isMatch(request: HijackerRequest, rule: Rule): boolean;
+  handler(
+    request: Request,
+    baseRule: BaseRule,
+    context: HijackerContext
+  ): Promise<HijackerResponse>;
 }
 
 interface RuleManagerOptions {
-  ruleTypes: Newable<RuleType>[];
   rules: Partial<IRule>[];
   baseRule: BaseRule;
 }
 
 export class RuleManager {
-  ruleTypes: Record<string, RuleType>;
-  rules: Rule[];
-  baseRule: BaseRule;
+  ruleTypes: Record<string, RuleType> = {};
+  rules: Rule[] = [];
+  baseRule: BaseRule = {} as BaseRule;
 
-  constructor({ ruleTypes, rules, baseRule}: RuleManagerOptions) {
+  init({ rules, baseRule }: RuleManagerOptions) {
     this.baseRule = baseRule;
     this.rules = [];
     this.ruleTypes = {
       rest: new RestRule(),
       graphql: new GraphqlRule(),
-      ...ruleTypes.reduce((acc, curRule) => {
-        const tempType = new curRule();
-
-        return {
-          ...acc,
-          [tempType.type]: tempType
-        };
-      }, {})
     };
 
     rules.map(r => this.addRule(r));
+  }
+
+  addRuleTypes(ruleTypes: RuleType[]) {
+    ruleTypes.forEach((ruleType) => {
+      this.ruleTypes[ruleType.type] = ruleType;
+    });
   }
 
   addRule(rule: Partial<IRule>) {
@@ -77,8 +72,12 @@ export class RuleManager {
     });
   }
 
-  async handler(requestType: string, request: Request): Promise<HijackerResponse> {
+  async handler(requestType: string, request: Request, context: HijackerContext): Promise<HijackerResponse> {
     // TODO: Check if type has been registered
-    return this.ruleTypes[requestType].handler(request, this.baseRule);
+    return this.ruleTypes[requestType].handler(
+      request,
+      this.baseRule,
+      context
+    );
   }
 }

@@ -28,6 +28,7 @@ export class RestRule implements RuleType {
     };
 
     const requestOptions: OptionsOfTextResponseBody = {
+      url: activeRule.baseUrl + (activeRule.routeTo ?? originalReq.path),
       method: originalReq.method,
       headers: {
         ...originalReq.headers
@@ -51,10 +52,8 @@ export class RestRule implements RuleType {
       requestOptions.body = JSON.stringify(originalReq.body);
     }
 
-    const url = activeRule.baseUrl + (activeRule.routeTo ?? originalReq.path);
-
     if (!activeRule.skipApi) {
-      const response = await got(url, requestOptions);
+      const response = await got(requestOptions);
       
       let body = response.body;
       try {
