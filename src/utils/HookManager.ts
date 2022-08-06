@@ -14,12 +14,6 @@ export class HookManager {
       // Request to hijacker. Handler<HijackerRequest>
       HIJACKER_REQUEST: [],
 
-      // Request to api server. Handler<Request>
-      SERVER_REQUEST: [],
-
-      // Response from server
-      SERVER_RESPONSE: [],
-
       // Response from hijacker. Handler<HijackerResponse>
       HIJACKER_RESPONSE: []
     };

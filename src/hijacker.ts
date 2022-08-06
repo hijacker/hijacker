@@ -10,7 +10,7 @@ import { HttpMethod, IRule } from './rules/Rule.js';
 import { RuleManager } from './rules/RuleManager.js';
 import { Config } from './types/Config.js';
 import { HijackerContext } from './types/index.js';
-import { Request, HijackerRequest } from './types/Request.js';
+import { Request, HijackerRequest, HijackerResponse } from './types/Request.js';
 import {
   EventManager, filterResponseHeaders, HookManager
 } from './utils/index.js';
@@ -73,24 +73,26 @@ export class Hijacker {
           request.matchingRule = ruleManager.match(request.originalReq);
   
           // Call ruletype handler
-          const newRes = await ruleManager.handler(request.matchingRule?.type ?? 'rest', request, this.context);
-  
+          const newRes = await hookManager.executeHook<HijackerResponse>(
+            'HIJACKER_RESPONSE',
+            await ruleManager.handler(request.matchingRule?.type ?? config.baseRule.type ?? 'rest', request, this.context)
+          );
+
           // Send response to server (break out into function that takes response)
           res.set(filterResponseHeaders(newRes.headers));
   
-          res.status(newRes.statusCode).send(newRes.body);
+          return res.status(newRes.statusCode).send(newRes.body);
         } catch (e: unknown) {
+          const body: Record<string, any> = {
+            message: 'There was an error with the hijacker request'
+          };
+
           if (e instanceof Error) {
-            res.status(500).json({
-              message: 'There was an error with the hijacker request',
-              error: e.message,
-              stack: e.stack
-            });
-          } else {
-            res.status(500).json({
-              message: 'There was an error with the hijacker request'
-            });
+            body.error = e.message;
+            body.stack = e.stack;
           }
+          
+          return res.status(500).send(body);
         }
       });
     

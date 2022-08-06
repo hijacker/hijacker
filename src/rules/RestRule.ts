@@ -45,6 +45,9 @@ export class RestRule implements RuleType {
             // console.log({...req});
           }
         ]
+      },
+      retry: {
+        limit: 0
       }
     };
 

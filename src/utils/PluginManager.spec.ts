@@ -1,9 +1,10 @@
-import { beforeAll, beforeEach, describe, expect, it, MockedFunction, vi } from "vitest";
-import { RuleManager } from "../rules/RuleManager";
-import { HijackerContext } from "../types";
-import { EventManager } from "./EventManager";
-import { HookManager } from "./HookManager";
-import { Plugin, PluginManager } from "./PluginManager";
+import { beforeAll, beforeEach, describe, expect, it, MockedFunction, vi } from 'vitest';
+
+import { RuleManager } from '../rules/RuleManager';
+import { HijackerContext } from '../types';
+import { EventManager } from './EventManager';
+import { HookManager } from './HookManager';
+import { Plugin, PluginManager } from './PluginManager';
 
 describe('PluginManager', () => {
   let mockRuleManager: RuleManager;
@@ -37,7 +38,7 @@ describe('PluginManager', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.resetAllMocks();
-  })
+  });
 
   it('should register plugin', () => {
     expect.assertions(1);
@@ -57,7 +58,7 @@ describe('PluginManager', () => {
       plugins: [plugin]
     });
 
-    expect(pluginManager.plugins).toHaveProperty('TestPlugin')
+    expect(pluginManager.plugins).toHaveProperty('TestPlugin');
   });
 
   it('should pass context to initPlugin', () => {
@@ -135,10 +136,10 @@ describe('PluginManager', () => {
     });
     
     expect(mockHookManager.registerHandler)
-      .toBeCalledWith('HIJACKER_CONFIG', plugin.handlers['HIJACKER_CONFIG'])
+      .toBeCalledWith('HIJACKER_CONFIG', plugin.handlers['HIJACKER_CONFIG']);
 
     expect(mockHookManager.registerHandler)
-      .toBeCalledWith('HIJACKER_TEST', plugin.handlers['HIJACKER_TEST'])
+      .toBeCalledWith('HIJACKER_TEST', plugin.handlers['HIJACKER_TEST']);
   });
 
   it('should register plugins hooks', () => {
@@ -182,7 +183,7 @@ describe('PluginManager', () => {
       new PluginManager({
         context,
         plugins: [plugin, plugin]
-      })
+      });
     }).toThrow('Plugin with name already exists');
-  })
+  });
 });

@@ -28,10 +28,8 @@ export class RuleManager {
   init({ rules, baseRule }: RuleManagerOptions) {
     this.baseRule = baseRule;
     this.rules = [];
-    this.ruleTypes = {
-      rest: new RestRule(),
-      graphql: new GraphqlRule(),
-    };
+    this.ruleTypes.rest = new RestRule();
+    this.ruleTypes.graphql = new GraphqlRule();
 
     rules.map(r => this.addRule(r));
   }
@@ -66,7 +64,7 @@ export class RuleManager {
 
   match(request: HijackerRequest) {
     return this.rules.find(r => {
-      const ruleType = r.type ?? 'rest';
+      const ruleType = r.type?? this.baseRule.type ?? 'rest';
 
       return !r.disabled && this.ruleTypes[ruleType].isMatch(request, r);
     });
@@ -74,6 +72,7 @@ export class RuleManager {
 
   async handler(requestType: string, request: Request, context: HijackerContext): Promise<HijackerResponse> {
     // TODO: Check if type has been registered
+    
     return this.ruleTypes[requestType].handler(
       request,
       this.baseRule,

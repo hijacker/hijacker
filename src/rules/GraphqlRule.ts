@@ -4,7 +4,7 @@ import { HijackerRequest} from '../types/Request.js';
 import { RestRule } from './RestRule.js';
 import { IRule, Rule } from './Rule.js';
 
-class GraphqlRuleType extends Rule {
+export class GraphqlRuleType extends Rule {
   operationName?: string;
 
   constructor(rule: Partial<IRule & { operationName?: string; }>) {
