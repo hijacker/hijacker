@@ -22,7 +22,10 @@ describe('Plugin Tests', () => {
         baseUrl: 'http://hijacker.testing.com',
         type: 'TestRule'
       },
-      rules: []
+      rules: [],
+      logger: {
+        level: "NONE"
+      }
     };
   });
   

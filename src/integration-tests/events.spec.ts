@@ -31,7 +31,10 @@ describe('Event Tests', () => {
             posts: 'get'
           }
         }
-      ]
+      ],
+      logger: {
+        level: "NONE"
+      }
     };
   });
 

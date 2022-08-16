@@ -38,7 +38,10 @@ describe('Request Tests', () => {
           method: 'PUT',
           statusCode: 418
         }
-      ]
+      ],
+      logger: {
+        level: "NONE"
+      }
     };
 
     hijackerServer = new Hijacker(config);
@@ -184,4 +187,5 @@ describe('Request Tests', () => {
   it.todo('should remove all hopbyhop headers before returning response to client');
   it.todo('should forward rest of response headers from api');
   it.todo('should forward request headers to the api');
+  it.todo('should still function when no rules present');
 });

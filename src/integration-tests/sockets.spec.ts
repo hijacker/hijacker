@@ -40,7 +40,10 @@ describe('Socket Tests', () => {
           method: 'PUT',
           statusCode: 418
         }
-      ]
+      ],
+      logger: {
+        level: "NONE"
+      }
     };
 
     hijackerServer = new Hijacker(config);

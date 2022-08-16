@@ -35,7 +35,10 @@ describe.skip('Intercept Tests', () => {
             posts: 'get'
           }
         }
-      ]
+      ],
+      logger: {
+        level: "NONE"
+      }
     };
 
     hijackerServer = new Hijacker(config);

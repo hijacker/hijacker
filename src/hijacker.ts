@@ -15,6 +15,7 @@ import {
   EventManager, filterResponseHeaders, HookManager
 } from './utils/index.js';
 import { PluginManager } from './utils/PluginManager.js';
+import { Logger, LogLevel } from './utils/Logger.js';
 
 export class Hijacker {
   app: express.Application;
@@ -30,7 +31,8 @@ export class Hijacker {
     const { 
       eventManager,
       hookManager,
-      ruleManager
+      ruleManager,
+      logger
     } = this.context;
 
     this.pluginManager = new PluginManager({
@@ -39,6 +41,8 @@ export class Hijacker {
     });
 
     const config = hookManager.executeSyncHook<Config>('HIJACKER_START', startConfig);
+
+    logger.level = config.logger?.level ?? 'INFO';
 
     ruleManager.init({
       baseRule: config.baseRule,
@@ -57,7 +61,9 @@ export class Hijacker {
         try {
           res.header('Access-Control-Allow-Origin', '*');
           res.header('Access-Control-Allow-Headers', '');
-  
+          
+          logger.log('INFO', `[${req.method}] ${req.originalUrl}`);
+
           // Generate first HijackerRequest/Lifecycle OBJ and match rule
           const originalReq = await hookManager.executeHook<HijackerRequest>('HIJACKER_REQUEST', {
             path: req.originalUrl,
@@ -127,7 +133,8 @@ export class Hijacker {
     return {
       eventManager: new EventManager(server),
       hookManager: new HookManager(),
-      ruleManager: new RuleManager()
+      ruleManager: new RuleManager(),
+      logger: new Logger()
     };
   }
 
