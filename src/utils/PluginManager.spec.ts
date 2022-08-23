@@ -1,8 +1,8 @@
-import { beforeAll, beforeEach, describe, expect, it, MockedFunction, vi } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { RestRule } from '../rules/RestRule';
 import { RuleManager } from '../rules/RuleManager';
 import { HijackerContext } from '../types';
-import { EventManager } from './EventManager';
 import { HookManager } from './HookManager';
 import { Plugin, PluginManager } from './PluginManager';
 
@@ -19,7 +19,7 @@ describe('PluginManager', () => {
       },
       init: vi.fn(),
       addRuleTypes: vi.fn(),
-      addRule: vi.fn(),
+      addRules: vi.fn(),
       updateRule: vi.fn(),
       deleteRule: vi.fn(),
       match: vi.fn(),
@@ -46,6 +46,7 @@ describe('PluginManager', () => {
     const context: HijackerContext = {
       eventManager: {} as any,
       hookManager: {} as any,
+      logger: {} as any,
       ruleManager: mockRuleManager
     };
 
@@ -67,6 +68,7 @@ describe('PluginManager', () => {
     const context: HijackerContext = {
       eventManager: {} as any,
       hookManager: {} as any,
+      logger: {} as any,
       ruleManager: mockRuleManager
     };
 
@@ -89,6 +91,7 @@ describe('PluginManager', () => {
     const context: HijackerContext = {
       eventManager: {} as any,
       hookManager: {} as any,
+      logger: {} as any,
       ruleManager: mockRuleManager
     };
 
@@ -96,6 +99,7 @@ describe('PluginManager', () => {
       name: 'TestPlugin',
       ruleTypes: [{
         type: 'TestRule',
+        ruleClass: RestRule,
         isMatch() {
           return true;
         },
@@ -118,6 +122,7 @@ describe('PluginManager', () => {
 
     const context: HijackerContext = {
       eventManager: {} as any,
+      logger: {} as any,
       hookManager: mockHookManager,
       ruleManager: mockRuleManager
     };
@@ -147,6 +152,7 @@ describe('PluginManager', () => {
 
     const context: HijackerContext = {
       eventManager: {} as any,
+      logger: {} as any,
       hookManager: mockHookManager,
       ruleManager: mockRuleManager
     };
@@ -171,6 +177,7 @@ describe('PluginManager', () => {
 
     const context: HijackerContext = {
       eventManager: {} as any,
+      logger: {} as any,
       hookManager: mockHookManager,
       ruleManager: mockRuleManager
     };

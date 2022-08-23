@@ -17,7 +17,6 @@ describe('Event Tests', () => {
           path: '/cars',
           skipApi: true,
           method: 'GET',
-          interceptRequest: true,
           body: {
             test: 'testing'
           }
@@ -26,14 +25,13 @@ describe('Event Tests', () => {
           path: '/posts',
           skipApi: true,
           method: 'GET',
-          interceptResponse: true,
           body: {
             posts: 'get'
           }
         }
       ],
       logger: {
-        level: "NONE"
+        level: 'NONE'
       }
     };
   });

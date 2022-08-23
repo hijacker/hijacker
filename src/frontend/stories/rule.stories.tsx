@@ -1,6 +1,6 @@
 import type { Story } from '@ladle/react';
 
-import { IRule } from '../../rules/Rule.js';
+import { Rule as RuleType } from '../../rules/Rule.js';
 import { Rule } from '../components/Rule.js';
 
 export default {
@@ -8,7 +8,7 @@ export default {
 };
 
 export const RuleStory: Story<{
-  rule: Partial<IRule>;
+  rule: Partial<RuleType>;
 }> = ({ rule }) => (
   <Rule rule={rule} />
 );

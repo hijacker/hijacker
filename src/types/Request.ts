@@ -1,6 +1,7 @@
 import express from 'express';
 
-import { BaseRule, HttpMethod, Rule } from '../rules/Rule.js';
+import { HttpMethod } from '../rules/RestRule.js';
+import { Rule } from '../rules/Rule.js';
 
 // Request to hijacker from client
 export interface HijackerRequest {
@@ -16,9 +17,9 @@ export interface HijackerResponse {
   body: any;
 }
 
-export interface Request {
+export interface Request<T = any> {
   originalReq: HijackerRequest;
   originalRes?: express.Response;
-  matchingRule?: Rule;
+  matchingRule?: Rule<T>;
 }
 

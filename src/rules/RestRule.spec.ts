@@ -1,17 +1,16 @@
 import { describe, it, expect } from 'vitest';
 
 import { HijackerRequest } from '../types/Request.js';
-import { RestRule } from './RestRule.js';
-import { Rule } from './Rule.js';
+import { RestRule, RestRuleType } from './RestRule.js';
 
 describe('RestRule', () => {
   describe('isMatch', () => {
     it('should match correct path', () => {
       expect.assertions(2);
 
-      const ruleType = new RestRule();
+      const ruleType = new RestRuleType();
   
-      const rule = new Rule({
+      const rule = new RestRule({
         path: '/test-route',
         method: 'POST'
       });
@@ -26,9 +25,9 @@ describe('RestRule', () => {
     it('should match correct method', () => {
       expect.assertions(2);
 
-      const ruleType = new RestRule();
+      const ruleType = new RestRuleType();
   
-      const rule = new Rule({
+      const rule = new RestRule({
         path: '/test-route',
         method: 'POST'
       });
@@ -43,9 +42,9 @@ describe('RestRule', () => {
     it('should match ALL method', () => {
       expect.assertions(2);
 
-      const ruleType = new RestRule();
+      const ruleType = new RestRuleType();
   
-      const rule = new Rule({
+      const rule = new RestRule({
         path: '/test-route',
         method: 'ALL'
       });
@@ -60,9 +59,9 @@ describe('RestRule', () => {
     it('should match parameters in path', () => {
       expect.assertions(2);
       
-      const ruleType = new RestRule();
+      const ruleType = new RestRuleType();
   
-      const rule = new Rule({
+      const rule = new RestRule({
         path: '/test-route/:id',
         method: 'POST'
       });
@@ -77,7 +76,7 @@ describe('RestRule', () => {
   
   describe('handler', () => {
     it('should handle a rest request correctly', () => {
-      const ruleType = new RestRule();
+      // const ruleType = new RestRuleType();
   
       // expect(ruleType.handler).toThrow();
     });

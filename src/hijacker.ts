@@ -6,7 +6,8 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import xmlParser from 'express-xml-bodyparser';
 
-import { HttpMethod, IRule } from './rules/Rule.js';
+import { HttpMethod } from './rules/RestRule.js';
+import { Rule } from './rules/Rule.js';
 import { RuleManager } from './rules/RuleManager.js';
 import { Config } from './types/Config.js';
 import { HijackerContext } from './types/index.js';
@@ -14,8 +15,8 @@ import { Request, HijackerRequest, HijackerResponse } from './types/Request.js';
 import {
   EventManager, filterResponseHeaders, HookManager
 } from './utils/index.js';
+import { Logger } from './utils/Logger.js';
 import { PluginManager } from './utils/PluginManager.js';
-import { Logger, LogLevel } from './utils/Logger.js';
 
 export class Hijacker {
   app: express.Application;
@@ -89,7 +90,7 @@ export class Hijacker {
   
           return res.status(newRes.statusCode).send(newRes.body);
         } catch (e: unknown) {
-          const body: Record<string, any> = {
+          const body: Record<string, string | undefined> = {
             message: 'There was an error with the hijacker request'
           };
 
@@ -109,13 +110,13 @@ export class Hijacker {
           rules: ruleManager.rules
         });
 
-        socket.on('UPDATE_RULES', (rules: Partial<IRule>[]) => {
+        socket.on('UPDATE_RULES', (rules: Partial<Rule>[]) => {
           rules.forEach((rule) => ruleManager.updateRule(rule));
           eventManager.emit('UPDATE_RULES', ruleManager.rules);
         });
 
-        socket.on('ADD_RULES', (rules: Partial<IRule>[]) => {
-          rules.forEach((rule) => ruleManager.addRule(rule));
+        socket.on('ADD_RULES', (rules: Partial<Rule>[]) => {
+          ruleManager.addRules(rules);
           eventManager.emit('UPDATE_RULES', ruleManager.rules);
         });
 

@@ -1,23 +1,27 @@
+import { v4 as uuid } from 'uuid';
+
 import { HijackerContext } from '../types/index.js';
 import { Request, HijackerRequest, HijackerResponse } from '../types/Request.js';
-import { GraphqlRule } from './GraphqlRule.js';
-import { RestRule } from './RestRule.js';
-import { BaseRule, IRule, Rule } from './Rule.js';
+import { classToObject } from '../utils/index.js';
+import { GraphqlRuleType } from './GraphqlRule.js';
+import { RestRuleType } from './RestRule.js';
+import { BaseRule, Rule } from './Rule.js';
 
-export interface RuleType {
+
+export interface RuleType<T = any> {
   type: string;
-  ruleClass?: any;
-  isMatch(request: HijackerRequest, rule: Rule): boolean;
+  ruleClass: { new (rule: Partial<Rule>): Rule };
+  isMatch(request: HijackerRequest, rule: Rule<T>): boolean;
   handler(
-    request: Request,
-    baseRule: BaseRule,
+    request: Request<T>,
+    baseRule: BaseRule<T>,
     context: HijackerContext
   ): Promise<HijackerResponse>;
 }
 
 interface RuleManagerOptions {
-  rules: Partial<IRule>[];
-  baseRule: BaseRule;
+  baseRule: BaseRule<any>;
+  rules: Partial<Rule<any>>[];
 }
 
 export class RuleManager {
@@ -28,10 +32,10 @@ export class RuleManager {
   init({ rules, baseRule }: RuleManagerOptions) {
     this.baseRule = baseRule;
     this.rules = [];
-    this.ruleTypes.rest = new RestRule();
-    this.ruleTypes.graphql = new GraphqlRule();
+    this.ruleTypes.rest = new RestRuleType();
+    this.ruleTypes.graphql = new GraphqlRuleType();
 
-    rules.map(r => this.addRule(r));
+    this.addRules(rules);
   }
 
   addRuleTypes(ruleTypes: RuleType[]) {
@@ -40,22 +44,36 @@ export class RuleManager {
     });
   }
 
-  addRule(rule: Partial<IRule>) {
-    const ruleType = rule.type ?? this.baseRule.type ?? 'rest';
-    const ruleClass = this.ruleTypes[ruleType]?.ruleClass ?? Rule;
+  addRules(rules: Partial<Rule<any>>[]) {
+    for (const rule of rules) {
+      const ruleType = rule.type ?? this.baseRule.type ?? 'rest';
+      const ruleClass = this.ruleTypes[ruleType].ruleClass;
+  
+      if (ruleType in this.ruleTypes === false) {
+        throw new Error(`Cannot register rule for non-existant rule type \`${ruleType}\``);
+      }
 
-    this.rules.push(new ruleClass({
-      ...this.baseRule,
-      ...rule
-    }));
+      this.rules.push(new ruleClass({
+        id: uuid(),
+        ...this.baseRule,
+        ...rule
+      }));
+    }
   }
 
-  updateRule(rule: Partial<IRule>) {
-    const r = this.rules.find(x => x.id === rule.id);
+  updateRule(rule: Partial<Rule>) {
+    const index = this.rules.findIndex(x => x.id === rule.id);
+    const ruleType = rule.type ?? this.baseRule.type ?? 'rest';
+    const ruleClass = this.ruleTypes[ruleType].ruleClass;
 
-    if (r) {
-      r.update(rule);
+    if (ruleType in this.ruleTypes === false) {
+      throw new Error(`Cannot register rule for non-existant rule type \`${ruleType}\``);
     }
+
+    this.rules[index] = new ruleClass({
+      ...classToObject(this.rules[index]),
+      ...rule
+    });
   }
 
   deleteRule(id: string) {
@@ -64,16 +82,18 @@ export class RuleManager {
 
   match(request: HijackerRequest) {
     return this.rules.find(r => {
-      const ruleType = r.type?? this.baseRule.type ?? 'rest';
+      const ruleType = r.type ?? this.baseRule.type ?? 'rest';
 
       return !r.disabled && this.ruleTypes[ruleType].isMatch(request, r);
     });
   }
 
-  async handler(requestType: string, request: Request, context: HijackerContext): Promise<HijackerResponse> {
-    // TODO: Check if type has been registered
-    
-    return this.ruleTypes[requestType].handler(
+  async handler(ruleType: string, request: Request, context: HijackerContext): Promise<HijackerResponse> {
+    if (ruleType in this.ruleTypes === false) {
+      throw new Error(`Cannot register rule for non-existant rule type \`${ruleType}\``);
+    }
+  
+    return this.ruleTypes[ruleType].handler(
       request,
       this.baseRule,
       context

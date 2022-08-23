@@ -40,7 +40,7 @@ describe('Request Tests', () => {
         }
       ],
       logger: {
-        level: "NONE"
+        level: 'NONE'
       }
     };
 
@@ -172,7 +172,7 @@ describe('Request Tests', () => {
       });
     
     try {
-      const response = await got.put('http://localhost:3000/error').json();
+      await got.put('http://localhost:3000/error').json();
     } catch (error) {
       if (error instanceof RequestError) {
         expect(error.response?.statusCode).toBe(404);

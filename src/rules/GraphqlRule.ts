@@ -1,31 +1,25 @@
 import { OperationDefinitionNode, parse } from 'graphql';
 
 import { HijackerRequest} from '../types/Request.js';
-import { RestRule } from './RestRule.js';
-import { IRule, Rule } from './Rule.js';
+import { RestRule, RestRuleFields, RestRuleType } from './RestRule.js';
+import { Rule } from './Rule.js';
 
-export class GraphqlRuleType extends Rule {
+export class GraphqlRule extends RestRule {
   operationName?: string;
 
-  constructor(rule: Partial<IRule & { operationName?: string; }>) {
+  constructor(rule: Partial<Rule<RestRuleFields & { operationName?: string; }>>) {
     super(rule);
 
     this.operationName = rule.operationName;
   }
-
-  update(rule: Partial<IRule & { operationName?: string; }>): void {
-    super.update(rule);
-
-    this.operationName = rule.operationName ?? this.operationName;
-  }
 }
 
-export class GraphqlRule extends RestRule {
+export class GraphqlRuleType extends RestRuleType {
   type = 'graphql';
 
-  ruleClass = GraphqlRuleType;
+  ruleClass = GraphqlRule;
 
-  isMatch(request: HijackerRequest, rule: GraphqlRuleType): boolean {
+  isMatch(request: HijackerRequest, rule: GraphqlRule): boolean {
     try {
       const { definitions } = parse(request.body.query);
       const topOperation = definitions[0] as OperationDefinitionNode;

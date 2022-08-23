@@ -6,6 +6,7 @@ import { program } from 'commander';
 
 // import pkg from '../../package.json';
 import { Hijacker } from '../hijacker.js';
+import { Config } from '../types/Config.js';
 
 // Define CLI
 // TODO: Read in package.json to correctly set version
@@ -17,7 +18,7 @@ program
 const options = program.opts();
 
 // TODO: Restructure to take in options as argument
-let rc = {};
+let rc = {} as Config;
 
 (async () => {
   // TODO: Figure out a better way to read in rules (and watch?)
@@ -41,8 +42,8 @@ let rc = {};
     process.exit(1);
   }
 
-  const server = new Hijacker(rc as any);
-  server.on('started', (port: any) => {
+  const server = new Hijacker(rc);
+  server.on('started', (port: number) => {
     console.log(`Application is listening on port ${port}`);
   });
 })();

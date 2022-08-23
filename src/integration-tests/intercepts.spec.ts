@@ -21,7 +21,7 @@ describe.skip('Intercept Tests', () => {
           path: '/cars',
           skipApi: true,
           method: 'GET',
-          interceptRequest: true,
+          // interceptRequest: true,
           body: {
             test: 'testing'
           }
@@ -30,14 +30,14 @@ describe.skip('Intercept Tests', () => {
           path: '/posts',
           skipApi: true,
           method: 'GET',
-          interceptResponse: true,
+          // interceptResponse: true,
           body: {
             posts: 'get'
           }
         }
       ],
       logger: {
-        level: "NONE"
+        level: 'NONE'
       }
     };
 

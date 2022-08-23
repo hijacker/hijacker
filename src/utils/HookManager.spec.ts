@@ -38,7 +38,7 @@ describe('HookManager', () => {
     expect.assertions(1);
 
     hookManager.registerHook('REQUEST');
-    hookManager.registerHandler('REQUEST', (val) => null);
+    hookManager.registerHandler('REQUEST', () => null);
 
     expect(hookManager.hooks['REQUEST'].length).toEqual(1);
   });

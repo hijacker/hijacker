@@ -1,11 +1,12 @@
-import { beforeAll, beforeEach, describe, expect, it, SpyInstance, vi } from "vitest";
-import { Logger } from "./Logger";
+import { beforeAll, beforeEach, describe, expect, it, SpyInstance, vi } from 'vitest';
+
+import { Logger } from './Logger';
 
 describe('Logger', () => {
   let consoleSpy: SpyInstance;
 
   beforeAll(() => {
-    consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
   });
 
   beforeEach(() => {
@@ -32,7 +33,7 @@ describe('Logger', () => {
     expect.assertions(3);
 
     const logger = new Logger();
-    logger.level = "INFO";
+    logger.level = 'INFO';
 
     logger.log('ERROR', 'Test');
     logger.log('WARN', 'Test');
@@ -47,7 +48,7 @@ describe('Logger', () => {
     expect.assertions(1);
 
     const logger = new Logger();
-    logger.level = "HTTP";
+    logger.level = 'HTTP';
 
     logger.log('SILLY', 'Test');
     logger.log('DEBUG', 'Test');

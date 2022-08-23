@@ -1,11 +1,13 @@
 import { describe, it, expect } from 'vitest';
 
 import { HijackerResponse, HijackerRequest } from '../types/Request.js';
+import { RestRule } from './RestRule.js';
 import { Rule } from './Rule.js';
 import { RuleManager, RuleType } from './RuleManager.js';
 
-class NewRule implements RuleType {
+class NewRuleType implements RuleType {
   type = 'NewRule';
+  ruleClass = RestRule;
 
   isMatch(request: HijackerRequest, rule: Rule): boolean {
     return rule.name === 'NEW RULE MATCH';
@@ -41,7 +43,7 @@ describe('RuleManager', () => {
         baseUrl: ''
       }
     });
-    ruleManager.addRuleTypes([new NewRule()]);
+    ruleManager.addRuleTypes([new NewRuleType()]);
 
     expect(Object.keys(ruleManager.ruleTypes)).toEqual(['rest', 'graphql', 'NewRule']);
   });
@@ -50,6 +52,9 @@ describe('RuleManager', () => {
     expect.assertions(1);
     
     const ruleManager = new RuleManager();
+
+    ruleManager.addRuleTypes([new NewRuleType()]);
+    
     ruleManager.init({
       rules: [
         {
@@ -67,13 +72,12 @@ describe('RuleManager', () => {
           body: {
             Hello: 'World'
           }
-        },
+        }
       ],
       baseRule: {
         baseUrl: ''
       }
     });
-    ruleManager.addRuleTypes([new NewRule()]);
 
     // NewRule matches any rule that has name 'NEW RULE MATCH'
     const req: HijackerRequest = {
@@ -84,7 +88,7 @@ describe('RuleManager', () => {
     };
 
     const match = ruleManager.match(req);
-
+    
     expect(match).toEqual(ruleManager.rules[1]);
   });
 
@@ -175,14 +179,14 @@ describe('RuleManager', () => {
 
     expect(ruleManager.rules.length).toBe(0);
 
-    ruleManager.addRule({
+    ruleManager.addRules([{
       path: '/cars',
       name: 'Rule 1',
       skipApi: true,
       body: {
         Hello: 'World'
       }
-    });
+    }]);
 
     expect(ruleManager.rules[0].name).toBe('Rule 1');
     expect(ruleManager.rules.length).toBe(1);

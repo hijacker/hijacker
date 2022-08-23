@@ -15,8 +15,6 @@ export const App = () => {
             <Typography variant="h1">Hijacker</Typography>
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="testing" element={<div>testing</div>} />
-              <Route path="hello" element={<div>hello</div>} />
             </Routes>
           </Container>
         </ThemeProvider>

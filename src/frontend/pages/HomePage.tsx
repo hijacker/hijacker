@@ -15,16 +15,7 @@ export const HomePage = () => {
           onChange={updateRule}
         />
       ))}
-      <Button onClick={() => {
-        addRule({
-          baseUrl: 'test',
-          path: '/posts',
-          skipApi: true,
-          body: {
-            test: 'rule'
-          }
-        });
-      }}>
+      <Button onClick={() => addRule({})}>
         Add Rule
       </Button>
     </div>

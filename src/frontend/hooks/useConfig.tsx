@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState , createContext } from 'react';
 import { io } from 'socket.io-client';
 
-import { IRule } from '../../rules/Rule.js';
+import { Rule } from '../../rules/Rule.js';
 import { HijackerSocketClient } from '../../types/Sockets.js';
 
 interface ConfigContext {
-  rules: Partial<IRule>[];
-  addRule: (rule: Partial<IRule>) => void;
-  updateRule: (rule: Partial<IRule>) => void;
+  rules: Partial<Rule<any>>[];
+  addRule: (rule: Partial<Rule<any>>) => void;
+  updateRule: (rule: Partial<Rule<any>>) => void;
 }
 
 const ConfigContext = createContext<ConfigContext>({
@@ -22,7 +22,7 @@ interface ContextProviderProps {
 
 export const ConfigProvider = ({ children }: ContextProviderProps) => {
   const [socket, setSocket] = useState<HijackerSocketClient | null>(null);
-  const [rules, setRules] = useState<Partial<IRule>[]>([]);
+  const [rules, setRules] = useState<Partial<Rule<any>>[]>([]);
 
   const [resetSocket, setResetSocket] = useState<boolean>(false);
 
@@ -47,13 +47,13 @@ export const ConfigProvider = ({ children }: ContextProviderProps) => {
     };
   }, [setSocket, setRules, resetSocket]);
 
-  const addRule = (rule: Partial<IRule>) => {
+  const addRule = (rule: Partial<Rule>) => {
     if (socket) {
       socket.emit('ADD_RULES', [rule]);
     }
   };
 
-  const updateRule = (rule: Partial<IRule>) => {
+  const updateRule = (rule: Partial<Rule>) => {
     if (socket) {
       socket.emit('UPDATE_RULES', [rule]);
     }

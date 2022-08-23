@@ -8,9 +8,9 @@ describe('GraphqlRule', () => {
     it('should match correct operationName', () => {
       expect.assertions(2);
 
-      const ruleType = new GraphqlRule();
+      const ruleType = new GraphqlRuleType();
   
-      const rule = new GraphqlRuleType({
+      const rule = new GraphqlRule({
         operationName: 'CreateTest'
       });
   

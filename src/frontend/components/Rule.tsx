@@ -16,11 +16,11 @@ import CodeMirror from '@uiw/react-codemirror';
 import { debounce, isEqual } from 'lodash';
 import { SyntheticEvent, useState } from 'react';
 
-import { IRule } from '../../rules/Rule.js';
+import { Rule as RuleType } from '../../rules/Rule.js';
 
 interface RuleProps {
-  rule: Partial<IRule>;
-  onChange?: (rule: Partial<IRule>) => void;
+  rule: Partial<RuleType<any>>;
+  onChange?: (rule: Partial<RuleType<any>>) => void;
 }
 
 interface TabPanelProps {
@@ -101,6 +101,7 @@ export const Rule = (props: RuleProps) => {
         <TabPanel show={activeTab === 0}>
           <CodeMirror
             value={JSON.stringify(rule, null, 2)}
+            height="350px"
             extensions={[
               json(),
               linter(jsonParseLinter())

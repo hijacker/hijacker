@@ -3,6 +3,7 @@ import nock, { Scope } from 'nock';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 import { Hijacker } from '../hijacker';
+import { RestRule } from '../rules/RestRule';
 import { Config } from '../types/Config';
 import { HijackerRequest, HijackerResponse } from '../types/Request';
 import { Plugin } from '../utils/PluginManager';
@@ -24,7 +25,7 @@ describe('Plugin Tests', () => {
       },
       rules: [],
       logger: {
-        level: "NONE"
+        level: 'NONE'
       }
     };
   });
@@ -39,6 +40,7 @@ describe('Plugin Tests', () => {
           {
             type: 'TestRule',
             isMatch: () => true,
+            ruleClass: RestRule,
             handler: async () => ({
               body: {
                 example: 'hijacker'

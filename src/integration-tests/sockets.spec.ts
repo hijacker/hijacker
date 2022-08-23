@@ -42,7 +42,7 @@ describe('Socket Tests', () => {
         }
       ],
       logger: {
-        level: "NONE"
+        level: 'NONE'
       }
     };
 
