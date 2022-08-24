@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
 import { HijackerRequest } from '../types/Request.js';
-import { RestRule, RestRuleType } from './RestRule.js';
+import { RestRuleType } from './RestRule.js';
 
 describe('RestRule', () => {
   describe('isMatch', () => {
@@ -10,7 +10,7 @@ describe('RestRule', () => {
 
       const ruleType = new RestRuleType();
   
-      const rule = new RestRule({
+      const rule = ruleType.createRule({
         path: '/test-route',
         method: 'POST'
       });
@@ -27,7 +27,7 @@ describe('RestRule', () => {
 
       const ruleType = new RestRuleType();
   
-      const rule = new RestRule({
+      const rule = ruleType.createRule({
         path: '/test-route',
         method: 'POST'
       });
@@ -44,7 +44,7 @@ describe('RestRule', () => {
 
       const ruleType = new RestRuleType();
   
-      const rule = new RestRule({
+      const rule = ruleType.createRule({
         path: '/test-route',
         method: 'ALL'
       });
@@ -61,7 +61,7 @@ describe('RestRule', () => {
       
       const ruleType = new RestRuleType();
   
-      const rule = new RestRule({
+      const rule = ruleType.createRule({
         path: '/test-route/:id',
         method: 'POST'
       });

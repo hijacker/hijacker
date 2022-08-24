@@ -20,7 +20,7 @@ export type HttpMethod =
   'TRACE' |
   'PATCH';
 
-export interface RestRuleFields {
+export interface RestRule {
   id: string;
   skipApi: boolean;
   method: HttpMethod | 'ALL';
@@ -28,41 +28,28 @@ export interface RestRuleFields {
   path: string;
   statusCode?: number;
   routeTo?: string;
-}
-
-export class RestRule implements Rule<RestRuleFields> {
-  id: string;
-  disabled?: boolean;
-  name?: string;
-  baseUrl: string;
-  type: string;
-  skipApi: boolean;
-  method: HttpMethod | 'ALL';
-  body: any;
-  path: string;
-  statusCode?: number;
-  routeTo?: string;
-
-  constructor(rule: Partial<Rule<RestRuleFields>>) {
-    this.id = rule.id ?? uuid();
-    this.disabled = rule.disabled ?? false;
-    this.name = rule.name;
-    this.baseUrl = rule.baseUrl ?? '';
-    this.type = rule.type ?? 'rest';
-    this.skipApi = rule.skipApi ?? false;
-    this.method = rule.method ?? 'ALL';
-    this.body = rule.body;
-    this.path = rule.path ?? '';
-    this.statusCode = rule.statusCode;
-    this.routeTo = rule.routeTo;
-  }
 }
 
 export class RestRuleType implements RuleType<RestRule> {
   type = 'rest';
-  ruleClass = RestRule;
+  
+  createRule(rule: Partial<Rule<RestRule>>) {
+    return {
+      id: rule.id ?? uuid(),
+      disabled: rule.disabled ?? false,
+      name: rule.name,
+      baseUrl: rule.baseUrl ?? '',
+      type: rule.type ?? 'rest',
+      skipApi: rule.skipApi ?? false,
+      method: rule.method ?? 'ALL',
+      body: rule.body,
+      path: rule.path ?? '',
+      statusCode: rule.statusCode,
+      routeTo: rule.routeTo
+    };
+  }
 
-  isMatch(request: HijackerRequest, rule: RestRule) {
+  isMatch(request: HijackerRequest, rule: Rule<RestRule>) {
     return !!routeMatcher(rule.path).parse(request.path) && 
       (!Object.prototype.hasOwnProperty.call(rule, 'method') || rule.method === request.method || rule.method === 'ALL');
   }

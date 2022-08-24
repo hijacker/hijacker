@@ -1,6 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { RestRule } from '../rules/RestRule';
+import { Rule } from '../rules/Rule';
 import { RuleManager } from '../rules/RuleManager';
 import { HijackerContext } from '../types';
 import { HookManager } from './HookManager';
@@ -99,7 +99,7 @@ describe('PluginManager', () => {
       name: 'TestPlugin',
       ruleTypes: [{
         type: 'TestRule',
-        ruleClass: RestRule,
+        createRule: (rule: Rule) => rule,
         isMatch() {
           return true;
         },

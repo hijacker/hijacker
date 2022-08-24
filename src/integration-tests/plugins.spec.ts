@@ -3,7 +3,7 @@ import nock, { Scope } from 'nock';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 import { Hijacker } from '../hijacker';
-import { RestRule } from '../rules/RestRule';
+import { Rule } from '../rules/Rule';
 import { Config } from '../types/Config';
 import { HijackerRequest, HijackerResponse } from '../types/Request';
 import { Plugin } from '../utils/PluginManager';
@@ -40,7 +40,7 @@ describe('Plugin Tests', () => {
           {
             type: 'TestRule',
             isMatch: () => true,
-            ruleClass: RestRule,
+            createRule: (rule: Rule) => rule,
             handler: async () => ({
               body: {
                 example: 'hijacker'
@@ -75,7 +75,7 @@ describe('Plugin Tests', () => {
         name: 'TestPlugin',
         handlers: {
           'HIJACKER_START': (config: Config) => {
-            expect(config.port).toEqual(3001);
+            expect(config.rules.length).toEqual(0);
             
             return {
               ...config,

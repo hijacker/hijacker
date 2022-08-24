@@ -10,7 +10,7 @@ import { BaseRule, Rule } from './Rule.js';
 
 export interface RuleType<T = any> {
   type: string;
-  ruleClass: { new (rule: Partial<Rule>): Rule };
+  createRule(rule: Partial<Rule<T>>): Rule<T>;
   isMatch(request: HijackerRequest, rule: Rule<T>): boolean;
   handler(
     request: Request<T>,
@@ -47,30 +47,33 @@ export class RuleManager {
   addRules(rules: Partial<Rule<any>>[]) {
     for (const rule of rules) {
       const ruleType = rule.type ?? this.baseRule.type ?? 'rest';
-      const ruleClass = this.ruleTypes[ruleType].ruleClass;
   
       if (ruleType in this.ruleTypes === false) {
         throw new Error(`Cannot register rule for non-existant rule type \`${ruleType}\``);
       }
 
-      this.rules.push(new ruleClass({
+      const { createRule } = this.ruleTypes[ruleType];
+
+      this.rules.push(createRule({
         id: uuid(),
+        // FIXME: No base rule here. Send base rule to match and handler
         ...this.baseRule,
         ...rule
       }));
     }
   }
 
-  updateRule(rule: Partial<Rule>) {
+  updateRule(rule: Partial<Rule<any>>) {
     const index = this.rules.findIndex(x => x.id === rule.id);
     const ruleType = rule.type ?? this.baseRule.type ?? 'rest';
-    const ruleClass = this.ruleTypes[ruleType].ruleClass;
 
     if (ruleType in this.ruleTypes === false) {
       throw new Error(`Cannot register rule for non-existant rule type \`${ruleType}\``);
     }
 
-    this.rules[index] = new ruleClass({
+    const { createRule } = this.ruleTypes[ruleType];
+
+    this.rules[index] = createRule({
       ...classToObject(this.rules[index]),
       ...rule
     });

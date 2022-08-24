@@ -1,13 +1,16 @@
 import { describe, it, expect } from 'vitest';
 
 import { HijackerResponse, HijackerRequest } from '../types/Request.js';
-import { RestRule } from './RestRule.js';
+import { RestRuleType } from './RestRule.js';
 import { Rule } from './Rule.js';
-import { RuleManager, RuleType } from './RuleManager.js';
+import { RuleManager } from './RuleManager.js';
 
-class NewRuleType implements RuleType {
+class NewRuleType extends RestRuleType {
   type = 'NewRule';
-  ruleClass = RestRule;
+  
+  createRule(rule: Partial<Rule>) {
+    return super.createRule(rule);
+  }
 
   isMatch(request: HijackerRequest, rule: Rule): boolean {
     return rule.name === 'NEW RULE MATCH';

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { HijackerRequest } from '../types/Request';
-import { GraphqlRule, GraphqlRuleType } from './GraphqlRule';
+import { GraphqlRuleType } from './GraphqlRule';
 
 describe('GraphqlRule', () => {
   describe('isMatch', () => {
@@ -10,7 +10,7 @@ describe('GraphqlRule', () => {
 
       const ruleType = new GraphqlRuleType();
   
-      const rule = new GraphqlRule({
+      const rule = ruleType.createRule({
         operationName: 'CreateTest'
       });
   
