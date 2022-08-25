@@ -7,7 +7,7 @@ import { routeMatcher } from 'route-matcher';
 import { v4 as uuid } from 'uuid';
 
 import { HijackerRequest, HijackerResponse, Request } from '../types/Request.js';
-import { BaseRule, Rule } from './Rule.js';
+import { Rule } from './Rule.js';
 import { RuleType } from './RuleManager.js';
 
 export type HttpMethod =
@@ -21,7 +21,6 @@ export type HttpMethod =
   'PATCH';
 
 export interface RestRule {
-  id: string;
   skipApi: boolean;
   method: HttpMethod | 'ALL';
   body: any;
@@ -54,7 +53,7 @@ export class RestRuleType implements RuleType<RestRule> {
       (!Object.prototype.hasOwnProperty.call(rule, 'method') || rule.method === request.method || rule.method === 'ALL');
   }
 
-  async handler(request: Request<RestRule>, baseRule: BaseRule<RestRule>): Promise<HijackerResponse> {
+  async handler(request: Request<RestRule>, baseRule: Partial<Rule<RestRule>>): Promise<HijackerResponse> {
     const { originalReq, matchingRule } = request;
     const activeRule = matchingRule ?? baseRule;
 

@@ -5,15 +5,19 @@ import { Rule } from '../../rules/Rule.js';
 import { HijackerSocketClient } from '../../types/Sockets.js';
 
 interface ConfigContext {
+  baseRule?: Partial<Rule<any>>;
   rules: Partial<Rule<any>>[];
   addRule: (rule: Partial<Rule<any>>) => void;
   updateRule: (rule: Partial<Rule<any>>) => void;
+  updateBaseRule: (rule: Partial<Rule<any>>) => void;
 }
 
 const ConfigContext = createContext<ConfigContext>({
+  baseRule: undefined,
   rules: [],
   addRule: () => {},
-  updateRule: () => {}
+  updateRule: () => {},
+  updateBaseRule: () => {}
 });
 
 interface ContextProviderProps {
@@ -22,6 +26,7 @@ interface ContextProviderProps {
 
 export const ConfigProvider = ({ children }: ContextProviderProps) => {
   const [socket, setSocket] = useState<HijackerSocketClient | null>(null);
+  const [baseRule, setBaseRule] = useState<Partial<Rule<any>> | undefined>(undefined);
   const [rules, setRules] = useState<Partial<Rule<any>>[]>([]);
 
   const [resetSocket, setResetSocket] = useState<boolean>(false);
@@ -31,6 +36,7 @@ export const ConfigProvider = ({ children }: ContextProviderProps) => {
  
     newSocket.on('SETTINGS', (config) => {
       setRules(config.rules);
+      setBaseRule(config.baseRule);
     });
 
     newSocket.on('UPDATE_RULES', setRules);
@@ -45,25 +51,33 @@ export const ConfigProvider = ({ children }: ContextProviderProps) => {
     return () => {
       newSocket.close(); 
     };
-  }, [setSocket, setRules, resetSocket]);
+  }, [setSocket, setRules, setBaseRule, resetSocket]);
 
-  const addRule = (rule: Partial<Rule>) => {
+  const addRule = (rule: Partial<Rule<any>>) => {
     if (socket) {
       socket.emit('ADD_RULES', [rule]);
     }
   };
 
-  const updateRule = (rule: Partial<Rule>) => {
+  const updateRule = (rule: Partial<Rule<any>>) => {
     if (socket) {
       socket.emit('UPDATE_RULES', [rule]);
     }
   };
 
+  const updateBaseRule = (rule: Partial<Rule<any>>) => {
+    if (socket) {
+      socket.emit('UPDATE_BASE_RULE', rule);
+    }
+  };
+
   return (
     <ConfigContext.Provider value={{
+      baseRule,
       rules,
       addRule,
-      updateRule
+      updateRule,
+      updateBaseRule
     }}>
       {children}
     </ConfigContext.Provider>

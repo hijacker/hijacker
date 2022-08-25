@@ -7,11 +7,3 @@ export const isPromise = (p: any) =>
   typeof p === 'object' &&
   typeof p.then === 'function' &&
   typeof p.catch === 'function';
-
-export const classToObject = (c: any) => {
-  return Object.getOwnPropertyNames(c)
-    .reduce((acc, cur) => ({
-      ...acc,
-      [cur]: c[cur]
-    }), {});
-};

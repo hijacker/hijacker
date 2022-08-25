@@ -5,14 +5,15 @@ import { Rule } from '../rules/Rule';
 import { Config } from './Config';
 
 export interface ClientToServerEvents {
-  ADD_RULES: (rule: Partial<Rule>[]) => void;
-  UPDATE_RULES: (rule: Partial<Rule>[]) => void;
+  ADD_RULES: (rule: Partial<Rule<any>>[]) => void;
+  UPDATE_RULES: (rule: Partial<Rule<any>>[]) => void;
+  UPDATE_BASE_RULE: (rule: Partial<Rule<any>>) => void;
   DELETE_RULES: (ids: string[]) => void;
 }
 
 export interface ServerToClientEvents {
   SETTINGS: (config: Config) => void;
-  UPDATE_RULES: (rules: Partial<Rule>[]) => void;
+  UPDATE_RULES: (rules: Partial<Rule<any>>[]) => void;
 }
 
 export type HijackerSocketClient = Socket<ServerToClientEvents, ClientToServerEvents>;

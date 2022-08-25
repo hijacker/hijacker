@@ -107,7 +107,12 @@ export class Hijacker {
       // Set up sockets
       eventManager.on('connection', (socket) => {
         socket.emit('SETTINGS', {
+          baseRule: ruleManager.baseRule,
           rules: ruleManager.rules
+        });
+
+        socket.on('UPDATE_BASE_RULE', (rule: Partial<Rule<any>>) => {
+          ruleManager.baseRule = rule;
         });
 
         socket.on('UPDATE_RULES', (rules: Partial<Rule>[]) => {

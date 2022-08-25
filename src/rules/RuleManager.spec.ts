@@ -92,7 +92,7 @@ describe('RuleManager', () => {
 
     const match = ruleManager.match(req);
     
-    expect(match).toEqual(ruleManager.rules[1]);
+    expect(match.id).toEqual(ruleManager.rules[1].id);
   });
 
   it('should delete rule from rule list', () => {

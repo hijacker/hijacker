@@ -8,7 +8,3 @@ export type Rule<T = {}> = {
 } & {
   [Property in keyof T]: T[Property];
 }
-
-export type BaseRule<T = any> = Partial<Rule<T>> & {
-  baseUrl: string;
-}

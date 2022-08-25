@@ -20,6 +20,8 @@ import { Rule as RuleType } from '../../rules/Rule.js';
 
 interface RuleProps {
   rule: Partial<RuleType<any>>;
+  name?: string;
+  disableable?: boolean;
   onChange?: (rule: Partial<RuleType<any>>) => void;
 }
 
@@ -51,7 +53,7 @@ const TabPanel = (props: TabPanelProps) => {
 };
 
 export const Rule = (props: RuleProps) => {
-  const { rule, onChange } = props;
+  const { rule, onChange, name, disableable = true } = props;
 
   const [activeTab, setActiveTab] = useState(0);
 
@@ -77,8 +79,8 @@ export const Rule = (props: RuleProps) => {
         id="panel1a-header"
       >
         <RuleMethod>POST</RuleMethod>
-        <RuleTitle fontWeight="600" sx={{ flexGrow: 1 }}>{rule.name ?? rule.path}</RuleTitle>
-        <Switch
+        <RuleTitle fontWeight="600" sx={{ flexGrow: 1 }}>{name ?? rule.name ?? rule.path}</RuleTitle>
+        { disableable && <Switch
           size="small"
           checked={!rule.disabled}
           onClick={(e) => e.stopPropagation()}
@@ -90,7 +92,7 @@ export const Rule = (props: RuleProps) => {
               });
             }
           }}
-        />
+        /> }
       </AccordionSummary>
       <AccordionDetails>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

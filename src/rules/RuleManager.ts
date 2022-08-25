@@ -2,10 +2,9 @@ import { v4 as uuid } from 'uuid';
 
 import { HijackerContext } from '../types/index.js';
 import { Request, HijackerRequest, HijackerResponse } from '../types/Request.js';
-import { classToObject } from '../utils/index.js';
 import { GraphqlRuleType } from './GraphqlRule.js';
 import { RestRuleType } from './RestRule.js';
-import { BaseRule, Rule } from './Rule.js';
+import { Rule } from './Rule.js';
 
 
 export interface RuleType<T = any> {
@@ -14,20 +13,22 @@ export interface RuleType<T = any> {
   isMatch(request: HijackerRequest, rule: Rule<T>): boolean;
   handler(
     request: Request<T>,
-    baseRule: BaseRule<T>,
+    baseRule: Partial<Rule<T>>,
     context: HijackerContext
   ): Promise<HijackerResponse>;
 }
 
 interface RuleManagerOptions {
-  baseRule: BaseRule<any>;
+  baseRule: Partial<Rule<any>>;
   rules: Partial<Rule<any>>[];
 }
 
+type ProcessedRule = Partial<Rule> & { id: string };
+
 export class RuleManager {
   ruleTypes: Record<string, RuleType> = {};
-  rules: Rule[] = [];
-  baseRule: BaseRule = {} as BaseRule;
+  rules: ProcessedRule[] = [];
+  baseRule: Partial<Rule<any>> = {};
 
   init({ rules, baseRule }: RuleManagerOptions) {
     this.baseRule = baseRule;
@@ -52,14 +53,10 @@ export class RuleManager {
         throw new Error(`Cannot register rule for non-existant rule type \`${ruleType}\``);
       }
 
-      const { createRule } = this.ruleTypes[ruleType];
-
-      this.rules.push(createRule({
+      this.rules.push({
         id: uuid(),
-        // FIXME: No base rule here. Send base rule to match and handler
-        ...this.baseRule,
         ...rule
-      }));
+      });
     }
   }
 
@@ -71,12 +68,10 @@ export class RuleManager {
       throw new Error(`Cannot register rule for non-existant rule type \`${ruleType}\``);
     }
 
-    const { createRule } = this.ruleTypes[ruleType];
-
-    this.rules[index] = createRule({
-      ...classToObject(this.rules[index]),
+    this.rules[index] = {
+      ...this.rules[index],
       ...rule
-    });
+    };
   }
 
   deleteRule(id: string) {
@@ -84,10 +79,22 @@ export class RuleManager {
   }
 
   match(request: HijackerRequest) {
-    return this.rules.find(r => {
+    const rule = this.rules.find(r => {
       const ruleType = r.type ?? this.baseRule.type ?? 'rest';
 
-      return !r.disabled && this.ruleTypes[ruleType].isMatch(request, r);
+      const withBaseRule = this.ruleTypes[ruleType].createRule({
+        ...this.baseRule,
+        ...r
+      });
+
+      return !r.disabled && this.ruleTypes[ruleType].isMatch(request, withBaseRule);
+    });
+
+    const ruleType = rule?.type ?? this.baseRule.type ?? 'rest';
+
+    return this.ruleTypes[ruleType].createRule({
+      ...this.baseRule,
+      ...rule
     });
   }
 
