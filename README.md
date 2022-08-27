@@ -16,9 +16,9 @@ Hijacker is a develoment too meant to proxy to an existing API while being able 
   - [Rule Types](#rule-types)
   - [Logger](#logger)
 - [Extending Hijacker](#extending-hijacker)
-  - [Custom Rule Type](#custom-rule-type)
+  - [Plugins](#plugins)
+  - [Custom Rule Types](#custom-rule-types)
   - [Hooks](#hooks)
-- [Contributing](#contributing)
 
 ## Get Started
 
@@ -122,11 +122,36 @@ Settings for built in logger. This may eventually get changed to accepting a cus
 | `level` | Max log level that you wan't logged to the console. | `SILLY` \| `DEBUG` \| `HTTP` \| `INFO` \| `WARN` \| `ERROR` \| `NONE` | `no` | `INFO` |
 
 ## Extending Hijacker
-Hijacker was made with extensibility in mind. There are a couple ways Hijacker can be extended: Custom Rule Types and Hooks.
+Hijacker was made with extensibility in mind. There are a two ways Hijacker can be extended: custom rule types and hooks.
 
-### Custom Rule Type
+### Plugins
+Plugins are how hooks and rule types are packaged up to be added to a config for a hijacker user to use.
+
+| Property | Description | Type | Required | Default |
+| -------- | ----------- | ---- | -------- | ------- |
+| `name` | Name of plugin | string | `yes` | |
+| `initPlugin` | Function called to initialize plugin and pass HijackerContext | `(context: HijackerContext) => void` | `no` | |
+| `hooks` | Array of hook names that the plugin allows to be hooked into | `string[]` | `no` | |
+| `handlers` | List of hook handlers for plugin | `Record<string, function>` | `no` | |
+| `ruleTypes` | Array of [custom rule types](#custom-rule-types) | `RuleType[]` | `no` | |
+
+### Custom Rule Types
+It is possible to create custom rule types, that allow for request matching and handling. You can view [RestRule](src/rules/RestRule.ts) and [GraphqlRule](src/rules/GraphqlRule.ts) for examples.
+
+| Property | Description | Type | Required | Default |
+| -------- | ----------- | ---- | -------- | ------- |
+| `type` | Rule type used to match rules | `string` | `yes` | |
+| `createRule` | Create rule object used for the handler | `(rule: Partial<Rule<T>>) => Rule<T>` | `yes` | |
+| `isMatch` | Used to determine if request matches a rule | `(request: HijackerRequest, rule: Rule<T>) => boolean` | `yes` | |
+| `handler` | Request handler for rule type | `(request: Request<T>, baseRule: Partial<Rule<T>>, context: HijackerContext) => Promise<HijackerResponse>` | `yes` | |
 
 ### Hooks
+Hooks allow plugins to listen and modify objects at specific points in the request lifecycle. Hook handlers are passed an object that they can modify and return an object of the same shape. Right now Hijacker has hooks for the following events:
 
+| Hook Name | Type | Description | Synchronous |
+| --------- | ---- | ----------- | ----------- |
+| `HIJACKER_START` | `Config` | Executed when hijacker starts up and allows modifying the hijacker config | `yes` |
+| `HIJACKER_REQUEST` | `HijackerRequst` |  Begining of request. Called before rule matched | `no` |
+| `HIJACKER_RESPONSE` | `HijackerResponse` | Called after request handler, before response returned to client | `no` | 
 
-## Contributing
+Plugins are able to add additional hooks using the HookManager which allow other plugins to modify their functionality.
