@@ -1,6 +1,7 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 
 import { HijackerResponse, HijackerRequest } from '../types/Request.js';
+import { Logger } from '../utils/Logger.js';
 import { RestRuleType } from './RestRule.js';
 import { Rule } from './Rule.js';
 import { RuleManager } from './RuleManager.js';
@@ -22,10 +23,15 @@ class NewRuleType extends RestRuleType {
 }
 
 describe('RuleManager', () => {
+  const logger: Logger = {
+    level: 'NONE',
+    log: vi.fn()
+  };
+
   it('should have default rest and graphql matchers if none provided', () => {
     expect.assertions(1);
 
-    const ruleManager = new RuleManager();
+    const ruleManager = new RuleManager({ logger });
     ruleManager.init({
       rules: [],
       baseRule: {
@@ -39,7 +45,7 @@ describe('RuleManager', () => {
   it('should support adding custom rule type', () => {
     expect.assertions(1);
 
-    const ruleManager = new RuleManager();
+    const ruleManager = new RuleManager({ logger });
     ruleManager.init({
       rules: [],
       baseRule: {
@@ -54,7 +60,7 @@ describe('RuleManager', () => {
   it('should match with the correct rule type', () => {
     expect.assertions(1);
     
-    const ruleManager = new RuleManager();
+    const ruleManager = new RuleManager({ logger });
 
     ruleManager.addRuleTypes([new NewRuleType()]);
     
@@ -98,7 +104,7 @@ describe('RuleManager', () => {
   it('should delete rule from rule list', () => {
     expect.assertions(3);
 
-    const ruleManager = new RuleManager();
+    const ruleManager = new RuleManager({ logger });
     ruleManager.init({
       rules: [
         {
@@ -134,7 +140,7 @@ describe('RuleManager', () => {
   it('should update rule in rule list', () => {
     expect.assertions(2);
 
-    const ruleManager = new RuleManager();
+    const ruleManager = new RuleManager({ logger });
     ruleManager.init({
       rules: [
         {
@@ -172,7 +178,7 @@ describe('RuleManager', () => {
   it('should add rule to rule list', () => {
     expect.assertions(3);
 
-    const ruleManager = new RuleManager();
+    const ruleManager = new RuleManager({ logger });
     ruleManager.init({
       rules: [],
       baseRule: {

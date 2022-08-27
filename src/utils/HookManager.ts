@@ -1,11 +1,19 @@
 import { isPromise } from './index.js';
+import { Logger } from './Logger.js';
 
 export type Handler<T = any> = (val: T) => T;
 
+interface HookManagerOptions {
+  logger: Logger;
+}
+
 export class HookManager {
   hooks: Record<string, Handler[]>;
+  logger: Logger;
 
-  constructor() {
+  constructor({ logger }: HookManagerOptions) {
+    this.logger = logger;
+
     // Include default hooks
     this.hooks = {
       // Config modification at start
@@ -20,6 +28,8 @@ export class HookManager {
   }
 
   registerHook(hookName: string) {
+    this.logger.log('DEBUG', '[HookManager]', 'registerHook');
+
     if (hookName in this.hooks) {
       throw new Error('A hook already exists with that name');
     }
@@ -28,6 +38,8 @@ export class HookManager {
   }
 
   registerHandler(hookName: string, handler: Handler) {
+    this.logger.log('DEBUG', '[HookManager]', 'registerHandler');
+
     if (hookName in this.hooks === false) {
       throw new Error('No hook with that name exists');
     }
@@ -36,6 +48,8 @@ export class HookManager {
   }
 
   async executeHook<T = any>(hookName: string, initialVal: T | Promise<T>) {
+    this.logger.log('DEBUG', '[HookManager]', 'executeHook');
+
     if (hookName in this.hooks === false) {
       throw new Error('No hook with that name exists');
     }
@@ -44,6 +58,8 @@ export class HookManager {
   }
 
   executeSyncHook<T = any>(hookName: string, initialVal: T) {
+    this.logger.log('DEBUG', '[HookManager]', 'executeSyncHook');
+
     if (hookName in this.hooks === false) {
       throw new Error('No hook with that name exists');
     }

@@ -39,9 +39,9 @@ describe('Logger', () => {
     logger.log('WARN', 'Test');
     logger.log('INFO', 'Test');
 
-    expect(consoleSpy).toHaveBeenCalledWith('[ERROR] Test');
-    expect(consoleSpy).toHaveBeenCalledWith('[WARN] Test');
-    expect(consoleSpy).toHaveBeenCalledWith('[INFO] Test');
+    expect(consoleSpy).toHaveBeenCalledWith('[ERROR]', 'Test');
+    expect(consoleSpy).toHaveBeenCalledWith('[WARN]', 'Test');
+    expect(consoleSpy).toHaveBeenCalledWith('[INFO]', 'Test');
   });
 
   it('should not log if logger level is lower than log level', () => {

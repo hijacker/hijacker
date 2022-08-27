@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { HookManager } from './HookManager';
 
@@ -6,7 +6,12 @@ describe('HookManager', () => {
   let hookManager: HookManager;
 
   beforeEach(() => {
-    hookManager = new HookManager();
+    hookManager = new HookManager({
+      logger: {
+        level: 'NONE',
+        log: vi.fn()
+      }
+    });
   });
 
   it('should register a hook', () => {

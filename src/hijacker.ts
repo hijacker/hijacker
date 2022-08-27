@@ -136,11 +136,26 @@ export class Hijacker {
   }
   
   private createContext(server: Server): HijackerContext {
+    const logger = new Logger();
+
+    const eventManager = new EventManager({
+      server,
+      logger
+    });
+
+    const hookManager = new HookManager({
+      logger
+    });
+
+    const ruleManager = new RuleManager({
+      logger
+    });
+
     return {
-      eventManager: new EventManager(server),
-      hookManager: new HookManager(),
-      ruleManager: new RuleManager(),
-      logger: new Logger()
+      eventManager,
+      hookManager,
+      ruleManager,
+      logger
     };
   }
 

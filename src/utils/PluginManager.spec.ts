@@ -4,14 +4,19 @@ import { Rule } from '../rules/Rule';
 import { RuleManager } from '../rules/RuleManager';
 import { HijackerContext } from '../types';
 import { HookManager } from './HookManager';
+import { Logger } from './Logger';
 import { Plugin, PluginManager } from './PluginManager';
 
 describe('PluginManager', () => {
   let mockRuleManager: RuleManager;
   let mockHookManager: HookManager;
+  let mockLogger: Logger;
 
   beforeAll(() => {
+    mockLogger = { level: 'NONE', log: vi.fn() };
+
     mockRuleManager = {
+      logger: mockLogger,
       ruleTypes: {},
       rules: [],
       baseRule: {
@@ -27,6 +32,7 @@ describe('PluginManager', () => {
     };
 
     mockHookManager = {
+      logger: mockLogger,
       hooks: {},
       executeHook: vi.fn(),
       executeSyncHook: vi.fn(),
@@ -46,7 +52,7 @@ describe('PluginManager', () => {
     const context: HijackerContext = {
       eventManager: {} as any,
       hookManager: {} as any,
-      logger: {} as any,
+      logger: mockLogger,
       ruleManager: mockRuleManager
     };
 
@@ -68,7 +74,7 @@ describe('PluginManager', () => {
     const context: HijackerContext = {
       eventManager: {} as any,
       hookManager: {} as any,
-      logger: {} as any,
+      logger: mockLogger,
       ruleManager: mockRuleManager
     };
 
@@ -91,7 +97,7 @@ describe('PluginManager', () => {
     const context: HijackerContext = {
       eventManager: {} as any,
       hookManager: {} as any,
-      logger: {} as any,
+      logger: mockLogger,
       ruleManager: mockRuleManager
     };
 
@@ -122,7 +128,7 @@ describe('PluginManager', () => {
 
     const context: HijackerContext = {
       eventManager: {} as any,
-      logger: {} as any,
+      logger: mockLogger,
       hookManager: mockHookManager,
       ruleManager: mockRuleManager
     };
@@ -152,7 +158,7 @@ describe('PluginManager', () => {
 
     const context: HijackerContext = {
       eventManager: {} as any,
-      logger: {} as any,
+      logger: mockLogger,
       hookManager: mockHookManager,
       ruleManager: mockRuleManager
     };
@@ -177,7 +183,7 @@ describe('PluginManager', () => {
 
     const context: HijackerContext = {
       eventManager: {} as any,
-      logger: {} as any,
+      logger: mockLogger,
       hookManager: mockHookManager,
       ruleManager: mockRuleManager
     };

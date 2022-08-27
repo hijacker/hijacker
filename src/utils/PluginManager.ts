@@ -1,6 +1,7 @@
 import { RuleType } from '../rules/RuleManager';
 import { HijackerContext } from '../types';
 import { Handler } from './HookManager';
+import { Logger } from './Logger';
 
 interface PluginManagerOptions {
   context: HijackerContext;
@@ -18,9 +19,11 @@ export interface Plugin {
 export class PluginManager {
   plugins: Record<string, Plugin> = {};
   context: HijackerContext;
+  logger: Logger;
 
   constructor({ context, plugins = [] }: PluginManagerOptions) {
     this.context = context;
+    this.logger = context.logger;
 
     plugins.forEach(this.initPlugin.bind(this));
 
@@ -32,6 +35,8 @@ export class PluginManager {
   }
 
   private initPlugin(plugin: Plugin) {
+    this.logger.log('DEBUG', '[PluginManager]', 'initPlugin');
+
     if (plugin.name in this.plugins) {
       throw new Error('Plugin with name already exists');
     }
@@ -47,12 +52,16 @@ export class PluginManager {
   }
 
   private registerPluginHooks(plugin: Plugin) {
+    this.logger.log('DEBUG', '[PluginManager]', 'registerPluginHooks');
+
     plugin.hooks?.forEach((hook) => {
       this.context.hookManager.registerHook(hook);
     });
   }
 
   private registerPluginHandlers(plugin: Plugin) {
+    this.logger.log('DEBUG', '[PluginManager]', 'registerPluginHandlers');
+
     for (const [key, val] of Object.entries(plugin.handlers ?? {})) {
       this.context.hookManager.registerHandler(key, val);
     }

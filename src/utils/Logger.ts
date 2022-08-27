@@ -11,15 +11,19 @@ const logLevels = [
 export type LogLevel = typeof logLevels[number];
 
 export interface LoggerOptions {
-  level: LogLevel;
+  level?: LogLevel;
 }
 
 export class Logger {
-  level: LogLevel = 'INFO';
+  level: LogLevel;
 
-  log(level: Exclude<LogLevel, 'NONE'>, message: any) {
+  constructor({ level }: LoggerOptions = {}) {
+    this.level = level ?? 'INFO';
+  }
+
+  log(level: Exclude<LogLevel, 'NONE'>, ...args: any[]) {
     if (logLevels.indexOf(level) >= logLevels.indexOf(this.level)) {
-      console.log(`[${level}] ${message}`);
+      console.log(`[${level}]`, ...args);
     }
   }
 }

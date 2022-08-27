@@ -16,7 +16,10 @@ const hijacker = new Hijacker({
       }
     }
   ],
-  plugins: []
+  plugins: [],
+  logger: {
+    level: 'SILLY'
+  }
 });
 
 process.on('beforeExit', () => {

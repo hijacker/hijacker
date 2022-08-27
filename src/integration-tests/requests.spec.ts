@@ -84,7 +84,7 @@ describe('Request Tests', () => {
     });
   });
 
-  it.only('should return rule body if matching rule', async () => {
+  it('should return rule body if matching rule', async () => {
     expect.assertions(1);
 
     nockServer.post('/cars')
