@@ -53,18 +53,17 @@ export class RestRuleType implements RuleType<RestRule> {
       (!Object.prototype.hasOwnProperty.call(rule, 'method') || rule.method === request.method || rule.method === 'ALL');
   }
 
-  async handler(request: Request<RestRule>, baseRule: Partial<Rule<RestRule>>): Promise<HijackerResponse> {
+  async handler(request: Request<RestRule>): Promise<HijackerResponse> {
     const { originalReq, matchingRule } = request;
-    const activeRule = matchingRule ?? baseRule;
 
     const responseObj: HijackerResponse = {
-      body: activeRule.body ?? {},
+      body: matchingRule.body ?? {},
       headers: {},
-      statusCode: activeRule.statusCode ?? 200
+      statusCode: matchingRule.statusCode ?? 200
     };
 
     const requestOptions: OptionsOfTextResponseBody = {
-      url: activeRule.baseUrl + (activeRule.routeTo ?? originalReq.path),
+      url: matchingRule.baseUrl + (matchingRule.routeTo ?? originalReq.path),
       method: originalReq.method,
       headers: {
         ...originalReq.headers
@@ -92,7 +91,7 @@ export class RestRuleType implements RuleType<RestRule> {
       requestOptions.body = JSON.stringify(originalReq.body);
     }
 
-    if (!activeRule.skipApi) {
+    if (!matchingRule.skipApi) {
       const response = await got(requestOptions);
       
       let body = response.body;
@@ -100,9 +99,9 @@ export class RestRuleType implements RuleType<RestRule> {
         body = JSON.parse(body);
       } catch {}
 
-      responseObj.body = activeRule.body ?? body;
-      responseObj.statusCode = activeRule.statusCode ?? response.statusCode;
-      responseObj.headers = response.headers as Record<string, string> ?? {};
+      responseObj.body = matchingRule.body ?? body;
+      responseObj.statusCode = matchingRule.statusCode ?? response.statusCode;
+      responseObj.headers = response.headers as Record<string, string>;
     }
 
     return responseObj;

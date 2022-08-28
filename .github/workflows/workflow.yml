@@ -1,4 +1,4 @@
-name: Testing and Release
+name: CI/CD
 
 # Run on push to all branches. But only PRs to master
 on:
@@ -25,12 +25,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install Dependencies
         run: npm i
-      - name: Build Project
-        run: npm run build
-      - name: Run Linting
-        run: npm run lint
       - name: Run Tests
         run: npm test
+      - name: Run Linting
+        run: npm run lint
+      - name: Build Project
+        run: npm run build
       - name: Coveralls Parallel
         uses: coverallsapp/github-action@master
         with:
@@ -66,6 +66,8 @@ jobs:
         run: npm i
       - name: Build Project
         run: npm run build
+      - name: Build Types
+        run: npm run build:types
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

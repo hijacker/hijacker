@@ -5,6 +5,7 @@ export default defineConfig({
     include: ['src/**/*.spec.{ts,tsx}'],
     watch: false,
     coverage: {
+      provider: 'istanbul',
       reporter: ['text', 'lcov'],
       exclude: ['**/*.spec.{ts,tsx}']
     }

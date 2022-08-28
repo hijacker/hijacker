@@ -14,7 +14,6 @@ export interface RuleType<T = any> {
   isMatch(request: HijackerRequest, rule: Rule<T>): boolean;
   handler(
     request: Request<T>,
-    baseRule: Partial<Rule<T>>,
     context: HijackerContext
   ): Promise<HijackerResponse>;
 }
@@ -129,7 +128,6 @@ export class RuleManager {
   
     return this.ruleTypes[ruleType].handler(
       request,
-      this.baseRule,
       context
     );
   }

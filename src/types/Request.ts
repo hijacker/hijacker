@@ -20,6 +20,6 @@ export interface HijackerResponse {
 export interface Request<T = any> {
   originalReq: HijackerRequest;
   originalRes?: express.Response;
-  matchingRule?: Rule<T>;
+  matchingRule: Rule<T>;
 }
 

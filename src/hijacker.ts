@@ -73,16 +73,19 @@ export class Hijacker {
             method: req.method as HttpMethod
           });
 
+          
+  
+          const matchingRule = ruleManager.match(originalReq);
+          
           const request: Request = {
-            originalReq
+            originalReq,
+            matchingRule
           };
-  
-          request.matchingRule = ruleManager.match(request.originalReq);
-  
+
           // Call ruletype handler
           const newRes = await hookManager.executeHook<HijackerResponse>(
             'HIJACKER_RESPONSE',
-            await ruleManager.handler(request.matchingRule?.type ?? config.baseRule.type ?? 'rest', request, this.context)
+            await ruleManager.handler(request.matchingRule.type ?? 'rest', request, this.context)
           );
 
           // Send response to server (break out into function that takes response)
