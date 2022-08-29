@@ -28,5 +28,23 @@ describe('GraphqlRule', () => {
       expect(ruleType.isMatch(reqOne, rule)).toBe(false);
       expect(ruleType.isMatch(reqTwo, rule)).toBe(true);
     });
+
+    it('should not match invalid graphql query', () => {
+      expect.assertions(1);
+
+      const ruleType = new GraphqlRuleType();
+  
+      const rule = ruleType.createRule({
+        operationName: 'CreateTest'
+      });
+
+      const req = { 
+        body: {
+          query: ' query CreateTest {'
+        }
+      } as HijackerRequest;
+
+      expect(ruleType.isMatch(req, rule)).toBe(false);
+    });
   });
 });

@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 
-import { HijackerResponse, HijackerRequest } from '../types/Request.js';
+import { HijackerContext } from '../types/index.js';
+import { HijackerResponse, HijackerRequest, Request } from '../types/Request.js';
 import { Logger } from '../utils/Logger.js';
 import { RestRuleType } from './RestRule.js';
 import { Rule } from './Rule.js';
@@ -199,5 +200,67 @@ describe('RuleManager', () => {
 
     expect(ruleManager.rules[0].name).toBe('Rule 1');
     expect(ruleManager.rules.length).toBe(1);
+  });
+
+  it('should not allow adding rule for non-existant rule-type', () => {
+    expect.assertions(1);
+
+    const ruleManager = new RuleManager({ logger });
+    ruleManager.init({
+      rules: [],
+      baseRule: {
+        baseUrl: ''
+      }
+    });
+
+    expect(() => {
+      ruleManager.addRules([{
+        path: '/cars',
+        name: 'Rule 1',
+        skipApi: true,
+        body: {
+          Hello: 'World'
+        },
+        type: 'fakeRule'
+      }]);
+    }).toThrow('Cannot register rule for non-existant rule type `fakeRule`');
+  });
+
+  it('should not allow updating rule to a non-existant rule-type', () => {
+    expect.assertions(1);
+
+    const ruleManager = new RuleManager({ logger });
+    ruleManager.init({
+      rules: [],
+      baseRule: {
+        baseUrl: ''
+      }
+    });
+
+    expect(() => {
+      ruleManager.updateRule({
+        type: 'fakeRule'
+      });
+    }).toThrow();
+  });
+
+  it('should throw error when trying to handle unregistered rule type', () => {
+    expect.assertions(1);
+
+    const ruleManager = new RuleManager({ logger });
+    ruleManager.init({
+      rules: [],
+      baseRule: {
+        baseUrl: ''
+      }
+    });
+
+    expect(
+      ruleManager.handler(
+        'fakeRule',
+        {} as Request,
+        {} as HijackerContext
+      )
+    ).rejects.toThrow();
   });
 });

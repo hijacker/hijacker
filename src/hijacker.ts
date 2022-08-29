@@ -73,8 +73,6 @@ export class Hijacker {
             method: req.method as HttpMethod
           });
 
-          
-  
           const matchingRule = ruleManager.match(originalReq);
           
           const request: Request = {

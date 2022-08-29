@@ -183,6 +183,24 @@ describe('Request Tests', () => {
     }
   });
 
+  it('should fail a request gracefully', async () => {
+    expect.assertions(1);
+    
+    hijackerServer.context.ruleManager.baseRule = {
+      baseUrl: ''
+    };
+
+    try {
+      await got.get('http://localhost:3000/testing').json();
+    } catch (error) {
+      if (error instanceof RequestError) {
+        expect(JSON.parse(error.response?.body as string ?? '')).toContain({
+          message: 'There was an error with the hijacker request'
+        });
+      }
+    }
+  });
+
   // Figure out how to fail test when filterResponseHeaders not used
   it.todo('should remove all hopbyhop headers before returning response to client');
   it.todo('should forward rest of response headers from api');
