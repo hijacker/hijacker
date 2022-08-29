@@ -1,5 +1,5 @@
 {
-  "name": "hijacker",
+  "name": "@hijacker/core",
   "version": "0.0.0-development",
   "description": "Frontend development tool for intercepting and mocking api requests",
   "author": "Travis Weidenbenner <travis@weidenbenner.com>",
@@ -13,6 +13,9 @@
     "semantic-release": "semantic-release",
     "start": "npm run dev",
     "test": "vitest --coverage --config config/vitest.config.ts"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "type": "module",
   "main": "dist/hijacker.js",
@@ -73,7 +76,9 @@
     "> 1%",
     "last 2 versions"
   ],
-  "bin": "dist/bin/hijacker.js",
+  "bin": {
+    "hijacker": "dist/bin/hijacker.js"
+  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"

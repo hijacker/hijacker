@@ -26,12 +26,12 @@ Hijacker is a develoment too meant to proxy to an existing API while being able 
 
 #### Locally
 ```shell
-npm i -D hijacker
+npm i -D @hijacker/core
 ```
 
 #### Globally
 ```shell
-npm i -g hijacker
+npm i -g @hijacker/core
 ```
 
 ### Create Config
