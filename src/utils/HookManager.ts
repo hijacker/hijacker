@@ -30,18 +30,16 @@ export class HookManager {
   registerHook(hookName: string) {
     this.logger.log('DEBUG', '[HookManager]', 'registerHook');
 
-    if (hookName in this.hooks) {
-      throw new Error('A hook already exists with that name');
+    if (hookName in this.hooks === false) {
+      this.hooks[hookName] = [];
     }
-
-    this.hooks[hookName] = [];
   }
 
   registerHandler(hookName: string, handler: Handler) {
     this.logger.log('DEBUG', '[HookManager]', 'registerHandler');
 
     if (hookName in this.hooks === false) {
-      throw new Error('No hook with that name exists');
+      throw new Error(`Can't register handler for non-existant hook '${hookName}'`);
     }
 
     this.hooks[hookName].push(handler);
@@ -51,7 +49,7 @@ export class HookManager {
     this.logger.log('DEBUG', '[HookManager]', 'executeHook');
 
     if (hookName in this.hooks === false) {
-      throw new Error('No hook with that name exists');
+      throw new Error(`Can't execute non-existant hook '${hookName}'`);
     }
 
     return await this.hooks[hookName].reduce(async (acc, cur) => cur(await acc), initialVal);
@@ -61,7 +59,7 @@ export class HookManager {
     this.logger.log('DEBUG', '[HookManager]', 'executeSyncHook');
 
     if (hookName in this.hooks === false) {
-      throw new Error('No hook with that name exists');
+      throw new Error(`Can't execute non-existant hook '${hookName}'`);
     }
 
     return this.hooks[hookName].reduce((acc, cur) => {

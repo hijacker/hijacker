@@ -30,15 +30,6 @@ describe('HookManager', () => {
     expect(hookManager.hooks['REQUEST']).toEqual([]);
   });
 
-  it('should not allow registering hook if one with same name already exists', () => {
-    expect.assertions(1);
-
-    hookManager.registerHook('REQUEST');
-    expect(() => {
-      hookManager.registerHook('REQUEST');
-    }).toThrow('A hook already exists with that name');
-  });
-
   it('should allow registering handlers', () => {
     expect.assertions(1);
 
@@ -53,7 +44,7 @@ describe('HookManager', () => {
 
     expect(() => {
       hookManager.registerHandler('REQUEST', () => null);
-    }).toThrow('No hook with that name exists');
+    }).toThrow('Can\'t register handler for non-existant hook \'REQUEST\'');
   });
 
   it('should execute handler on value', async () => {
@@ -83,7 +74,7 @@ describe('HookManager', () => {
     expect.assertions(1);
 
     expect(hookManager.executeHook('REQUEST', () => null))
-      .rejects.toThrow('No hook with that name exists');
+      .rejects.toThrow('Can\'t execute non-existant hook \'REQUEST\'');
   });
 
   it('should execute handlers in order they were registered', async () => {
@@ -103,7 +94,7 @@ describe('HookManager', () => {
 
     expect(() => {
       hookManager.executeSyncHook('REQUEST', () => null);
-    }).toThrow('No hook with that name exists');
+    }).toThrow('Can\'t execute non-existant hook \'REQUEST\'');
   });
 
   it('should throw error when async handler registered for a sync hook', () => {
