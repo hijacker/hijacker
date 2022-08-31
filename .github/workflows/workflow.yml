@@ -1,13 +1,13 @@
 name: CI/CD
 
-# Run on push to all branches. But only PRs to master
+# Run on push to all branches. But only PRs to main
 on:
   push:
     branches:
       - '*'
   pull_request:
     branches:
-      - 'master'
+      - 'main'
 
 jobs:
   test:

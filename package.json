@@ -84,6 +84,12 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
+  "releases": {
+    "branches": [
+      "main", 
+      { "name": "beta", "prerelease": true }
+    ]
+  },
   "homepage": "http://hijacker.io",
   "license": "MIT",
   "repository": "https://github.com/travis-w/hijacker"
