@@ -1,7 +1,7 @@
 # Hijacker
 [![npm](https://img.shields.io/npm/v/@hijacker/core.svg)](https://www.npmjs.com/package/@hijacker/core)
 [![Build Status](https://github.com/travis-w/hijacker/actions/workflows/workflow.yml/badge.svg)](https://github.com/travis-w/hijacker/actions/workflows/workflow.yml)
-[![Coverage Status](https://coveralls.io/repos/github/travis-w/hijacker/badge.svg?branch=master)](https://coveralls.io/github/travis-w/hijacker?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/travis-w/hijacker/badge.svg?branch=main)](https://coveralls.io/github/travis-w/hijacker?branch=main)
 
 Hijacker is a develoment too meant to proxy to an existing API while being able to mock and modify specific requests via rules.
 
