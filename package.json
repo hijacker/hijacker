@@ -1,74 +1,84 @@
 {
-  "name": "hijacker",
+  "name": "@hijacker/core",
   "version": "0.0.0-development",
   "description": "Frontend development tool for intercepting and mocking api requests",
-  "author": "Travis Weidenbenner <travis@travisw.dev>",
+  "author": "Travis Weidenbenner <travis@weidenbenner.com>",
   "scripts": {
-    "build": "vue-cli-service build",
-    "lint": "npm run lint:front && npm run lint:back",
+    "build": "node build/dev-server.cjs",
+    "build:types": "tsc --declaration --emitDeclarationOnly",
     "commit": "git-cz",
-    "dev:back": "nodemon bin/hijacker.js",
-    "dev:front": "vue-cli-service serve",
-    "lint:back": "eslint --ext .js lib/ test/",
-    "lint:front": "eslint --ext .js --ext .vue src/",
+    "dev": "node build/dev-server.cjs --dev",
+    "lint": "eslint src/ build/",
+    "ladle:serve": "ladle serve --config config",
     "semantic-release": "semantic-release",
-    "start": "concurrently \"npm run dev:front\" \"npm run dev:back\"",
-    "storybook:build": "vue-cli-service storybook:build -c config/storybook",
-    "storybook:serve": "vue-cli-service storybook:serve -p 6006 -c config/storybook",
-    "test": "jest --coverage"
+    "start": "npm run dev",
+    "test": "vitest --coverage --config config/vitest.config.ts"
   },
-  "main": "lib/hijacker.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "main": "dist/hijacker.js",
   "files": [
-    "bin/",
-    "lib/"
+    "dist/"
   ],
   "dependencies": {
-    "body-parser": "^1.19.0",
-    "commander": "^8.1.0",
-    "express": "^4.17.1",
+    "body-parser": "^1.20.0",
+    "class-validator": "^0.13.2",
+    "colorette": "^2.0.19",
+    "commander": "^9.4.0",
+    "express": "^4.18.1",
     "express-xml-bodyparser": "^0.3.0",
-    "got": "^11.8.2",
-    "luxon": "^1.27.0",
+    "got": "^12.3.1",
+    "graphql": "^16.6.0",
+    "luxon": "^3.0.1",
     "route-matcher": "^0.1.0",
-    "socket.io": "^4.1.2",
-    "uuid": "^8.3.2",
-    "winston": "^3.3.3"
+    "socket.io": "^4.5.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^6.3.7",
-    "@storybook/vue": "^6.3.7",
-    "@vue/cli-plugin-babel": "^4.5.13",
-    "@vue/cli-plugin-router": "^4.5.13",
-    "@vue/cli-plugin-vuex": "^4.5.13",
-    "@vue/cli-service": "^4.5.13",
-    "axios": "^0.21.1",
-    "babel-eslint": "^10.1.0",
-    "commitizen": "^4.2.4",
-    "concurrently": "^6.2.1",
-    "core-js": "^3.14.0",
+    "@codemirror/lang-json": "^6.0.0",
+    "@codemirror/lint": "^6.0.0",
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
+    "@ladle/react": "^2.1.2",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/material": "^5.10.1",
+    "@types/express": "^4.17.13",
+    "@types/express-xml-bodyparser": "^0.3.2",
+    "@types/lodash": "^4.14.184",
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@types/uuid": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^5.34.0",
+    "@typescript-eslint/parser": "^5.34.0",
+    "@uiw/react-codemirror": "4.11.5",
+    "@vitest/coverage-istanbul": "^0.22.1",
+    "codemirror": "^6.0.1",
+    "commitizen": "^4.2.5",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^7.32.0",
-    "eslint-plugin-vue": "^7.16.0",
-    "jest": "^27.0.6",
-    "monaco-editor": "^0.25.1",
-    "monaco-editor-webpack-plugin": "^4.0.0",
-    "nock": "^13.1.1",
-    "nodemon": "^2.0.12",
-    "sass": "^1.35.1",
-    "sass-loader": "^10.1.1",
-    "semantic-release": "^17.4.4",
-    "socket.io-client": "^4.1.2",
-    "vue": "^2.6.14",
-    "vue-cli-plugin-storybook": "^2.0.0",
-    "vue-router": "^3.5.1",
-    "vue-template-compiler": "^2.6.14",
-    "vuex": "^3.6.2"
+    "esbuild": "^0.15.5",
+    "eslint": "^8.22.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-react": "^7.30.1",
+    "glob": "^8.0.3",
+    "lodash": "^4.17.21",
+    "nock": "^13.2.9",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.3.0",
+    "semantic-release": "^19.0.4",
+    "socket.io-client": "^4.5.1",
+    "typescript": "^4.7.4",
+    "vitest": "^0.22.1"
   },
   "browserslist": [
     "> 1%",
     "last 2 versions"
   ],
-  "bin": "bin/hijacker.js",
+  "bin": {
+    "hijacker": "dist/bin/hijacker.js"
+  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
@@ -76,11 +86,5 @@
   },
   "homepage": "http://hijacker.io",
   "license": "MIT",
-  "nodemonConfig": {
-    "ignore": [
-      "test/*",
-      "src/*"
-    ]
-  },
   "repository": "https://github.com/travis-w/hijacker"
 }

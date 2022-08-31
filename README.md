@@ -1,114 +1,157 @@
 # Hijacker
-[![npm](https://img.shields.io/npm/v/hijacker.svg)](https://www.npmjs.com/package/hijacker)
-[![Build Status](https://travis-ci.org/travis-w/hijacker.svg?branch=master)](https://travis-ci.org/travis-w/hijacker)
+[![npm](https://img.shields.io/npm/v/@hijacker/core.svg)](https://www.npmjs.com/package/@hijacker/core)
+[![Build Status](https://github.com/travis-w/hijacker/actions/workflows/workflow.yml/badge.svg)](https://github.com/travis-w/hijacker/actions/workflows/workflow.yml)
 [![Coverage Status](https://coveralls.io/repos/github/travis-w/hijacker/badge.svg?branch=master)](https://coveralls.io/github/travis-w/hijacker?branch=master)
 
-Hijacker can be used as an API relay to assist with front end development. It can intercept requests and responses between the client and the API server.
+Hijacker is a develoment too meant to proxy to an existing API while being able to mock and modify specific requests via rules.
 
-*NOTE:* Hijacker is in early development and subject may break config files from update to update.
+- [Get Started](#get-started)
+  - [Install](#install)
+  - [Create Config](#create-config)
+  - [Run](#run)
+- [Config](#config)
+  - [Config](#config-1)
+  - [Rule](#rule)
+  - [Base Rule](#base-rule)
+  - [Rule Types](#rule-types)
+  - [Logger](#logger)
+- [Extending Hijacker](#extending-hijacker)
+  - [Plugins](#plugins)
+  - [Custom Rule Types](#custom-rule-types)
+  - [Hooks](#hooks)
 
-### NPM
-Hijacker can be found on npm [here](https://www.npmjs.com/package/hijacker)
+## Get Started
 
-## Getting Started
-Hijacker is designed to be used alongside of an existing API so setting up a project is as simple as letting Hijacker know your API url and a list of rules you would like to intercept and then pointing your client to the Hijacker server instead of your API server.  If no rule is provided for a given route, it will return the response from the API server, so Hijacker can be used with out any rules, and your application should function as if Hijacker is not there.
+### Install 
 
-### Installing
-To install Hijacker, you can either install it to a specific project:
-
+#### Locally
+```shell
+npm i -D @hijacker/core
 ```
-npm install hijacker
+
+#### Globally
+```shell
+npm i -g @hijacker/core
 ```
 
-Or you can install it globally to allow use of the `hijacker` command in your terminal:
-
-```
-npm install -g hijacker
-```
-
-### Setup
-To set up a project for use with Hijacker a hijacker.conf.json file should be added to your project root. The file should be structured similar to below:
-
-```
-{
-  "base_url": "http://api.base.com", // (REQUIRED) Base URL for API to intercept (without trailing backslash) requests for
-  "port": 3000,  // Port to run the hijacker server on (Default: 3005)
-  "rules": []    // List of rule objects for intercepting requests (Default: [])
+### Create Config
+Create config file named `hijacker.config.js` with the following:
+```javascript
+module.exports = {
+  port: 3000,
+  baseRule: {
+    baseUrl: '<YOUR_API_URL>'
+  },
+  rules: []
 }
 ```
+View [Config](#config) for more information.
 
-#### Example:
-Here is an basic config file that defines a rule for the route `/cars`. Every other route will make a request to https://jsonplaceholder.typicode.com[route] and return the given response.
-```
-{
-  "base_url": "https://jsonplaceholder.typicode.com",
-  "port": 3000,
-  "rules": [
-    {
-      "path": "/cars",
-      "skipApi": true,
-      "body": {
-        "Hello": "World"
-      }
-    }
-  ]
-}
-```
+### Run
+Add a `hijacker` script to your `package.json` file:
+`"hijacker": "hijacker"`.
 
-### Running
-Once you have have your config file set up in your project you can start the Hijacker server in the following ways:
-
-#### Global Install
-If you installed Hijacker globally, to start the server, all you need to do is run the following command in a directory that contains a configuration file:
-
-```
-hijacker
-```
-
-#### Local Install
-If you installed Hijacker to a specific npm project you can run the following command in a directory with a configuration file:
-
-```
-./node_modules/.bin/hijacker
-```
-
-#### package.json Setup
-In either installation case, you can add a command similar to the following to the scripts section of the package.json file of a project.
-
-```
-"scripts": {
-  "hijacker": "hijacker"
-}
-```
-
-And then you can run the following command in your node project to start the server:
-```
+Then run the following command in the directory with your config file:
+```shell
 npm run hijacker
 ```
+Your hijacker instance should now be running at `http://localhost:3000` with the interface available at `http://localhost:3000/hijacker`.
 
-### Route Rule Object
-Below are parameters that can be used in a route rule. Optional parameters will default to values from the original request/response.
+## Config
 
-| Parameter         | Default    | Description                                                  |
-| ----------------- | ---------- | ------------------------------------------------------------ |
-| body              | (optional) | Body object to send back to client in response               |
-| disabled          | false      | Flag to allow disabling a rule without deleting from list    |
-| interceptRequest  | false      | Ability to intercept request from client before sent to api  |
-| interceptResponse | false      | Ability to intercept response from api before sent to client |
-| keepHeaders       | []         | List of headers to forward to api server                     |
-| path              | (required) | Apply rule to requests to paths that match                   |
-| skipApi           | false      | Skip call to api server and send predefined response         |
-| method            | All        | HTTP method to apply the rule to                             |
-| statusCode        | (optional) | Status code to send back to the client                       |
+### Config
+| Property | Descripton | Type | Required | Default |
+| -------- | ---------- | ---- | -------- | ------- |
+| `port` | Port that you want the hijacker instance to run on | `number` | `yes` |
+| `baseRule` | Base rule that other rules will inhert from. See [Base Rule](#base-rule) | `Partial<Rule>` | `yes` | |
+| `rules` | Array of hijacker rules. See [Rule](#rule) | `Partial<Rule>[]` | `yes` | |
+| `logger` | Logger configuration options. See [Logger](#logger) | `LoggerOptions` | `no` | |
 
+### Rule
+A tells hijacker how to handle certain requests. If no matching rule is found, hijacker will proxy the request to the API server.
 
-## Future Work
-Hijacker is currently under development with the following features planned:
-- Dashboard to configure Hijacker rules
-- Request/Response Breakpoints (Editing requests before they are sent to the API server and responses before they are sent back to the client) (Implemented but needs dashboard)
-- More advanced route rules
-  - Match paths with regex
-  - Modify responses/requests w/ functions rather than replacing with object
-- Support for multiple API's for a project
-- Better CLI
-- Allow use without an existing API server
+| Property | Description | Type | Required | Default |
+| -------- | ----------- | ---- | -------- | ------- |
+| `name` | Rule name. Used for display purposes only | `string` | `no` | |
+| `disabled` | If rule is disabled it can't be matched | `boolean` | `no` | `false` |
+| `type` | Rule type. Used to determine which RuleType to use for matching and handling the request | `string` | `rest` |
+| `baseUrl` | Base URL for API you want to point hijacker at for specific rule | `string` | `no` | |
+
+### Base Rule
+The base rule allows you set default values for the  
+
+### Rule Types
+By default hijacker includes Rest and a GraphQL rule types. Each rule type can have additional properties that build upon the base rule properties. Each rule will be merged with the Base Rule and use it's values unless overridden in the rule.
+
+The base rule has the same values as [Rules](#rule). The only difference is that `baseUrl` is required so that requests that have no matching rule will be able to be proxied.
+
+#### Rest Rule
+The rest rule type is meant for REST APIs, and will be used for rule's where `type` is set to `rest`. The rest rule type has the same properties as the [Rule](#rule), as well as the following:
+
+| Property | Description | Type | Required | Default |
+| -------- | ----------- | ---- | -------- | ------- |
+| `skipApi` | | `boolean` | `no` | `false` |
+| `method` | HTTP method of the request to match on. | `GET` \| `HEAD` \| `POST` \| `PUT` \| `DELETE` \| `OPTIONS` \| `TRACE` \| `PATCH` \| `ALL` | `no` | `ALL` |
+| `body` | Response body to send back when a rule matches | `any` | `no` | `undefined` |
+| `path` | URL path of request to match on. | `string` | `yes` | |
+| `statusCode` | Status code you would like hijacker return for a request | `number` | `no` | |
+| `routeTo` | Path to redirect request to at the API url | `string` | `no` | |
+
+#### GraphQL Rule
+The GraphQL rule type expands on the Rest Rule but adds matching that works for GraphQL queries. Right now the GraphQL rule type only matches on the operation name. 
+
+| Property | Description | Type | Required | Default |
+| -------- | ----------- | ---- | -------- | ------- |
+| `operationName` | Operation to match in graphql query | `string` | `yes` | |
+
+__Example__:
+```graphql
+query TestQuery {
+  posts {
+    name
+    id
+  }
+}
+```
+For the above query, `TestQuery` is the `operationName` that should be used to match query in a rule.
+
+### Logger
+Settings for built in logger. This may eventually get changed to accepting a custom logger.
+| Property | Description | Type | Required | Default |
+| -------- | ----------- | ---- | -------- | ------- |
+| `level` | Max log level that you wan't logged to the console. | `SILLY` \| `DEBUG` \| `HTTP` \| `INFO` \| `WARN` \| `ERROR` \| `NONE` | `no` | `INFO` |
+
+## Extending Hijacker
+Hijacker was made with extensibility in mind. There are a two ways Hijacker can be extended: custom rule types and hooks.
+
+### Plugins
+Plugins are how hooks and rule types are packaged up to be added to a config for a hijacker user to use.
+
+| Property | Description | Type | Required | Default |
+| -------- | ----------- | ---- | -------- | ------- |
+| `name` | Name of plugin | string | `yes` | |
+| `initPlugin` | Function called to initialize plugin and pass HijackerContext | `(context: HijackerContext) => void` | `no` | |
+| `hooks` | Array of hook names that the plugin allows to be hooked into | `string[]` | `no` | |
+| `handlers` | List of hook handlers for plugin | `Record<string, function>` | `no` | |
+| `ruleTypes` | Array of [custom rule types](#custom-rule-types) | `RuleType[]` | `no` | |
+
+### Custom Rule Types
+It is possible to create custom rule types, that allow for request matching and handling. You can view [RestRule](src/rules/RestRule.ts) and [GraphqlRule](src/rules/GraphqlRule.ts) for examples.
+
+| Property | Description | Type | Required | Default |
+| -------- | ----------- | ---- | -------- | ------- |
+| `type` | Rule type used to match rules | `string` | `yes` | |
+| `createRule` | Create rule object used for the handler | `(rule: Partial<Rule<T>>) => Rule<T>` | `yes` | |
+| `isMatch` | Used to determine if request matches a rule | `(request: HijackerRequest, rule: Rule<T>) => boolean` | `yes` | |
+| `handler` | Request handler for rule type | `(request: Request<T>, baseRule: Partial<Rule<T>>, context: HijackerContext) => Promise<HijackerResponse>` | `yes` | |
+
+### Hooks
+Hooks allow plugins to listen and modify objects at specific points in the request lifecycle. Hook handlers are passed an object that they can modify and return an object of the same shape. Right now Hijacker has hooks for the following events:
+
+| Hook Name | Type | Description | Synchronous |
+| --------- | ---- | ----------- | ----------- |
+| `HIJACKER_START` | `Config` | Executed when hijacker starts up and allows modifying the hijacker config | `yes` |
+| `HIJACKER_REQUEST` | `HijackerRequst` |  Begining of request. Called before rule matched | `no` |
+| `HIJACKER_RESPONSE` | `HijackerResponse` | Called after request handler, before response returned to client | `no` | 
+
+Plugins are able to add additional hooks using the HookManager which allow other plugins to modify their functionality.
