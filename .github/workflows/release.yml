@@ -59,7 +59,7 @@ jobs:
         if: ${{ github.github.ref_name != 'main' }}
         run: pnpm changeset pre enter $HIJACKER_PRE_TAG
         env:
-          HIJACKER_PRE_TAG: ${{ github.gitub.ref_name }}
+          HIJACKER_PRE_TAG: ${{ github.ref_name }}
       - name: Create Release Pull Request or Publish to npm
         uses: changesets/action@v1
         with:
