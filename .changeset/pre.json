@@ -8,6 +8,7 @@
     "@hijacker/tsconfig": "0.0.1"
   },
   "changesets": [
-    "large-turkeys-switch"
+    "large-turkeys-switch",
+    "polite-forks-learn"
   ]
 }
