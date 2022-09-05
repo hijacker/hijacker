@@ -7,6 +7,10 @@ on:
       - 'beta'
       - 'next'
   pull_request:
+    branches:
+      - 'main'
+      - 'beta'
+      - 'next'
 
 jobs:
   test:
