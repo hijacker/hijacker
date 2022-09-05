@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest';
+import { HijackerRequest } from '@hijacker/core/dist/types/Request';
 
-import { HijackerRequest } from '../types/Request';
-import { GraphqlRuleType } from './GraphqlRule';
+import { GraphQLRuleType } from './GraphQLRule.js';
 
 describe('GraphqlRule', () => {
   describe('isMatch', () => {
     it('should match correct operationName', () => {
       expect.assertions(2);
 
-      const ruleType = new GraphqlRuleType();
+      const ruleType = new GraphQLRuleType();
   
       const rule = ruleType.createRule({
         operationName: 'CreateTest'
@@ -32,7 +32,7 @@ describe('GraphqlRule', () => {
     it('should not match invalid graphql query', () => {
       expect.assertions(1);
 
-      const ruleType = new GraphqlRuleType();
+      const ruleType = new GraphQLRuleType();
   
       const rule = ruleType.createRule({
         operationName: 'CreateTest'
