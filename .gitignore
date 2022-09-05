@@ -40,9 +40,6 @@ jspm_packages/
 # dotenv environment variables file
 .env
 
-# Hijacker config
-hijacker.config.js*
-
 # Output
 dist
 

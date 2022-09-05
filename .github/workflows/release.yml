@@ -1,0 +1,69 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'beta'
+      - 'next'
+  pull_request:
+    branches:
+      - 'main'
+      - 'beta'
+      - 'next'
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Build Project
+        run: pnpm build
+      - name: Run Tests
+        run: pnpm test
+
+  release:
+    name: Release
+    needs: test
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'pnpm'
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Set Publish Tag
+        if: ${{ github.github.ref_name != 'main' }}
+        run: pnpm changesets pre enter ${{ github.gitub.ref_name }}
+      - name: Create Release Pull Request or Publish to npm
+        uses: changesets/action@v1
+        with:
+          publish: pnpm ci:publish
+          commit: Bump package versions
+          title: Bump package versions
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

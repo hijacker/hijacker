@@ -1,99 +1,31 @@
 {
-  "name": "@hijacker/core",
-  "version": "0.0.0-development",
-  "description": "Frontend development tool for intercepting and mocking api requests",
-  "author": "Travis Weidenbenner <travis@weidenbenner.com>",
+  "name": "root",
+  "version": "0.0.0",
+  "author": "Travis Weidenbenner",
+  "homepage": "http://hijacker.io",
+  "repository": "https://github.com/travis-w/hijacker",
+  "license": "MIT",
+  "private": true,
   "scripts": {
-    "build": "node build/dev-server.cjs",
-    "build:types": "tsc --declaration --emitDeclarationOnly",
     "commit": "git-cz",
-    "dev": "node build/dev-server.cjs --dev",
-    "lint": "eslint src/ build/",
-    "ladle:serve": "ladle serve --config config",
-    "semantic-release": "semantic-release",
-    "start": "npm run dev",
-    "test": "vitest --coverage --config config/vitest.config.ts"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "type": "module",
-  "main": "dist/hijacker.js",
-  "files": [
-    "dist/"
-  ],
-  "dependencies": {
-    "body-parser": "^1.20.0",
-    "class-validator": "^0.13.2",
-    "colorette": "^2.0.19",
-    "commander": "^9.4.0",
-    "express": "^4.18.1",
-    "express-xml-bodyparser": "^0.3.0",
-    "got": "^12.3.1",
-    "graphql": "^16.6.0",
-    "luxon": "^3.0.3",
-    "route-matcher": "^0.1.0",
-    "socket.io": "^4.5.1",
-    "uuid": "^8.3.2"
+    "clean:node_modules": "rimraf ./**/node_modules",
+    "clean:builds": "rimraf ./**/dist",
+    "clean:coverage": "rimraf ./**/coverage",
+    "clean:all": "pnpm clean:builds && pnpm clean:coverage && pnpm clean:node_modules",
+    "test": "pnpm -r --filter=!root test",
+    "build": "pnpm -r --filter=!root build",
+    "changeset": "changeset",
+    "ci:publish": "pnpm -r publish --filer=@hijacker/*"
   },
   "devDependencies": {
-    "@codemirror/lang-json": "^6.0.0",
-    "@codemirror/lint": "^6.0.0",
-    "@emotion/react": "^11.10.4",
-    "@emotion/styled": "^11.10.4",
-    "@ladle/react": "^2.4.2",
-    "@mui/icons-material": "^5.10.3",
-    "@mui/material": "^5.10.3",
-    "@types/express": "^4.17.13",
-    "@types/express-xml-bodyparser": "^0.3.2",
-    "@types/lodash": "^4.14.184",
-    "@types/react": "^18.0.18",
-    "@types/react-dom": "^18.0.6",
-    "@types/uuid": "^8.3.4",
-    "@typescript-eslint/eslint-plugin": "^5.36.1",
-    "@typescript-eslint/parser": "^5.36.1",
-    "@uiw/react-codemirror": "4.11.6",
-    "@vitest/coverage-istanbul": "^0.22.1",
-    "codemirror": "^6.0.1",
+    "@changesets/cli": "^2.24.4",
     "commitizen": "^4.2.5",
     "cz-conventional-changelog": "^3.3.0",
-    "esbuild": "^0.15.6",
-    "eslint": "^8.23.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-react": "^7.31.1",
-    "glob": "^8.0.3",
-    "lodash": "^4.17.21",
-    "nock": "^13.2.9",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.3.0",
-    "semantic-release": "^19.0.5",
-    "socket.io-client": "^4.5.1",
-    "typescript": "^4.8.2",
-    "vitest": "^0.22.1"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ],
-  "bin": {
-    "hijacker": "dist/bin/hijacker.js"
+    "rimraf": "^3.0.2"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  },
-  "release": {
-    "branches": [
-      "main",
-      {
-        "name": "beta",
-        "prerelease": true
-      }
-    ]
-  },
-  "homepage": "http://hijacker.io",
-  "license": "MIT",
-  "repository": "https://github.com/travis-w/hijacker"
+  }
 }
