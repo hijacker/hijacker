@@ -1,0 +1,22 @@
+{
+  "name": "@hijacker/plugin-graphql",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest --coverage",
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "devDependencies": {
+    "@hijacker/tsconfig": "workspace:*",
+    "typescript": "^4.8.2",
+    "vitest": "^0.22.1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hijacker/core": "workspace:*",
+    "graphql": "^16.6.0"
+  }
+}

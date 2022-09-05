@@ -12,8 +12,8 @@
   "extends": [
     "eslint:recommended",
     "plugin:import/recommended",
-    "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended"
+    // "plugin:react/recommended",
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -24,7 +24,7 @@
     "sourceType": "module"
   },
   "plugins": [
-    "react",
+    // "react",
     "@typescript-eslint"
   ],
   "rules": {
@@ -48,7 +48,7 @@
     "no-async-promise-executor": 0,
     "no-empty": 0,
     "react/react-in-jsx-scope": "off",
-    "@typescript-eslint/no-empty-function": "off",
-    "react/prop-types": "off"
+    "@typescript-eslint/no-empty-function": "off"
+    // "react/prop-types": "off"
   }
 }
