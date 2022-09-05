@@ -1,5 +1,5 @@
 import { defineConfig } from '@hijacker/core';
-import { GraphqlPlugin } from '@hijacker/plugin-graphql';
+import { GraphQLPlugin } from '@hijacker/plugin-graphql';
 
 export default defineConfig({
   port: 3000,
@@ -27,6 +27,6 @@ export default defineConfig({
     }
   ],
   plugins: [
-    new GraphqlPlugin({})
+    new GraphQLPlugin({})
   ]
 })

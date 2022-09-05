@@ -1,2 +1,2 @@
-export * from './GraphqlPlugin.js';
-export * from './GraphqlRule.js';
+export * from './GraphQLPlugin.js';
+export * from './GraphQLRule.js';
