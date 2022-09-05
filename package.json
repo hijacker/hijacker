@@ -15,7 +15,7 @@
     "test": "pnpm -r --filter=!root test",
     "build": "pnpm -r --filter=!root build",
     "changeset": "changeset",
-    "ci:publish": "pnpm -r publish --filter=@hijacker/*"
+    "ci:publish": "changeset tag && pnpm -r publish --filter=@hijacker/*"
   },
   "devDependencies": {
     "@changesets/cli": "^2.24.4",

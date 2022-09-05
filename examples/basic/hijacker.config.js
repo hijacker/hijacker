@@ -1,4 +1,6 @@
-export default {
+import { defineConfig } from '@hijacker/core';
+
+export default defineConfig({
   port: 3000,
   baseRule: {
     baseUrl: 'https://jsonplaceholder.typicode.com/'
@@ -10,4 +12,4 @@ export default {
       hello: 'world'
     }
   }]
-}
+})

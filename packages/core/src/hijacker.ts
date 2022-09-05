@@ -186,3 +186,5 @@ export class Hijacker {
     });
   }
 }
+
+export const defineConfig = (config: Config) => config;
