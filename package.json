@@ -13,9 +13,11 @@
     "clean:coverage": "rimraf ./**/coverage",
     "clean:all": "pnpm clean:builds && pnpm clean:coverage && pnpm clean:node_modules",
     "test": "pnpm -r --filter=!root test",
-    "build": "pnpm -r --filter=!root build"
+    "build": "pnpm -r --filter=!root build",
+    "changeset": "changeset"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.24.4",
     "commitizen": "^4.2.5",
     "cz-conventional-changelog": "^3.3.0",
     "rimraf": "^3.0.2"

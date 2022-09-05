@@ -1,6 +1,6 @@
 {
   "name": "@hijacker/core",
-  "version": "0.0.0-development",
+  "version": "1.0.1",
   "description": "Frontend development tool for intercepting and mocking api requests",
   "author": "Travis Weidenbenner <travis@weidenbenner.com>",
   "scripts": {
