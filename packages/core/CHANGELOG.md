@@ -1,5 +1,11 @@
 # @hijacker/core
 
+## 2.0.0-beta.2
+
+### Major Changes
+
+- 9ca139f: Finish breaking graphql type out into own plugin. Will now require having `@hijacker/plugin-graphql` in order to use graphql rule type.
+
 ## 2.0.0-beta.1
 
 ### Minor Changes
