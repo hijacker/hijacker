@@ -14,7 +14,8 @@
     "clean:all": "pnpm clean:builds && pnpm clean:coverage && pnpm clean:node_modules",
     "test": "pnpm -r --filter=!root test",
     "build": "pnpm -r --filter=!root build",
-    "changeset": "changeset"
+    "changeset": "changeset",
+    "ci:publish": "pnpm -r publish --filer=@hijacker/*"
   },
   "devDependencies": {
     "@changesets/cli": "^2.24.4",

@@ -1,15 +1,12 @@
-name: CI/CD
+name: Release
 
-# Run on push to all branches. But only PRs to main
 on:
   push:
     branches:
-      - 'monorepo'
+      - 'main'
       - 'beta'
-      - 'main'
+      - 'next'
   pull_request:
-    branches:
-      - 'main'
 
 jobs:
   test:
@@ -25,7 +22,7 @@ jobs:
         with:
           version: 7
       - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
@@ -35,45 +32,33 @@ jobs:
         run: pnpm build
       - name: Run Tests
         run: pnpm test
-      # - name: Run Linting
-      #   run: pnpm lint
-      # - name: Coveralls Parallel
-      #   uses: coverallsapp/github-action@master
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     flag-name: run-${{ matrix.test_number }}
-      #     path-to-lcov: './coverage/lcov.info'
-      #     parallel: true
 
-  # coveralls:
-  #   name: Coveralls
-  #   needs: test
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Coveralls Finished
-  #       uses: coverallsapp/github-action@master
-  #       with:
-  #         github-token: ${{ secrets.GITHUB_TOKEN }}
-  #         path-to-lcov: './coverage/lcov.info'
-  #         parallel-finished: true
-
-  # release:
-  #   name: Release
-  #   needs: test
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-  #     - name: Setup Node.js
-  #       uses: actions/setup-node@v1
-  #       with:
-  #         node-version: 14.x
-  #     - name: Install Dependencies
-  #       run: npm i
-  #     - name: Build Project
-  #       run: npm run build
-  #     - name: Release
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-  #       run: npm run semantic-release
+  release:
+    name: Release
+    needs: test
+    if: ${{ github.event_name == 'push' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7
+      - name: Setup Node.js ${{ matrix.node-version }}
+          uses: actions/setup-node@v3
+          with:
+            node-version: 16
+            cache: 'pnpm'
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Set Publish Tag
+        if: ${{ github.github.ref_name != 'main' }}
+        run: pnpm changesets pre enter ${{ github.gitub.ref_name }}
+      - name: Create Release Pull Request or Publish to npm
+        uses: changesets/action@v1
+        with:
+          publish: pnpm ci:publish
+          commit: Bump package versions
+          title: Bump package versions
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
