@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
-
 import { HijackerRequest } from '@hijacker/core/dist/types/Request';
-import { GraphqlRuleType } from '@hijacker/core/dist/rules/GraphqlRule';
+
+import { GraphqlRuleType } from './GraphqlRule.js';
 
 describe('GraphqlRule', () => {
   describe('isMatch', () => {

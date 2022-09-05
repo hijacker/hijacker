@@ -29,7 +29,7 @@ describe('RuleManager', () => {
     log: vi.fn()
   };
 
-  it('should have default rest and graphql matchers if none provided', () => {
+  it('should have default rest matcher if none provided', () => {
     expect.assertions(1);
 
     const ruleManager = new RuleManager({ logger });
@@ -40,7 +40,7 @@ describe('RuleManager', () => {
       }
     });
 
-    expect(Object.keys(ruleManager.ruleTypes)).toEqual(['rest', 'graphql']);
+    expect(Object.keys(ruleManager.ruleTypes)).toEqual(['rest']);
   });
 
   it('should support adding custom rule type', () => {
@@ -55,7 +55,7 @@ describe('RuleManager', () => {
     });
     ruleManager.addRuleTypes([new NewRuleType()]);
 
-    expect(Object.keys(ruleManager.ruleTypes)).toEqual(['rest', 'graphql', 'NewRule']);
+    expect(Object.keys(ruleManager.ruleTypes)).toEqual(['rest', 'NewRule']);
   });
 
   it('should match with the correct rule type', () => {

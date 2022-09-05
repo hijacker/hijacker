@@ -3,7 +3,6 @@ import { v4 as uuid } from 'uuid';
 import { HijackerContext } from '../types/index.js';
 import { Request, HijackerRequest, HijackerResponse } from '../types/Request.js';
 import { Logger } from '../utils/Logger.js';
-import { GraphqlRuleType } from './GraphqlRule.js';
 import { RestRuleType } from './RestRule.js';
 import { Rule } from './Rule.js';
 
@@ -45,7 +44,6 @@ export class RuleManager {
     this.baseRule = baseRule;
     this.rules = [];
     this.ruleTypes.rest = new RestRuleType();
-    this.ruleTypes.graphql = new GraphqlRuleType();
 
     this.addRules(rules);
   }
