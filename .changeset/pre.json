@@ -5,10 +5,12 @@
     "@examples/basic": "1.0.0",
     "@hijacker/core": "1.0.1",
     "@hijacker/plugin-graphql": "0.0.1",
-    "@hijacker/tsconfig": "0.0.1"
+    "@hijacker/tsconfig": "0.0.1",
+    "@examples/graphql": "1.0.0"
   },
   "changesets": [
     "large-turkeys-switch",
+    "modern-moose-play",
     "polite-forks-learn"
   ]
 }
