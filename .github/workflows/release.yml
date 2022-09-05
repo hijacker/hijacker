@@ -5,12 +5,10 @@ on:
     branches:
       - 'main'
       - 'beta'
-      - 'next'
   pull_request:
     branches:
       - 'main'
       - 'beta'
-      - 'next'
 
 jobs:
   test:
@@ -55,11 +53,16 @@ jobs:
           cache: 'pnpm'
       - name: Install Dependencies
         run: pnpm install
+      - name: Check for pre release file
+        id: check_files
+        uses: andstor/file-existence-action@v1
+        with:
+          files: ".changeset/pre.json"
       - name: Remove Publish Tag
-        if: ${{ github.github.ref_name == 'main' }}
+        if: ${{ github.github.ref_name == 'main' && steps.check_files.outputs.files_exists == 'true' }}
         run: pnpm changeset pre exit
       - name: Set Publish Tag
-        if: ${{ github.github.ref_name != 'main' }}
+        if: ${{ github.github.ref_name != 'main' && steps.check_files.outputs.files_exists == 'false' }}
         run: pnpm changeset pre enter $HIJACKER_PRE_TAG
         env:
           HIJACKER_PRE_TAG: ${{ github.ref_name }}
