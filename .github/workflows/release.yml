@@ -48,10 +48,10 @@ jobs:
         with:
           version: 7
       - name: Setup Node.js ${{ matrix.node-version }}
-          uses: actions/setup-node@v3
-          with:
-            node-version: 16
-            cache: 'pnpm'
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'pnpm'
       - name: Install Dependencies
         run: pnpm install
       - name: Set Publish Tag
