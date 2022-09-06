@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { HijackerRequest } from '@hijacker/core/dist/types/Request';
+import type { HijackerRequest } from '@hijacker/core';
 
 import { GraphQLRuleType } from './GraphQLRule.js';
 

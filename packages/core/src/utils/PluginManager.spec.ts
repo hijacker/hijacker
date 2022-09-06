@@ -1,11 +1,9 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { Rule } from '../rules/Rule';
-import { RuleManager } from '../rules/RuleManager';
-import { HijackerContext } from '../types';
-import { HookManager } from './HookManager';
-import { Logger } from './Logger';
-import { Plugin, PluginManager } from './PluginManager';
+import type { Rule, RuleManager } from '../rules/index.js';
+import type { HijackerContext } from '../types/index.js';
+import type { HookManager, Logger, Plugin } from './index.js';
+import {PluginManager } from './PluginManager';
 
 describe('PluginManager', () => {
   let mockRuleManager: RuleManager;

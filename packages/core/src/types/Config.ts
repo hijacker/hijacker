@@ -1,6 +1,5 @@
-import { Rule } from '../rules/Rule.js';
-import { LoggerOptions } from '../utils/Logger.js';
-import { Plugin } from '../utils/PluginManager.js';
+import type { Rule } from '../rules/index.js';
+import type { LoggerOptions, Plugin} from '../utils/index.js';
 
 export interface Config {
   port: number;

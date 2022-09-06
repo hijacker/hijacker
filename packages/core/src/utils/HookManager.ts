@@ -1,5 +1,5 @@
 import { isPromise } from './index.js';
-import { Logger } from './Logger.js';
+import type { Logger } from './index.js';
 
 export type Handler<T = any> = (val: T) => T;
 

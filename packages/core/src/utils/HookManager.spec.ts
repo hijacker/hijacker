@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { HookManager } from './HookManager';
+import { HookManager } from './index.js';
 
 describe('HookManager', () => {
   let hookManager: HookManager;

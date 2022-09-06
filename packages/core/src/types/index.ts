@@ -1,6 +1,5 @@
-import { RuleManager } from '../rules/RuleManager.js';
-import { EventManager, HookManager } from '../utils/index.js';
-import { Logger } from '../utils/Logger.js';
+import type { RuleManager } from '../rules/index.js';
+import type { EventManager, HookManager, Logger } from '../utils/index.js';
 
 export interface HijackerContext {
   ruleManager: RuleManager;
@@ -8,3 +7,7 @@ export interface HijackerContext {
   hookManager: HookManager;
   logger: Logger;
 }
+
+export * from './Config.js';
+export * from './Request.js';
+export * from './Sockets.js';

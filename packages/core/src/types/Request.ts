@@ -1,7 +1,6 @@
 import express from 'express';
 
-import { HttpMethod } from '../rules/RestRule.js';
-import { Rule } from '../rules/Rule.js';
+import { HttpMethod, Rule } from '../rules/index.js';
 
 // Request to hijacker from client
 export interface HijackerRequest {

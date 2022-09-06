@@ -1,11 +1,9 @@
 import { v4 as uuid } from 'uuid';
 
-import { HijackerContext } from '../types/index.js';
-import { Request, HijackerRequest, HijackerResponse } from '../types/Request.js';
-import { Logger } from '../utils/Logger.js';
-import { RestRuleType } from './RestRule.js';
-import { Rule } from './Rule.js';
-
+import type { Request, HijackerContext, HijackerRequest, HijackerResponse } from '../types/index.js';
+import type { Logger } from '../utils/index.js';
+import { RestRuleType } from './index.js';
+import type { Rule } from './index.js';
 
 export interface RuleType<T = any> {
   type: string;
