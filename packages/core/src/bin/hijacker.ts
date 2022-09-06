@@ -6,7 +6,7 @@ import { program } from 'commander';
 
 // import pkg from '../../package.json';
 import { Hijacker } from '../hijacker.js';
-import { Config } from '../types/Config.js';
+import type { Config } from '../types/index.js';
 
 // Define CLI
 // TODO: Read in package.json to correctly set version

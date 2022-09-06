@@ -1,11 +1,9 @@
 import { describe, it, expect, vi } from 'vitest';
 
-import { HijackerContext } from '../types/index.js';
-import { HijackerResponse, HijackerRequest, Request } from '../types/Request.js';
-import { Logger } from '../utils/Logger.js';
-import { RestRuleType } from './RestRule.js';
-import { Rule } from './Rule.js';
-import { RuleManager } from './RuleManager.js';
+import { HijackerContext, HijackerResponse, HijackerRequest, Request } from '../types/index.js';
+import { Logger } from '../utils/index.js';
+import { RestRuleType, RuleManager} from './index.js';
+import type { Rule } from './index.js';
 
 class NewRuleType extends RestRuleType {
   type = 'NewRule';

@@ -3,8 +3,8 @@ import { Server as NodeServer } from 'node:http';
 
 import { Server } from 'socket.io';
 
-import { HijackerSocketServer } from '../types/Sockets';
-import { Logger } from './Logger';
+import type { HijackerSocketServer } from '../types/index.js';
+import type { Logger } from './index.js';
 
 type EventType = 'socket' | 'event-manager' | 'both';
 

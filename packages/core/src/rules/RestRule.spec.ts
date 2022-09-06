@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
-import { HijackerRequest } from '../types/Request.js';
-import { RestRuleType } from './RestRule.js';
+import type { HijackerRequest } from '../types/index.js';
+import { RestRuleType } from './index.js';
 
 describe('RestRule', () => {
   describe('isMatch', () => {

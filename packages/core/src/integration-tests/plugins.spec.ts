@@ -2,11 +2,10 @@ import got from 'got';
 import nock, { Scope } from 'nock';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
-import { Hijacker } from '../hijacker';
-import { Rule } from '../rules/Rule';
-import { Config } from '../types/Config';
-import { HijackerRequest, HijackerResponse } from '../types/Request';
-import { Plugin } from '../utils/PluginManager';
+import { Hijacker } from '../hijacker.js';
+import type { Rule } from '../rules/index.js';
+import type { Config, HijackerRequest, HijackerResponse } from '../types/index.js';
+import type { Plugin } from '../utils/index.js';
 
 describe('Plugin Tests', () => {
   let config: Config;

@@ -1,5 +1,4 @@
-import { RuleType } from '@hijacker/core/dist/rules/RuleManager';
-import { Plugin } from '@hijacker/core/dist/utils/PluginManager';
+import type { RuleType, Plugin } from '@hijacker/core';
 
 import { GraphQLRuleType } from './GraphQLRule.js';
 

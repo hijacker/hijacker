@@ -6,17 +6,10 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import xmlParser from 'express-xml-bodyparser';
 
-import { HttpMethod } from './rules/RestRule.js';
-import { Rule } from './rules/Rule.js';
-import { RuleManager } from './rules/RuleManager.js';
-import { Config } from './types/Config.js';
-import { HijackerContext } from './types/index.js';
-import { Request, HijackerRequest, HijackerResponse } from './types/Request.js';
-import {
-  EventManager, filterResponseHeaders, HookManager
-} from './utils/index.js';
-import { Logger } from './utils/Logger.js';
-import { PluginManager } from './utils/PluginManager.js';
+import type { HttpMethod, Rule } from './rules/index.js';
+import { RuleManager } from './rules/index.js';
+import type { Config, HijackerContext, HijackerRequest, HijackerResponse, Request } from './types/index.js';
+import { EventManager, filterResponseHeaders, HookManager, Logger, PluginManager } from './utils/index.js';
 
 export class Hijacker {
   app: express.Application;
@@ -188,3 +181,6 @@ export class Hijacker {
 }
 
 export const defineConfig = (config: Config) => config;
+export * from './rules/index.js';
+export * from './types/index.js';
+export * from './utils/index.js';

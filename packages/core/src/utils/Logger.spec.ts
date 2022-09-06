@@ -1,6 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, it, SpyInstance, vi } from 'vitest';
 
-import { Logger } from './Logger';
+import { Logger } from './index.js';
 
 describe('Logger', () => {
   let consoleSpy: SpyInstance;

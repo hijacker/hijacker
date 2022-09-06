@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 import { describe, beforeAll, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
 
 import { Hijacker } from '../hijacker.js';
-import { Config } from '../types/Config.js';
+import type { Config } from '../types/index.js';
 
 describe('Socket Tests', () => {
   let hijackerServer: Hijacker;
