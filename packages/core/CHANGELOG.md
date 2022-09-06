@@ -1,5 +1,11 @@
 # @hijacker/core
 
+## 2.0.0-beta.3
+
+### Major Changes
+
+- 89a9657: Clean up type exporting in core. Allows everything to be exported out of `@hijacker/core` directly instead of digging in dist folder
+
 ## 2.0.0-beta.2
 
 ### Major Changes
