@@ -61,7 +61,7 @@ const config = {
         items: [
           {
             type: 'doc',
-            docId: 'intro',
+            docId: 'introduction',
             position: 'left',
             label: 'Docs',
           },
@@ -80,9 +80,17 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: 'Tutorial',
-                to: '/docs/intro',
+                label: 'Introduction',
+                to: '/docs/introduction',
               },
+              {
+                label: 'Getting Started',
+                to: '/docs/category/getting-started',
+              },
+              {
+                label: 'Plugins',
+                to: '/docs/plugins',
+              }
             ],
           },
           {
@@ -103,7 +111,7 @@ const config = {
               },
               {
                 label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
+                href: 'https://github.com/travis-w/hijacker',
               },
             ],
           },
