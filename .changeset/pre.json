@@ -6,9 +6,11 @@
     "@hijacker/core": "1.0.1",
     "@hijacker/plugin-graphql": "0.0.1",
     "@hijacker/tsconfig": "0.0.1",
-    "@examples/graphql": "1.0.0"
+    "@examples/graphql": "1.0.0",
+    "@docs/docs": "0.0.0"
   },
   "changesets": [
+    "big-goats-tease",
     "large-turkeys-switch",
     "modern-moose-play",
     "olive-walls-stare",
