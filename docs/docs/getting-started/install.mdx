@@ -1,0 +1,76 @@
+---
+sidebar_position: 1
+---
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Install
+Hijacker can be installed in any of the following ways.
+## Local
+<Tabs groupId="package-managers">
+  <TabItem value="npm" label="npm">
+
+  ```bash
+  npm i -D @hijacker/core
+  ```
+
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+
+  ```bash
+  pnpm add -D @hijacker/core
+  ```
+
+  </TabItem>
+</Tabs>
+
+If you choose to install hijacker to a project, you need to create a script for it in your `package.json`:
+
+```json
+{
+  ...,
+  "scripts": {
+    "hijacker": "hijacker"
+  },
+  ...
+}
+```
+
+## Global
+<Tabs groupId="package-managers">
+  <TabItem value="npm" label="npm">
+
+  ```bash
+  npm i -g @hijacker/core
+  ```
+
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+
+  ```bash
+  pnpm add -g @hijacker/core
+  ```
+
+  </TabItem>
+</Tabs>
+
+Installing hijacker locally will allow you to run the `hijacker` command anywhere in your terminal.
+
+## NPX
+Hijacker can be ran without installing with npx. Run the following command in a folder with a hijacker config file.
+<Tabs groupId="package-managers">
+  <TabItem value="npm" label="npm">
+
+  ```bash
+  npx @hijacker/core
+  ```
+
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+
+  ```bash
+  pnpm dlx @hijacker/core
+  ```
+
+  </TabItem>
+</Tabs>

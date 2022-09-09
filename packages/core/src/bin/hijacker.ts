@@ -11,7 +11,7 @@ import type { Config } from '../types/index.js';
 // Define CLI
 // TODO: Read in package.json to correctly set version
 program
-  .option('-c, --config <path>', 'set path to hijacker configuration', 'hijacker.config.json')
+  .option('-c, --config <path>', 'set path to hijacker configuration', 'hijacker.config.js')
   .version('1.0.0')
   .parse(process.argv);
 
