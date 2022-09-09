@@ -1,5 +1,11 @@
 # @hijacker/core
 
+## 2.0.0-beta.4
+
+### Patch Changes
+
+- a527f6b: Fix build for deployment. PNPM doesn't build before publish so need to add that step in.
+
 ## 2.0.0-beta.3
 
 ### Major Changes
