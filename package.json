@@ -13,8 +13,9 @@
     "clean:coverage": "rimraf ./**/coverage",
     "clean:docs": "rimraf ./docs/.docusaurus",
     "clean:all": "pnpm clean:builds && pnpm clean:coverage && pnpm clean:docs && pnpm clean:node_modules",
-    "test": "pnpm -r --filter=!root test",
-    "build": "pnpm -r --filter=!root build",
+    "test": "pnpm -r --filter=!root --filter=!@docs/* test",
+    "build": "pnpm -r --filter=!root --filter=!@docs/* build",
+    "build:docs": "pnpm --filter=@docs/* build",
     "dev:docs": "pnpm --filter=@docs/docs start",
     "changeset": "changeset",
     "ci:publish": "changeset tag && pnpm -r publish --filter=@hijacker/*"
