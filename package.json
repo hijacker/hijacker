@@ -18,7 +18,7 @@
     "build:docs": "pnpm --filter=@docs/* build",
     "dev:docs": "pnpm --filter=@docs/docs start",
     "changeset": "changeset",
-    "ci:publish": "changeset tag && pnpm -r publish --filter=@hijacker/*"
+    "ci:publish": "changeset tag && pnpm build && pnpm -r publish --filter=@hijacker/*"
   },
   "devDependencies": {
     "@changesets/cli": "^2.24.4",

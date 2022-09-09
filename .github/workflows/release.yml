@@ -71,7 +71,7 @@ jobs:
       - name: Create Release Pull Request or Publish to npm
         uses: changesets/action@v1
         with:
-          publish: pnpm build && pnpm ci:publish --tag $HIJACKER_RELEASE_TAG --no-git-checks
+          publish: pnpm ci:publish --tag $HIJACKER_RELEASE_TAG --no-git-checks
           commit: Bump package versions
           title: Bump package versions
         env:
