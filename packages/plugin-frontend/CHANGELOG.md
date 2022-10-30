@@ -1,5 +1,11 @@
 # @hijacker/plugin-frontend
 
+## 1.0.0-beta.1
+
+### Patch Changes
+
+- 9abbc3d: Fix deploy for frontend
+
 ## 1.0.0-beta.0
 
 ### Major Changes
