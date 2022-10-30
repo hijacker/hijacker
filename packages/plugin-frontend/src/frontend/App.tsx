@@ -7,7 +7,7 @@ import { theme } from './styles/theme.js';
 
 export const App = () => {
   return (
-    <BrowserRouter basename="/hijacker">
+    <BrowserRouter>
       <ConfigProvider>
         <ThemeProvider theme={theme}>
           <Container>

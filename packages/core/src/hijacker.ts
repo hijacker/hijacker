@@ -6,10 +6,10 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import xmlParser from 'express-xml-bodyparser';
 
-import type { HttpMethod, Rule } from './rules/index.js';
-import { RuleManager } from './rules/index.js';
+import type { HttpMethod } from './rules/index.js';
+import { RuleManager, HookManager, EventManager, PluginManager } from './managers/index.js';
 import type { Config, HijackerContext, HijackerRequest, HijackerResponse, Request } from './types/index.js';
-import { EventManager, filterResponseHeaders, HookManager, Logger, PluginManager } from './utils/index.js';
+import { filterResponseHeaders, Logger } from './utils/index.js';
 
 export class Hijacker {
   app: express.Application;
@@ -22,8 +22,7 @@ export class Hijacker {
     this.server = new Server(this.app);
     this.context = this.createContext(this.server);
 
-    const { 
-      eventManager,
+    const {
       hookManager,
       ruleManager,
       logger
@@ -98,33 +97,6 @@ export class Hijacker {
       });
     
     this.server.listen(config.port, () => {
-      // Set up sockets
-      eventManager.on('connection', (socket) => {
-        socket.emit('SETTINGS', {
-          baseRule: ruleManager.baseRule,
-          rules: ruleManager.rules
-        });
-
-        socket.on('UPDATE_BASE_RULE', (rule: Partial<Rule<any>>) => {
-          ruleManager.baseRule = rule;
-        });
-
-        socket.on('UPDATE_RULES', (rules: Partial<Rule>[]) => {
-          rules.forEach((rule) => ruleManager.updateRule(rule));
-          eventManager.emit('UPDATE_RULES', ruleManager.rules);
-        });
-
-        socket.on('ADD_RULES', (rules: Partial<Rule>[]) => {
-          ruleManager.addRules(rules);
-          eventManager.emit('UPDATE_RULES', ruleManager.rules);
-        });
-
-        socket.on('DELETE_RULES', (ids: string[]) => {
-          ids.forEach((id) => ruleManager.deleteRule(id));
-          eventManager.emit('UPDATE_RULES', ruleManager.rules);
-        });
-      }, 'socket');
-
       this.emit('started', config.port);
     });
   }
@@ -142,7 +114,8 @@ export class Hijacker {
     });
 
     const ruleManager = new RuleManager({
-      logger
+      logger,
+      eventManager
     });
 
     return {
@@ -154,25 +127,23 @@ export class Hijacker {
   }
 
   on(eventName: string, cb: (...args: any[]) => void) {
-    this.context.eventManager.on(eventName, cb, 'event-manager');
+    this.context.eventManager.on(eventName, cb);
   }
 
   once(eventName: string, cb: (...args: any[]) => void) {
-    this.context.eventManager.once(eventName, cb, 'event-manager');
+    this.context.eventManager.once(eventName, cb);
   }
 
   off(eventName: string, cb: (...args: any[]) => void) {
-    this.context.eventManager.off(eventName, cb, 'event-manager');
+    this.context.eventManager.off(eventName, cb);
   }
 
   emit(eventName: string, val: any) {
-    this.context.eventManager.emit(eventName, val, 'event-manager');
+    this.context.eventManager.emit(eventName, val);
   }
 
   async close() {
     return new Promise<void>(async (done) => {
-      this.context.eventManager.close();
-
       this.server.close(() => {
         done();
       });
@@ -184,3 +155,4 @@ export const defineConfig = (config: Config) => config;
 export * from './rules/index.js';
 export * from './types/index.js';
 export * from './utils/index.js';
+export * from './managers/index.js';

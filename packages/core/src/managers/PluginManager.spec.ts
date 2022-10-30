@@ -1,9 +1,10 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { Rule, RuleManager } from '../rules/index.js';
+import type { Rule } from '../rules/index.js';
+import type { RuleManager, HookManager } from './index.js';
 import type { HijackerContext } from '../types/index.js';
-import type { HookManager, Logger, Plugin } from './index.js';
-import {PluginManager } from './PluginManager';
+import type { Logger } from '../utils/index.js';
+import { PluginManager, Plugin } from './PluginManager';
 
 describe('PluginManager', () => {
   let mockRuleManager: RuleManager;
@@ -20,6 +21,7 @@ describe('PluginManager', () => {
       baseRule: {
         baseUrl: ''
       },
+
       init: vi.fn(),
       addRuleTypes: vi.fn(),
       addRules: vi.fn(),
@@ -27,6 +29,9 @@ describe('PluginManager', () => {
       deleteRule: vi.fn(),
       match: vi.fn(),
       handler: vi.fn(),
+      events: {
+        emit: vi.fn()
+      } as any
     };
 
     mockHookManager = {

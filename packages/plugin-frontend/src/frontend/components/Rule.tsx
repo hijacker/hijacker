@@ -16,7 +16,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import { debounce, isEqual } from 'lodash';
 import { SyntheticEvent, useState } from 'react';
 
-import { Rule as RuleType } from '../../rules/Rule.js';
+import { Rule as RuleType } from '@hijacker/core';
 
 interface RuleProps {
   rule: Partial<RuleType<any>>;

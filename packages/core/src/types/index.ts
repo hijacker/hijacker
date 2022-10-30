@@ -1,5 +1,5 @@
-import type { RuleManager } from '../rules/index.js';
-import type { EventManager, HookManager, Logger } from '../utils/index.js';
+import type { RuleManager, EventManager, HookManager } from '../managers/index.js';
+import type { Logger } from '../utils/index.js';
 
 export interface HijackerContext {
   ruleManager: RuleManager;

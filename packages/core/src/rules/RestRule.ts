@@ -7,7 +7,8 @@ import { routeMatcher } from 'route-matcher';
 import { v4 as uuid } from 'uuid';
 
 import type { HijackerRequest, HijackerResponse, Request } from '../types/index.js';
-import type { Rule, RuleType } from './index.js';
+import type { Rule } from './index.js';
+import type { RuleType } from '../managers/index.js';
 
 export type HttpMethod =
   'GET' |
