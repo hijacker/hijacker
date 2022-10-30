@@ -7,11 +7,13 @@
     "@hijacker/plugin-graphql": "0.0.1",
     "@hijacker/tsconfig": "0.0.1",
     "@examples/graphql": "1.0.0",
-    "@docs/docs": "0.0.0"
+    "@docs/docs": "0.0.0",
+    "@hijacker/plugin-frontend": "0.0.0"
   },
   "changesets": [
     "big-goats-tease",
     "large-turkeys-switch",
+    "lovely-avocados-tease",
     "modern-moose-play",
     "olive-walls-stare",
     "polite-forks-learn"

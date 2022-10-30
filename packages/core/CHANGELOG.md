@@ -1,5 +1,13 @@
 # @hijacker/core
 
+## 2.0.0-beta.5
+
+### Minor Changes
+
+- 5fe7b8b: Refactor frontend into seperate plugin.
+
+  Refactor managers in `@hijacker/core` for better organization.
+
 ## 2.0.0-beta.4
 
 ### Patch Changes
