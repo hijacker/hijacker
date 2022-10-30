@@ -1,5 +1,12 @@
 # @hijacker/plugin-graphql
 
+## 1.0.0-beta.5
+
+### Patch Changes
+
+- Updated dependencies [5fe7b8b]
+  - @hijacker/core@2.0.0-beta.5
+
 ## 1.0.0-beta.4
 
 ### Patch Changes
