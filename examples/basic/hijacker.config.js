@@ -1,4 +1,5 @@
 import { defineConfig } from '@hijacker/core';
+import { FrontendPlugin } from '@hijacker/plugin-frontend';
 
 export default defineConfig({
   port: 3000,
@@ -11,5 +12,10 @@ export default defineConfig({
     body: {
       hello: 'world'
     }
-  }]
+  }],
+  plugins: [
+    new FrontendPlugin({
+      port: 3001
+    })
+  ]
 })

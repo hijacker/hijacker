@@ -7,6 +7,7 @@
     "start": "hijacker -c hijacker.config.js"
   },
   "dependencies": {
-    "@hijacker/core": "workspace:*"
+    "@hijacker/core": "workspace:*",
+    "@hijacker/plugin-frontend": "workspace:*"
   }
 }

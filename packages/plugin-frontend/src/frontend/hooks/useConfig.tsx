@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState , createContext } from 'react';
 import { io } from 'socket.io-client';
+import { Rule, HijackerSocketClient} from '@hijacker/core';
 
-import { Rule } from '../../rules/Rule.js';
-import { HijackerSocketClient } from '../../types/Sockets.js';
 
 interface ConfigContext {
   baseRule?: Partial<Rule<any>>;

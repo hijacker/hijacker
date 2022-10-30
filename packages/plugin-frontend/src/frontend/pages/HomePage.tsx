@@ -10,12 +10,14 @@ export const HomePage = () => {
     <div>
       <Typography variant="h2">Base Rule</Typography>
       {baseRule && (
-        <Rule
-          rule={baseRule}
-          onChange={updateBaseRule}
-          name="Base Rule"
-          disableable={false}
-        />  
+        <div>
+          <Rule
+            rule={baseRule}
+            onChange={updateBaseRule}
+            name="Base Rule"
+            disableable={false}
+          /> 
+        </div> 
       )}
       <Typography variant="h2">Rules</Typography>
       {rules.map(x => (

@@ -6,7 +6,8 @@ import { describe, beforeAll, it, expect, beforeEach, afterEach, afterAll } from
 import { Hijacker } from '../hijacker.js';
 import type { Config } from '../types/index.js';
 
-describe('Socket Tests', () => {
+// TODO: Move to @hijacker/plugin-frontend
+describe.skip('Socket Tests', () => {
   let hijackerServer: Hijacker;
   let nockServer: any;
   let socket: any;

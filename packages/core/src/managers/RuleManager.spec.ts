@@ -1,9 +1,11 @@
 import { describe, it, expect, vi } from 'vitest';
 
 import { HijackerContext, HijackerResponse, HijackerRequest, Request } from '../types/index.js';
+import type { EventManager } from './index.js';
 import { Logger } from '../utils/index.js';
-import { RestRuleType, RuleManager} from './index.js';
-import type { Rule } from './index.js';
+import { RestRuleType } from '../rules/index.js';
+import { RuleManager } from './RuleManager.js';
+import type { Rule } from '../rules/index.js';
 
 class NewRuleType extends RestRuleType {
   type = 'NewRule';
@@ -27,10 +29,14 @@ describe('RuleManager', () => {
     log: vi.fn()
   };
 
+  const eventManager: EventManager = {
+    emit: vi.fn(),
+  } as any;
+
   it('should have default rest matcher if none provided', () => {
     expect.assertions(1);
 
-    const ruleManager = new RuleManager({ logger });
+    const ruleManager = new RuleManager({ logger, eventManager });
     ruleManager.init({
       rules: [],
       baseRule: {
@@ -44,7 +50,7 @@ describe('RuleManager', () => {
   it('should support adding custom rule type', () => {
     expect.assertions(1);
 
-    const ruleManager = new RuleManager({ logger });
+    const ruleManager = new RuleManager({ logger, eventManager });
     ruleManager.init({
       rules: [],
       baseRule: {
@@ -59,7 +65,7 @@ describe('RuleManager', () => {
   it('should match with the correct rule type', () => {
     expect.assertions(1);
     
-    const ruleManager = new RuleManager({ logger });
+    const ruleManager = new RuleManager({ logger, eventManager });
 
     ruleManager.addRuleTypes([new NewRuleType()]);
     
@@ -103,7 +109,7 @@ describe('RuleManager', () => {
   it('should delete rule from rule list', () => {
     expect.assertions(3);
 
-    const ruleManager = new RuleManager({ logger });
+    const ruleManager = new RuleManager({ logger, eventManager });
     ruleManager.init({
       rules: [
         {
@@ -139,7 +145,7 @@ describe('RuleManager', () => {
   it('should update rule in rule list', () => {
     expect.assertions(2);
 
-    const ruleManager = new RuleManager({ logger });
+    const ruleManager = new RuleManager({ logger, eventManager });
     ruleManager.init({
       rules: [
         {
@@ -177,7 +183,7 @@ describe('RuleManager', () => {
   it('should add rule to rule list', () => {
     expect.assertions(3);
 
-    const ruleManager = new RuleManager({ logger });
+    const ruleManager = new RuleManager({ logger, eventManager });
     ruleManager.init({
       rules: [],
       baseRule: {
@@ -203,7 +209,7 @@ describe('RuleManager', () => {
   it('should not allow adding rule for non-existant rule-type', () => {
     expect.assertions(1);
 
-    const ruleManager = new RuleManager({ logger });
+    const ruleManager = new RuleManager({ logger, eventManager });
     ruleManager.init({
       rules: [],
       baseRule: {
@@ -227,7 +233,7 @@ describe('RuleManager', () => {
   it('should not allow updating rule to a non-existant rule-type', () => {
     expect.assertions(1);
 
-    const ruleManager = new RuleManager({ logger });
+    const ruleManager = new RuleManager({ logger, eventManager });
     ruleManager.init({
       rules: [],
       baseRule: {
@@ -245,7 +251,7 @@ describe('RuleManager', () => {
   it('should throw error when trying to handle unregistered rule type', () => {
     expect.assertions(1);
 
-    const ruleManager = new RuleManager({ logger });
+    const ruleManager = new RuleManager({ logger, eventManager });
     ruleManager.init({
       rules: [],
       baseRule: {
