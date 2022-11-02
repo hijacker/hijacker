@@ -1,5 +1,6 @@
 import { json, jsonParseLinter } from '@codemirror/lang-json';
 import { linter } from '@codemirror/lint';
+import { Rule as RuleType } from '@hijacker/core';
 import { ExpandMore } from '@mui/icons-material';
 import {
   Accordion,
@@ -16,7 +17,6 @@ import CodeMirror from '@uiw/react-codemirror';
 import { debounce, isEqual } from 'lodash';
 import { SyntheticEvent, useState } from 'react';
 
-import { Rule as RuleType } from '@hijacker/core';
 
 interface RuleProps {
   rule: Partial<RuleType<any>>;

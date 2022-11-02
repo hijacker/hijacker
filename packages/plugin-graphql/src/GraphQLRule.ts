@@ -1,7 +1,7 @@
-import { OperationDefinitionNode, parse } from 'graphql';
 
 import type { HijackerRequest, RestRule, Rule } from '@hijacker/core';
 import { RestRuleType } from '@hijacker/core';
+import { OperationDefinitionNode, parse } from 'graphql';
 
 export interface GraphQLRule extends RestRule {
   operationName?: string;

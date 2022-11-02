@@ -3,9 +3,9 @@ import nock, { Scope } from 'nock';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 import { Hijacker } from '../hijacker.js';
+import type { Plugin } from '../managers/index.js';
 import type { Rule } from '../rules/index.js';
 import type { Config, HijackerRequest, HijackerResponse } from '../types/index.js';
-import type { Plugin } from '../managers/index.js';
 
 describe('Plugin Tests', () => {
   let config: Config;

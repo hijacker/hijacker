@@ -30,6 +30,8 @@ jobs:
           cache: 'pnpm'
       - name: Install Dependencies
         run: pnpm install
+      - name: Lint Project
+        run: pnpm lint
       - name: Build Project
         run: pnpm build
       - name: Run Tests

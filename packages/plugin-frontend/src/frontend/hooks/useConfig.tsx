@@ -1,6 +1,6 @@
+import { Rule, HijackerSocketClient } from '@hijacker/core';
 import { useContext, useEffect, useState , createContext } from 'react';
 import { io } from 'socket.io-client';
-import { Rule, HijackerSocketClient} from '@hijacker/core';
 
 
 interface ConfigContext {

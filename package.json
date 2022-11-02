@@ -13,12 +13,13 @@
     "clean:coverage": "rimraf ./**/coverage",
     "clean:docs": "rimraf ./docs/.docusaurus",
     "clean:all": "pnpm clean:builds && pnpm clean:coverage && pnpm clean:docs && pnpm clean:node_modules",
-    "test": "pnpm -r --filter=!root --filter=!@docs/* test",
-    "build": "pnpm -r --filter=!root --filter=!@docs/* build",
+    "test": "pnpm --filter=!root --filter=!@docs/* test",
+    "build": "pnpm --filter=!root --filter=!@docs/* build",
     "build:docs": "pnpm --filter=@docs/* build",
     "dev:docs": "pnpm --filter=@docs/docs start",
     "changeset": "changeset",
-    "ci:publish": "changeset tag && pnpm build && pnpm -r publish --filter=@hijacker/*"
+    "ci:publish": "changeset tag && pnpm build && pnpm -r publish --filter=@hijacker/*",
+    "lint": "pnpm -r lint"
   },
   "devDependencies": {
     "@changesets/cli": "^2.24.4",

@@ -6,8 +6,8 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import xmlParser from 'express-xml-bodyparser';
 
-import type { HttpMethod } from './rules/index.js';
 import { RuleManager, HookManager, EventManager, PluginManager } from './managers/index.js';
+import type { HttpMethod } from './rules/index.js';
 import type { Config, HijackerContext, HijackerRequest, HijackerResponse, Request } from './types/index.js';
 import { filterResponseHeaders, Logger } from './utils/index.js';
 

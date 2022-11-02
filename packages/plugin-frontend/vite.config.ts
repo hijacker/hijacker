@@ -6,6 +6,5 @@ export default defineConfig({
   root: './src/frontend',
   build: {
     outDir: '../../dist/frontend'
-  },
-  
+  }
 });
