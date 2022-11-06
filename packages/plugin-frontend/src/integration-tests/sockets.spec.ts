@@ -187,7 +187,7 @@ describe('Socket Tests', () => {
     });
   }));
 
-  it.only('should delete rules on DELETE_RULES', () => new Promise<void>((done) => {
+  it('should delete rules on DELETE_RULES', () => new Promise<void>((done) => {
     expect.assertions(2);
 
     const numRules = hijackerServer.context.ruleManager.rules.length;
