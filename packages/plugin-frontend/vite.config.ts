@@ -5,7 +5,9 @@ import { visualizer } from 'rollup-plugin-visualizer';
 export default defineConfig({
   plugins: [
     react(),
-    visualizer()
+    visualizer({
+      filename: 'visualize.html'
+    })
   ],
   root: './src/frontend',
   build: {

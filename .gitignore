@@ -43,6 +43,11 @@ jspm_packages/
 # Output
 dist
 
+# Bundle Visualize Ouput
+visualize.html
+
 # Editor settings
 .vscode
+
+# OS Files
 .DS_Store
