@@ -14,7 +14,7 @@ import {
   Switch
 } from '@mui/material';
 import CodeMirror from '@uiw/react-codemirror';
-import { debounce, isEqual } from 'lodash';
+import { debounce, isEqual } from 'lodash-es';
 import { SyntheticEvent, useState } from 'react';
 
 

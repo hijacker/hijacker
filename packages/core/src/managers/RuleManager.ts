@@ -95,10 +95,10 @@ export class RuleManager {
     this.events.emit('RULES_UPDATED', this.rules);
   }
 
-  deleteRule(id: string) {
+  deleteRules(ids: string[]) {
     this.logger.log('DEBUG', '[RuleManager]', 'deleteRules');
 
-    this.rules = this.rules.filter(x => x.id !== id);
+    this.rules = this.rules.filter(x => !ids.includes(x.id));
 
     this.events.emit('RULES_UPDATED', this.rules);
   }

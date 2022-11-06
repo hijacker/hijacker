@@ -1,13 +1,13 @@
+import { Hijacker } from '@hijacker/core';
+import type { Config } from '@hijacker/core';
 import got from 'got';
 import nock from 'nock';
 import io from 'socket.io-client';
 import { describe, beforeAll, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
 
-import { Hijacker } from '../hijacker.js';
-import type { Config } from '../types/index.js';
+import { FrontendPlugin } from '../FrontendPlugin.js';
 
-// TODO: Move to @hijacker/plugin-frontend
-describe.skip('Socket Tests', () => {
+describe('Socket Tests', () => {
   let hijackerServer: Hijacker;
   let nockServer: any;
   let socket: any;
@@ -44,7 +44,12 @@ describe.skip('Socket Tests', () => {
       ],
       logger: {
         level: 'NONE'
-      }
+      },
+      plugins: [
+        new FrontendPlugin({
+          port: 4001
+        })
+      ]
     };
 
     hijackerServer = new Hijacker(config);
@@ -56,7 +61,7 @@ describe.skip('Socket Tests', () => {
   });
 
   beforeEach(() => {
-    socket = io('http://localhost:4000');
+    socket = io('http://localhost:4001');
   });
 
   afterEach(() => {
@@ -182,13 +187,14 @@ describe.skip('Socket Tests', () => {
     });
   }));
 
-  it('should delete rules on DELETE_RULES', () => new Promise<void>((done) => {
+  it.only('should delete rules on DELETE_RULES', () => new Promise<void>((done) => {
     expect.assertions(2);
 
     const numRules = hijackerServer.context.ruleManager.rules.length;
 
     socket.on('UPDATE_RULES', (data: any) => {
       expect(data.length).toBe(numRules - 2);
+
       done();
     });
 

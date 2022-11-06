@@ -1,8 +1,7 @@
+import type { Rule, Config } from '@hijacker/core';
 import type { Server } from 'socket.io';
 import type { Socket } from 'socket.io-client';
 
-import type { Rule } from '../rules/index.js';
-import type { Config } from './index.js';
 
 export interface ClientToServerEvents {
   ADD_RULES: (rule: Partial<Rule<any>>[]) => void;

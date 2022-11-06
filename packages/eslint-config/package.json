@@ -1,12 +1,22 @@
 {
   "name": "@hijacker/eslint-config",
   "version": "0.0.0",
+  "description": "ESLint config used for hijacker development",
+  "author": "Travis Weidenbenner <travis@weidenbenner.com>",
   "main": "index.js",
+  "homepage": "http://hijacker.io",
   "license": "MIT",
+  "repository": "https://github.com/travis-w/hijacker",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",
     "eslint": "^8.23.0",
     "eslint-plugin-import": "^2.26.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.8.4"
   }
 }

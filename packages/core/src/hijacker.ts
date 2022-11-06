@@ -20,7 +20,7 @@ export class Hijacker {
   constructor(startConfig: Config) {
     this.app = express();
     this.server = new Server(this.app);
-    this.context = this.createContext(this.server);
+    this.context = this.createContext();
 
     const {
       hookManager,
@@ -101,11 +101,10 @@ export class Hijacker {
     });
   }
   
-  private createContext(server: Server): HijackerContext {
+  private createContext(): HijackerContext {
     const logger = new Logger();
 
     const eventManager = new EventManager({
-      server,
       logger
     });
 
