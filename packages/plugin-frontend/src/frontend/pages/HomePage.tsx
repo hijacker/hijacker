@@ -20,13 +20,15 @@ export const HomePage = () => {
         </div> 
       )}
       <Typography variant="h2">Rules</Typography>
-      {rules.map(x => (
-        <Rule
-          rule={x}
-          key={x.id} 
-          onChange={updateRule}
-        />
-      ))}
+      <div>
+        {rules.map(x => (
+          <Rule
+            rule={x}
+            key={x.id} 
+            onChange={updateRule}
+          />
+        ))}
+      </div>
       <Button onClick={() => addRule({})}>
         Add Rule
       </Button>

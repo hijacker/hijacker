@@ -1,6 +1,6 @@
 import { json, jsonParseLinter } from '@codemirror/lang-json';
 import { linter } from '@codemirror/lint';
-import { Rule as RuleType } from '@hijacker/core';
+import { HttpMethod, Rule as RuleType } from '@hijacker/core';
 import { ExpandMore } from '@mui/icons-material';
 import {
   Accordion,
@@ -30,12 +30,14 @@ interface TabPanelProps {
   show: boolean;
 }
 
-const RuleMethod = styled(Typography)`
-  background-color: #fbf1e6;
-  border: 1px solid #e69624;
+const RuleMethod = styled(Typography)<{ method: HttpMethod }>`
+  background-color: ${({ theme, method }) => theme.palette.methods[method]?.background ?? '#fff' };
+  border: 1px solid ${({ theme, method }) => theme.palette.methods[method]?.border ?? '#fff' };
   color: #000000;
   padding: 2px 10px;
   margin-right: 10px;
+  width: 95px;
+  text-align: center;
 `;
 
 const RuleTitle = styled(Typography)`
@@ -78,7 +80,7 @@ export const Rule = (props: RuleProps) => {
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <RuleMethod>POST</RuleMethod>
+        <RuleMethod method={rule.method ?? 'ALL'}>{rule.method ?? 'ALL'}</RuleMethod>
         <RuleTitle fontWeight="600" sx={{ flexGrow: 1 }}>{name ?? rule.name ?? rule.path}</RuleTitle>
         { disableable && <Switch
           size="small"
