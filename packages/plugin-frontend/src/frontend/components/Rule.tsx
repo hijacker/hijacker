@@ -1,5 +1,3 @@
-import { json, jsonParseLinter } from '@codemirror/lang-json';
-import { linter } from '@codemirror/lint';
 import { HttpMethod, Rule as RuleType } from '@hijacker/core';
 import { ExpandMore } from '@mui/icons-material';
 import {
@@ -11,11 +9,13 @@ import {
   Box,
   Tab,
   Tabs,
-  Switch
+  Switch,
+  Button
 } from '@mui/material';
-import CodeMirror from '@uiw/react-codemirror';
-import { debounce, isEqual } from 'lodash-es';
-import { SyntheticEvent, useState } from 'react';
+
+import { isEqual } from 'lodash-es';
+import { SyntheticEvent, useEffect, useState } from 'react';
+import { Editor } from './Editor';
 
 
 interface RuleProps {
@@ -23,6 +23,7 @@ interface RuleProps {
   name?: string;
   disableable?: boolean;
   onChange?: (rule: Partial<RuleType<any>>) => void;
+  onDelete?: (ruleId: string) => void;
 }
 
 interface TabPanelProps {
@@ -44,6 +45,17 @@ const RuleTitle = styled(Typography)`
   padding: 2px 0;
 `;
 
+const AccordionFooter = styled(Box)`
+  display: flex;
+  justify-content: right;
+  gap: ${({theme}) => theme.spacing(1)};
+  margin: ${({theme}) => theme.spacing(1)} 0;
+
+  & > button {
+    width: 90px;
+  }
+`
+
 const TabPanel = (props: TabPanelProps) => {
   const { show, children } = props;
 
@@ -55,23 +67,49 @@ const TabPanel = (props: TabPanelProps) => {
 };
 
 export const Rule = (props: RuleProps) => {
-  const { rule, onChange, name, disableable = true } = props;
+  const { rule, onChange, name, disableable = true, onDelete } = props;
 
   const [activeTab, setActiveTab] = useState(0);
+  const [ruleSource, setRuleSource] = useState(JSON.stringify(rule, null, 2));
 
   const handleTabChange = (event: SyntheticEvent, val: number) => {
     setActiveTab(val);
   };
 
-  const handleSourceChange = (val: string) => {
-    if (onChange && !isEqual(val, rule)) {
-      try {
-        onChange(JSON.parse(val));
-      } catch {
-        console.error('Invalid rule object');
-      }
+  const handleSourceChange = (val?: string) => {
+    if (val) {
+      setRuleSource(val);
     }
   };
+
+  const onSaveRule = () => {
+    try {
+      const newVal = JSON.parse(ruleSource)
+      if (onChange && !isEqual(newVal, rule)) {
+        onChange(newVal);
+      }
+    } catch {
+      console.error('Invalid rule object');
+    }
+  }
+
+  const onDeleteRule = () => {
+    if (onDelete && rule.id) {
+      onDelete(rule.id);
+    }
+  }
+
+  useEffect(() => {
+    try {
+      const curVal = JSON.parse(ruleSource)
+
+      if (!isEqual(curVal, rule)) {
+        setRuleSource(JSON.stringify(rule, null, 2));
+      }
+    } catch {
+      setRuleSource(JSON.stringify(rule, null, 2));
+    }
+  }, [rule]);
 
   return (
     <Accordion>
@@ -88,6 +126,7 @@ export const Rule = (props: RuleProps) => {
           onClick={(e) => e.stopPropagation()}
           onChange={(e, checked) => {
             if (onChange) {
+              // TODO: Check if rule === ruleSource to display message that unsaved will be overrode
               onChange({
                 ...rule,
                 disabled: !checked
@@ -103,16 +142,15 @@ export const Rule = (props: RuleProps) => {
           </Tabs>
         </Box>
         <TabPanel show={activeTab === 0}>
-          <CodeMirror
-            value={JSON.stringify(rule, null, 2)}
-            height="350px"
-            extensions={[
-              json(),
-              linter(jsonParseLinter())
-            ]}
-            onChange={debounce(handleSourceChange, 200)}
+          <Editor
+            value={ruleSource}
+            onChange={handleSourceChange}
           />
         </TabPanel>
+        <AccordionFooter>
+          { onDelete && <Button color="error" variant="outlined" onClick={onDeleteRule}>Delete</Button> }
+          <Button color="primary" variant="outlined" onClick={onSaveRule}>Save</Button>
+        </AccordionFooter>
       </AccordionDetails>
     </Accordion>
   );

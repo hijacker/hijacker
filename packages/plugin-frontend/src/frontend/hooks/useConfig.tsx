@@ -10,6 +10,7 @@ interface ConfigContext {
   addRule: (rule: Partial<Rule<any>>) => void;
   updateRule: (rule: Partial<Rule<any>>) => void;
   updateBaseRule: (rule: Partial<Rule<any>>) => void;
+  deleteRule: (ruleId: string) => void;
 }
 
 const ConfigContext = createContext<ConfigContext>({
@@ -17,7 +18,8 @@ const ConfigContext = createContext<ConfigContext>({
   rules: [],
   addRule: () => {},
   updateRule: () => {},
-  updateBaseRule: () => {}
+  updateBaseRule: () => {},
+  deleteRule: () => {}
 });
 
 interface ContextProviderProps {
@@ -65,6 +67,12 @@ export const ConfigProvider = ({ children }: ContextProviderProps) => {
     }
   };
 
+  const deleteRule = (ruleId: string) => {
+    if (socket) {
+      socket.emit('DELETE_RULES', [ruleId])
+    }
+  }
+
   const updateBaseRule = (rule: Partial<Rule<any>>) => {
     if (socket) {
       socket.emit('UPDATE_BASE_RULE', rule);
@@ -77,7 +85,8 @@ export const ConfigProvider = ({ children }: ContextProviderProps) => {
       rules,
       addRule,
       updateRule,
-      updateBaseRule
+      updateBaseRule,
+      deleteRule
     }}>
       {children}
     </ConfigContext.Provider>
