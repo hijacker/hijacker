@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "lint": "eslint {src/,build/*}",
+    "lint": "eslint src/",
     "start": "npm run dev",
     "test": "vitest --coverage --config vitest.config.ts"
   },
@@ -15,6 +15,7 @@
   },
   "type": "module",
   "main": "dist/hijacker.js",
+  "types": "dist/hijacker.d.ts",
   "bin": {
     "hijacker": "dist/bin/hijacker.js"
   },
@@ -23,32 +24,23 @@
   ],
   "dependencies": {
     "body-parser": "^1.20.0",
-    "class-validator": "^0.13.2",
-    "colorette": "^2.0.19",
     "commander": "^9.4.0",
     "express": "^4.18.1",
     "express-xml-bodyparser": "^0.3.0",
     "got": "^12.3.1",
-    "graphql": "^16.6.0",
-    "luxon": "^3.0.3",
     "route-matcher": "^0.1.0",
-    "socket.io": "^4.5.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@hijacker/eslint-config": "workspace:*",
     "@hijacker/tsconfig": "workspace:*",
     "@types/body-parser": "^1.19.2",
     "@types/express": "^4.17.13",
     "@types/express-xml-bodyparser": "^0.3.2",
     "@types/uuid": "^8.3.4",
-    "@typescript-eslint/eslint-plugin": "^5.36.1",
-    "@typescript-eslint/parser": "^5.36.1",
     "@vitest/coverage-istanbul": "^0.22.1",
     "eslint": "^8.23.0",
-    "eslint-plugin-import": "^2.26.0",
-    "glob": "^8.0.3",
     "nock": "^13.2.9",
-    "socket.io-client": "^4.5.1",
     "typescript": "^4.8.2",
     "vitest": "^0.22.1"
   },

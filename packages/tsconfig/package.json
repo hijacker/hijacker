@@ -1,7 +1,14 @@
 {
   "name": "@hijacker/tsconfig",
   "version": "1.0.0-beta.0",
+  "description": "Base TSConfig used for hijacker",
+  "author": "Travis Weidenbenner <travis@weidenbenner.com>",
+  "homepage": "http://hijacker.io",
   "license": "MIT",
+  "repository": "https://github.com/travis-w/hijacker",
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "base.json"
   ]

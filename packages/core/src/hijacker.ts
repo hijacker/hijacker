@@ -4,15 +4,16 @@ import { fileURLToPath } from 'node:url';
 
 import bodyParser from 'body-parser';
 import express from 'express';
+import type { Application } from 'express';
 import xmlParser from 'express-xml-bodyparser';
 
-import type { HttpMethod } from './rules/index.js';
 import { RuleManager, HookManager, EventManager, PluginManager } from './managers/index.js';
+import type { HttpMethod } from './rules/index.js';
 import type { Config, HijackerContext, HijackerRequest, HijackerResponse, Request } from './types/index.js';
 import { filterResponseHeaders, Logger } from './utils/index.js';
 
 export class Hijacker {
-  app: express.Application;
+  app: Application;
   server: Server;
   pluginManager: PluginManager;
   context: HijackerContext;
@@ -20,7 +21,7 @@ export class Hijacker {
   constructor(startConfig: Config) {
     this.app = express();
     this.server = new Server(this.app);
-    this.context = this.createContext(this.server);
+    this.context = this.createContext();
 
     const {
       hookManager,
@@ -101,11 +102,10 @@ export class Hijacker {
     });
   }
   
-  private createContext(server: Server): HijackerContext {
+  private createContext(): HijackerContext {
     const logger = new Logger();
 
     const eventManager = new EventManager({
-      server,
       logger
     });
 

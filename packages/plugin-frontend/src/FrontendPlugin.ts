@@ -2,15 +2,16 @@ import { Server } from 'node:http';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import type { HijackerContext, Plugin, Rule } from '@hijacker/core';
+import express from 'express';
 import { Server as SocketServer } from 'socket.io';
 
-import express from 'express';
-import type { HijackerContext, HijackerSocketServer, Plugin, Rule } from '@hijacker/core';
+import { HijackerSocketServer } from './types/index.js';
 
 interface FrontendPluginOptions {
   name?: string;
   port: number;
-};
+}
 
 export class FrontendPlugin implements Plugin {
   name: string;
@@ -19,7 +20,6 @@ export class FrontendPlugin implements Plugin {
   private server: Server;
   private port: number;
   private io: HijackerSocketServer;
-  
 
   constructor({ name, port }: FrontendPluginOptions) {
     this.name = name ?? 'frontend';
@@ -35,12 +35,12 @@ export class FrontendPlugin implements Plugin {
     });
   }
 
-  initPlugin({ logger, ruleManager }: HijackerContext) {
+  initPlugin({ logger, ruleManager, eventManager }: HijackerContext) {
     this.app
       .use('/assets', express.static(join(dirname(fileURLToPath(import.meta.url)), './frontend/assets'), { fallthrough: false,  }))
       .get('*', (_, res) => {
         res.sendFile(join(dirname(fileURLToPath(import.meta.url)), './frontend', 'index.html'));
-      })
+      });
 
     this.io.on('connection', (socket) => {
       socket.emit('SETTINGS', {
@@ -51,6 +51,7 @@ export class FrontendPlugin implements Plugin {
 
       socket.on('UPDATE_BASE_RULE', (rule: Partial<Rule<any>>) => {
         ruleManager.baseRule = rule;
+        this.io.emit('BASE_RULE_UPDATED', rule);
       });
 
       socket.on('UPDATE_RULES', (rules: Partial<Rule>[]) => {
@@ -62,12 +63,16 @@ export class FrontendPlugin implements Plugin {
       });
 
       socket.on('DELETE_RULES', (ids: string[]) => {
-        ids.forEach((id) => ruleManager.deleteRule(id));
+        ruleManager.deleteRules(ids);
       });
     });
-      
-    this.server.listen(this.port, () => {
-      logger.log('INFO', `[Frontend] Frontend listening on port: ${this.port}`)
+
+    eventManager.on('RULES_UPDATED', (rules) => {
+      this.io.emit('RULES_UPDATED', rules);
     });
-  };
+    
+    this.server.listen(this.port, () => {
+      logger.log('INFO', `[Frontend] Frontend listening on port: ${this.port}`);
+    });
+  }
 }

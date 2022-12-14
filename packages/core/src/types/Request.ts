@@ -1,4 +1,4 @@
-import express from 'express';
+import { Response } from 'express';
 
 import { HttpMethod, Rule } from '../rules/index.js';
 
@@ -18,7 +18,7 @@ export interface HijackerResponse {
 
 export interface Request<T = any> {
   originalReq: HijackerRequest;
-  originalRes?: express.Response;
+  originalRes?: Response;
   matchingRule: Rule<T>;
 }
 

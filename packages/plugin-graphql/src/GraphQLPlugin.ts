@@ -4,7 +4,7 @@ import { GraphQLRuleType } from './GraphQLRule.js';
 
 interface GraphQLPluginOptions {
   name?: string;
-};
+}
 
 export class GraphQLPlugin implements Plugin {
   name: string;
@@ -12,6 +12,6 @@ export class GraphQLPlugin implements Plugin {
 
   constructor({ name }: GraphQLPluginOptions) {
     this.name = name ?? 'GraphQLPlugin';
-    this.ruleTypes = [new GraphQLRuleType()]
+    this.ruleTypes = [new GraphQLRuleType()];
   }
 }

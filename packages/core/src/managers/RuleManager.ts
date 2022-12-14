@@ -1,10 +1,10 @@
 import { v4 as uuid } from 'uuid';
 
+import { RestRuleType } from '../rules/index.js';
+import type { Rule } from '../rules/index.js';
 import type { Request, HijackerContext, HijackerRequest, HijackerResponse } from '../types/index.js';
 import type { Logger } from '../utils/index.js';
 import type { EventManager } from './index.js';
-import { RestRuleType } from '../rules/index.js';
-import type { Rule } from '../rules/index.js';
 
 export interface RuleType<T = any> {
   type: string;
@@ -95,10 +95,10 @@ export class RuleManager {
     this.events.emit('RULES_UPDATED', this.rules);
   }
 
-  deleteRule(id: string) {
+  deleteRules(ids: string[]) {
     this.logger.log('DEBUG', '[RuleManager]', 'deleteRules');
 
-    this.rules = this.rules.filter(x => x.id !== id);
+    this.rules = this.rules.filter(x => !ids.includes(x.id));
 
     this.events.emit('RULES_UPDATED', this.rules);
   }

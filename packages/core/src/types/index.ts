@@ -10,4 +10,3 @@ export interface HijackerContext {
 
 export * from './Config.js';
 export * from './Request.js';
-export * from './Sockets.js';
