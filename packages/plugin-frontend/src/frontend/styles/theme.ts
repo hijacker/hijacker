@@ -1,10 +1,10 @@
-import { createTheme } from '@mui/material';
 import { HttpMethod } from '@hijacker/core';
+import { createTheme } from '@mui/material';
 
 interface MethodColorOptions {
   background: string;
   border: string;
-};
+}
 
 declare module '@mui/material' {
   interface Palette {

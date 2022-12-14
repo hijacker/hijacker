@@ -41,7 +41,8 @@ export const ConfigProvider = ({ children }: ContextProviderProps) => {
       setBaseRule(config.baseRule);
     });
 
-    newSocket.on('UPDATE_RULES', setRules);
+    newSocket.on('RULES_UPDATED', setRules);
+    newSocket.on('BASE_RULE_UPDATED', setBaseRule);
 
     newSocket.on('disconnect', () => {
       setSocket(null);
@@ -69,9 +70,9 @@ export const ConfigProvider = ({ children }: ContextProviderProps) => {
 
   const deleteRule = (ruleId: string) => {
     if (socket) {
-      socket.emit('DELETE_RULES', [ruleId])
+      socket.emit('DELETE_RULES', [ruleId]);
     }
-  }
+  };
 
   const updateBaseRule = (rule: Partial<Rule<any>>) => {
     if (socket) {

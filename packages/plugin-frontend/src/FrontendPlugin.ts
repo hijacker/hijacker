@@ -51,6 +51,7 @@ export class FrontendPlugin implements Plugin {
 
       socket.on('UPDATE_BASE_RULE', (rule: Partial<Rule<any>>) => {
         ruleManager.baseRule = rule;
+        this.io.emit('BASE_RULE_UPDATED', rule);
       });
 
       socket.on('UPDATE_RULES', (rules: Partial<Rule>[]) => {
@@ -67,7 +68,7 @@ export class FrontendPlugin implements Plugin {
     });
 
     eventManager.on('RULES_UPDATED', (rules) => {
-      this.io.emit('UPDATE_RULES', rules);
+      this.io.emit('RULES_UPDATED', rules);
     });
     
     this.server.listen(this.port, () => {

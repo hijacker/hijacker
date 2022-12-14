@@ -1,5 +1,5 @@
 import { BeforeMount } from '@monaco-editor/react';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense } from 'react';
 
 
 interface EditorProps {
@@ -11,26 +11,12 @@ const MonacoEditor = lazy(() => import('@monaco-editor/react'));
 export const Editor: React.FC<EditorProps> = (props) => {
   const { value, onChange } = props;
 
-  const onBeforeMount: BeforeMount = (monaco) => {
-    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-      validate: true,
-      schemas: [
-        {
-          uri: '',
-          fileMatch: ['*'],
-          schema: {
-            type: 'object',
-            properties: {
-              test: {
-                type: 'string'
-              }
-            },
-            additionalProperties: false
-          }
-        }
-      ]
-    })
-  }
+  const onBeforeMount: BeforeMount = () => {
+    // monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+    //   validate: true,
+    //   schemas: []
+    // })
+  };
 
   return (
     <Suspense fallback={<>Editor Loading...</>}>
@@ -48,5 +34,5 @@ export const Editor: React.FC<EditorProps> = (props) => {
         beforeMount={onBeforeMount}
       />
     </Suspense>
-  )
-}
+  );
+};

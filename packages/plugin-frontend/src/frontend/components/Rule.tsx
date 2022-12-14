@@ -12,9 +12,9 @@ import {
   Switch,
   Button
 } from '@mui/material';
-
 import { isEqual } from 'lodash-es';
 import { SyntheticEvent, useEffect, useState } from 'react';
+
 import { Editor } from './Editor';
 
 
@@ -54,7 +54,7 @@ const AccordionFooter = styled(Box)`
   & > button {
     width: 90px;
   }
-`
+`;
 
 const TabPanel = (props: TabPanelProps) => {
   const { show, children } = props;
@@ -84,24 +84,24 @@ export const Rule = (props: RuleProps) => {
 
   const onSaveRule = () => {
     try {
-      const newVal = JSON.parse(ruleSource)
+      const newVal = JSON.parse(ruleSource);
       if (onChange && !isEqual(newVal, rule)) {
         onChange(newVal);
       }
     } catch {
       console.error('Invalid rule object');
     }
-  }
+  };
 
   const onDeleteRule = () => {
     if (onDelete && rule.id) {
       onDelete(rule.id);
     }
-  }
+  };
 
   useEffect(() => {
     try {
-      const curVal = JSON.parse(ruleSource)
+      const curVal = JSON.parse(ruleSource);
 
       if (!isEqual(curVal, rule)) {
         setRuleSource(JSON.stringify(rule, null, 2));

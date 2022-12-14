@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 import bodyParser from 'body-parser';
 import express from 'express';
+import type { Application } from 'express';
 import xmlParser from 'express-xml-bodyparser';
 
 import { RuleManager, HookManager, EventManager, PluginManager } from './managers/index.js';
@@ -12,7 +13,7 @@ import type { Config, HijackerContext, HijackerRequest, HijackerResponse, Reques
 import { filterResponseHeaders, Logger } from './utils/index.js';
 
 export class Hijacker {
-  app: express.Application;
+  app: Application;
   server: Server;
   pluginManager: PluginManager;
   context: HijackerContext;

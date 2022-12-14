@@ -1,4 +1,4 @@
-import { Box, styled, TextField, Typography } from "@mui/material"
+import { Box, styled, Typography } from '@mui/material';
 
 const Wrapper = styled(Box)`
   display: flex;
@@ -14,7 +14,7 @@ const Title = styled(Typography)`
 const ContentWrapper = styled(Box)`
   text-align: right;
   flex-grow: 1;
-`
+`;
 
 interface HeaderProps {
   children: JSX.Element;
@@ -28,5 +28,5 @@ export const Header: React.FC<HeaderProps> = ({ children }) => {
         { children }
       </ContentWrapper>
     </Wrapper>
-  )
-}
+  );
+};
