@@ -8,15 +8,19 @@
     "@hijacker/tsconfig": "0.0.1",
     "@examples/graphql": "1.0.0",
     "@docs/docs": "0.0.0",
-    "@hijacker/plugin-frontend": "0.0.0"
+    "@hijacker/plugin-frontend": "0.0.0",
+    "@hijacker/eslint-config": "0.0.0"
   },
   "changesets": [
     "big-goats-tease",
+    "forty-moose-compare",
+    "giant-ligers-deny",
     "large-turkeys-switch",
     "lovely-avocados-tease",
     "modern-moose-play",
     "olive-walls-stare",
     "polite-forks-learn",
-    "quiet-files-argue"
+    "quiet-files-argue",
+    "tender-shrimps-protect"
   ]
 }
