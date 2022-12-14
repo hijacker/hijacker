@@ -145,7 +145,7 @@ describe('Socket Tests', () => {
 
     let ruleList;
 
-    socket.on('UPDATE_RULES', (data: any) => {
+    socket.on('RULES_UPDATED', (data: any) => {
       expect(data.length).toBe(ruleList.length + 1);
       done();
     });
@@ -167,7 +167,7 @@ describe('Socket Tests', () => {
 
     let ruleList;
 
-    socket.on('UPDATE_RULES', (data: any) => {
+    socket.on('RULES_UPDATED', (data: any) => {
       expect(data[0].body).toEqual({
         updated: 'rule'
       });
@@ -192,7 +192,7 @@ describe('Socket Tests', () => {
 
     const numRules = hijackerServer.context.ruleManager.rules.length;
 
-    socket.on('UPDATE_RULES', (data: any) => {
+    socket.on('RULES_UPDATED', (data: any) => {
       expect(data.length).toBe(numRules - 2);
 
       done();
