@@ -1,0 +1,12 @@
+{
+  "name": "@examples/typescript",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "hijacker -c hijacker.config.ts"
+  },
+  "dependencies": {
+    "@hijacker/core": "workspace:*"
+  }
+}
