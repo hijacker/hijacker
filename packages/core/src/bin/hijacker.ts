@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import fs from 'node:fs';
 import path from 'node:path';
 
 import { program } from 'commander';
@@ -7,6 +6,7 @@ import { program } from 'commander';
 // import pkg from '../../package.json';
 import { Hijacker } from '../hijacker.js';
 import type { Config } from '../types/index.js';
+import { jsonImporter, tsImporter } from './importers/index.js';
 
 // Define CLI
 // TODO: Read in package.json to correctly set version
@@ -29,12 +29,14 @@ let rc = {} as Config;
       configPath = path.join(process.cwd(), configPath);
     }
 
-    const isJs = path.extname(configPath) === '.js';
+    const fileExt = path.extname(configPath);
     
-    if (isJs) {
+    if (fileExt === '.js') {
       rc = (await import(configPath)).default;
+    } else if (fileExt === '.ts') {
+      rc = await tsImporter(configPath);
     } else {
-      rc = JSON.parse(fs.readFileSync(configPath).toString());
+      rc = jsonImporter(configPath);
     }
   } catch (e) {
     // No config file. Create and start again

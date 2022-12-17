@@ -29,7 +29,9 @@
     "express-xml-bodyparser": "^0.3.0",
     "got": "^12.3.1",
     "route-matcher": "^0.1.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "vite": "^3.2.2",
+    "vite-node": "^0.25.8"
   },
   "devDependencies": {
     "@hijacker/eslint-config": "workspace:*",
