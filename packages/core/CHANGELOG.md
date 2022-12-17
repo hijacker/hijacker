@@ -1,5 +1,11 @@
 # @hijacker/core
 
+## 2.0.0-beta.7
+
+### Minor Changes
+
+- ee641a0: Add ability for config to be a typescript file
+
 ## 2.0.0-beta.6
 
 ### Major Changes
