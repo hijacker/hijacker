@@ -1,6 +1,6 @@
-import { createServer } from 'vite'
-import { ViteNodeServer } from 'vite-node/server'
-import { ViteNodeRunner } from 'vite-node/client'
+import { createServer } from 'vite';
+import { ViteNodeRunner } from 'vite-node/client';
+import { ViteNodeServer } from 'vite-node/server';
 
 
 export const tsImporter = async (file: string) => {
@@ -10,28 +10,28 @@ export const tsImporter = async (file: string) => {
     },
   });
 
-  await server.pluginContainer.buildStart({})
+  await server.pluginContainer.buildStart({});
 
   // create vite-node server
-  const node = new ViteNodeServer(server)
+  const node = new ViteNodeServer(server);
 
   // create vite-node runner
   const runner = new ViteNodeRunner({
     root: server.config.root,
     base: server.config.base,
     fetchModule(id) {
-      return node.fetchModule(id)
+      return node.fetchModule(id);
     },
     resolveId(id, importer) {
-      return node.resolveId(id, importer)
+      return node.resolveId(id, importer);
     },
-  })
+  });
 
   // execute the file
-  const config = await runner.executeFile(file)
+  const config = await runner.executeFile(file);
 
   // close the vite server
-  await server.close()
+  await server.close();
 
   return config.default;
-}
+};
