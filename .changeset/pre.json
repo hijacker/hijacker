@@ -9,7 +9,8 @@
     "@examples/graphql": "1.0.0",
     "@docs/docs": "0.0.0",
     "@hijacker/plugin-frontend": "0.0.0",
-    "@hijacker/eslint-config": "0.0.0"
+    "@hijacker/eslint-config": "0.0.0",
+    "@examples/typescript": "1.0.0"
   },
   "changesets": [
     "big-goats-tease",
@@ -21,6 +22,7 @@
     "olive-walls-stare",
     "polite-forks-learn",
     "quiet-files-argue",
+    "strange-flies-add",
     "tender-shrimps-protect"
   ]
 }
