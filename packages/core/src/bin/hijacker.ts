@@ -6,7 +6,8 @@ import { program } from 'commander';
 // import pkg from '../../package.json';
 import { Hijacker } from '../hijacker.js';
 import type { Config } from '../types/index.js';
-import { jsonImporter, tsImporter } from './importers/index.js';
+import { validateConfig, ValidationError } from '../validation/index.js';
+import { ImportError, jsImporter, jsonImporter, tsImporter } from './importers/index.js';
 
 // Define CLI
 // TODO: Read in package.json to correctly set version
@@ -18,12 +19,13 @@ program
 const options = program.opts();
 
 // TODO: Restructure to take in options as argument
-let rc = {} as Config;
+let config: Config;
 
 (async () => {
   // TODO: Figure out a better way to read in rules (and watch?)
   try {
     let configPath = options.config;
+    let rc: unknown;
 
     if (!path.isAbsolute(options.config)) {
       configPath = path.join(process.cwd(), configPath);
@@ -32,19 +34,31 @@ let rc = {} as Config;
     const fileExt = path.extname(configPath);
     
     if (fileExt === '.js') {
-      rc = (await import(configPath)).default;
+      rc = await jsImporter(configPath);
     } else if (fileExt === '.ts') {
       rc = await tsImporter(configPath);
     } else {
       rc = jsonImporter(configPath);
     }
-  } catch (e) {
-    // No config file. Create and start again
-    console.error('No config file found: Please set up a config file and start again');
+
+    config = validateConfig(rc);
+  } catch (e: unknown) {
+    if (e instanceof ValidationError) {
+      console.error(`Config file '${options.config}' is invalid. Please fix the following issues:`);
+      e.errors.forEach((val) => {
+        // TODO: Can still better format errors
+        console.error(`- '${val.instancePath}' ${val.message}`);
+      });
+    } else if (e instanceof ImportError) {
+      console.error('There was an error loading your config file. Please check it for errors');
+    } else {
+      console.error('There was an error starting up Hijacker', e);
+    }
+
     process.exit(1);
   }
 
-  const server = new Hijacker(rc);
+  const server = new Hijacker(config);
   server.on('started', (port: number) => {
     console.log(`Application is listening on port ${port}`);
   });

@@ -1,5 +1,11 @@
 import { readFileSync } from 'node:fs';
 
-export const jsonImporter = (file: string) => {
-  return JSON.parse(readFileSync(file).toString());
+import { ImportError } from './index.js';
+
+export const jsonImporter = (file: string): unknown => {
+  try {
+    return JSON.parse(readFileSync(file).toString());
+  } catch {
+    throw new ImportError();
+  }
 };
