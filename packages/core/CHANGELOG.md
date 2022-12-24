@@ -1,5 +1,11 @@
 # @hijacker/core
 
+## 2.0.0-beta.8
+
+### Minor Changes
+
+- c3912b0: Add framework for config validation in `@hijacker/core`
+
 ## 2.0.0-beta.7
 
 ### Minor Changes
