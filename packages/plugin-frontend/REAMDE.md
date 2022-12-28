@@ -31,3 +31,8 @@ Now when you run hijacker, you can open up your browser to `http://localhost:300
 | Property | Descripton | Type | Required | Default |
 | -------- | ---------- | ---- | -------- | ------- |
 | `port` | Port that you want the interface to run on | `number` | `yes` | |
+
+## Development
+Right now the best way to develop `@hijacker/plugin-frontend` is to build the plugin as needed (can use the watcher with `pnpm dev`) and then run the `basic` example.
+
+If you just want to work on the frontend, you can use storybook instead with `pnpm storybook`.
