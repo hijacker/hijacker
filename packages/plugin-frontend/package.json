@@ -36,6 +36,7 @@
     "@hijacker/tsconfig": "workspace:*",
     "@monaco-editor/react": "^4.4.6",
     "@mui/icons-material": "^5.10.9",
+    "@mui/lab": "5.0.0-alpha.114",
     "@mui/material": "^5.10.12",
     "@storybook/addon-essentials": "^7.0.0-beta.15",
     "@storybook/addon-interactions": "^7.0.0-beta.15",

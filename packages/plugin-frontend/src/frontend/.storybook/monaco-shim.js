@@ -1,9 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-
-import { App } from './App';
-
-// Set up monaco for offline use: https://github.com/suren-atoyan/monaco-react#use-monaco-editor-as-an-npm-package
 import { loader } from "@monaco-editor/react";
 
 import * as monaco from "monaco-editor";
@@ -34,9 +28,3 @@ self.MonacoEnvironment = {
 loader.config({ monaco });
 
 loader.init();
-
-ReactDOM.createRoot(document.getElementById('app') as HTMLElement).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
