@@ -1,6 +1,6 @@
 {
   "name": "@hijacker/plugin-graphql",
-  "version": "1.0.0-beta.8",
+  "version": "1.0.0-beta.9",
   "description": "Plugin for hijacker that adds GraphQL support",
   "author": "Travis Weidenbenner <travis@weidenbenner.com>",
   "main": "dist/index.js",
