@@ -2,16 +2,12 @@ import { HijackerRequest, HijackerResponse } from "@hijacker/core";
 import { Box, Step, StepButton, Stepper, styled, Typography, Link } from "@mui/material"
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { useState } from "react"
+
 import { Editor } from "./Editor.js";
 import { HistoryDataGroup } from "./HistoryDataGroup.js";
 
-interface HistoryItem {
-  hijackerRequest: HijackerRequest;
-  hijackerResponse?: HijackerResponse;
-};
-
 const HistoryTimeline = styled(Stepper)`
-  margin-bottom: ${({theme}) => theme.spacing(3)};
+  margin: ${({theme}) => `${theme.spacing(2)} 0`};
 `
 
 const HistoryDataItem = styled(Typography)`
@@ -22,6 +18,12 @@ const HistoryDataItemLabel = styled('span')`
   color: ${({theme}) => theme.palette.info.main};
   font-weight: 600;
 `
+
+interface HistoryItem {
+  requestId: string;
+  hijackerRequest: HijackerRequest;
+  hijackerResponse?: HijackerResponse;
+};
 
 interface HistoryItemProps {
   item: HistoryItem;
@@ -39,10 +41,10 @@ export const HistoryItem: React.FC<HistoryItemProps> = ({ item }) => {
     <Box>
       <HistoryTimeline activeStep={activeStep}>
         <Step completed disabled={false}>
-          <StepButton onClick={() => handleStepClick(0)}>HIJACKER_REQUEST</StepButton>
+          <StepButton disableRipple onClick={() => handleStepClick(0)}>HIJACKER_REQUEST</StepButton>
         </Step>
         <Step completed={!!item.hijackerResponse} disabled={!item.hijackerResponse}>
-          <StepButton onClick={() => handleStepClick(1)} disabled={!item.hijackerResponse}>HIJACKER_RESPONSE</StepButton>
+          <StepButton disableRipple onClick={() => handleStepClick(1)} disabled={!item.hijackerResponse}>HIJACKER_RESPONSE</StepButton>
         </Step>
       </HistoryTimeline>
       {activeStep === 0 && (

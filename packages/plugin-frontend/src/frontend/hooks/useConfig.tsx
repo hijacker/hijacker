@@ -1,12 +1,20 @@
-import { Rule } from '@hijacker/core';
+import { HijackerRequest, HijackerResponse, Rule } from '@hijacker/core';
 import { useContext, useEffect, useState , createContext } from 'react';
 import { io } from 'socket.io-client';
 
 import { HijackerSocketClient } from '../../types/index.js';
 
+
+export interface HistoryItem {
+  requestId: string;
+  hijackerRequest: HijackerRequest;
+  hijackerResponse?: HijackerResponse;
+};
+
 interface ConfigContext {
   baseRule?: Partial<Rule<any>>;
   rules: Partial<Rule<any>>[];
+  history: HistoryItem[];
   addRule: (rule: Partial<Rule<any>>) => void;
   updateRule: (rule: Partial<Rule<any>>) => void;
   updateBaseRule: (rule: Partial<Rule<any>>) => void;
@@ -16,6 +24,7 @@ interface ConfigContext {
 const ConfigContext = createContext<ConfigContext>({
   baseRule: undefined,
   rules: [],
+  history: [],
   addRule: () => {},
   updateRule: () => {},
   updateBaseRule: () => {},
@@ -30,6 +39,7 @@ export const ConfigProvider = ({ children }: ContextProviderProps) => {
   const [socket, setSocket] = useState<HijackerSocketClient | null>(null);
   const [baseRule, setBaseRule] = useState<Partial<Rule<any>> | undefined>(undefined);
   const [rules, setRules] = useState<Partial<Rule<any>>[]>([]);
+  const [history, setHistory] = useState<HistoryItem[]>([]);
 
   const [resetSocket, setResetSocket] = useState<boolean>(false);
 
@@ -43,6 +53,23 @@ export const ConfigProvider = ({ children }: ContextProviderProps) => {
 
     newSocket.on('RULES_UPDATED', setRules);
     newSocket.on('BASE_RULE_UPDATED', setBaseRule);
+    newSocket.on('HISTORY_EVENT', (historyItem) => {
+      setHistory((val) => {
+        const index = val.findIndex(x => x.requestId === historyItem.requestId);
+
+        if (index === -1) {
+          return [historyItem, ...val];
+        }
+
+        return val.reduce((acc, cur) => {
+          if (cur.requestId === historyItem.requestId) {
+            return [...acc, historyItem]
+          }
+  
+          return [...acc, cur];
+        }, [] as HistoryItem[])
+      })
+    });
 
     newSocket.on('disconnect', () => {
       setSocket(null);
@@ -84,6 +111,7 @@ export const ConfigProvider = ({ children }: ContextProviderProps) => {
     <ConfigContext.Provider value={{
       baseRule,
       rules,
+      history,
       addRule,
       updateRule,
       updateBaseRule,

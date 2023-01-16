@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import type { Application } from 'express';
 import xmlParser from 'express-xml-bodyparser';
+import { v4 as uuid } from 'uuid';
 
 import { RuleManager, HookManager, EventManager, PluginManager } from './managers/index.js';
 import type { HttpMethod } from './rules/index.js';
@@ -44,9 +45,9 @@ export class Hijacker {
     });
 
     this.app
-      .get('/favicon.ico', (req, res) => res.sendStatus(204))
+      .get('/favicon.ico', (_, res) => res.sendStatus(204))
       .use('/hijacker/static', express.static(join(dirname(fileURLToPath(import.meta.url)), './frontend/static'), { fallthrough: false,  }))
-      .get(['/hijacker/*', '/hijacker'], (req, res) => {
+      .get(['/hijacker/*', '/hijacker'], (_, res) => {
         res.sendFile(join(dirname(fileURLToPath(import.meta.url)), './frontend', 'index.html'));
       })
       .use(bodyParser.json())
@@ -60,6 +61,7 @@ export class Hijacker {
 
           // Generate first HijackerRequest/Lifecycle OBJ and match rule
           const originalReq = await hookManager.executeHook<HijackerRequest>('HIJACKER_REQUEST', {
+            requestId: uuid(),
             path: req.originalUrl,
             headers: filterResponseHeaders(req.headers as Record<string, string>),
             body: req.body,

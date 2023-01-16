@@ -16,7 +16,9 @@ type Story = StoryObj<typeof HistoryItem>;
 export const Primary: Story = {
   args: {
     item: {
+      requestId: "123",
       hijackerRequest: {
+        requestId: "123",
         body: {
           hello: 'world'
         },
@@ -36,6 +38,7 @@ export const Primary: Story = {
         path: '/test'
       },
       hijackerResponse: {
+        requestId: "123",
         body: {
           foo: 'bar'
         },
@@ -60,7 +63,9 @@ export const Primary: Story = {
 export const NoResponse: Story = {
   args: {
     item: {
+      requestId: "123",
       hijackerRequest: {
+        requestId: "123",
         body: {},
         headers: {
           'Access-Control-Allow-Origin': '*',
@@ -84,7 +89,9 @@ export const NoResponse: Story = {
 export const NoHeaders: Story = {
   args: {
     item: {
+      requestId: "123",
       hijackerRequest: {
+        requestId: "123",
         body: {},
         headers: {},
         method: 'DELETE',

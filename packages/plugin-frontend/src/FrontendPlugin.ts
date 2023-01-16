@@ -2,11 +2,11 @@ import { Server } from 'node:http';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { HijackerContext, Plugin, Rule } from '@hijacker/core';
+import type { Handler, HijackerContext, HijackerRequest, HijackerResponse, Plugin, Rule } from '@hijacker/core';
 import express from 'express';
 import { Server as SocketServer } from 'socket.io';
 
-import { HijackerSocketServer } from './types/index.js';
+import { HijackerSocketServer, HistoryItem } from './types/index.js';
 
 interface FrontendPluginOptions {
   name?: string;
@@ -15,11 +15,13 @@ interface FrontendPluginOptions {
 
 export class FrontendPlugin implements Plugin {
   name: string;
-  
+  handlers: Record<string, Handler>;
+
   private app: express.Application;
   private server: Server;
   private port: number;
   private io: HijackerSocketServer;
+  private tempHistory: HistoryItem[];
 
   constructor({ name, port }: FrontendPluginOptions) {
     this.name = name ?? 'frontend';
@@ -33,6 +35,13 @@ export class FrontendPlugin implements Plugin {
         origin: true
       }
     });
+    this.tempHistory = [];
+
+    // Register handlers
+    this.handlers = {
+      HIJACKER_REQUEST: this.onHijackerRequest.bind(this),
+      HIJACKER_RESPONSE: this.onHijackerResponse.bind(this)
+    }
   }
 
   initPlugin({ logger, ruleManager, eventManager }: HijackerContext) {
@@ -74,5 +83,35 @@ export class FrontendPlugin implements Plugin {
     this.server.listen(this.port, () => {
       logger.log('INFO', `[Frontend] Frontend listening on port: ${this.port}`);
     });
+  }
+
+  // For now just send to history. Will eventually have breakpoints in these
+  async onHijackerRequest(req: HijackerRequest): Promise<HijackerRequest> {
+    // Only sending history over sockets and storing on frontend inmemory.
+    //    Using tempHistory allows full request lifecycles to always be seen in case frontend
+    //    only recieves one of the later events.
+    const historyItem: HistoryItem = {
+      requestId: req.requestId,
+      hijackerRequest: req
+    }
+
+    this.io.emit('HISTORY_EVENT', historyItem);
+
+    this.tempHistory.push(historyItem);
+
+    return req;
+  }
+
+  async onHijackerResponse(res: HijackerResponse): Promise<HijackerResponse> {
+    const historyItem = this.tempHistory.find(x => x.requestId === res.requestId)!;
+
+    historyItem.hijackerResponse = res;
+
+    this.io.emit('HISTORY_EVENT', historyItem);
+  
+    // Remove from temp history after request is finished
+    this.tempHistory = this.tempHistory.filter(x => x.requestId !== res.requestId);
+
+    return res;
   }
 }
