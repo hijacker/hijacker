@@ -33,7 +33,7 @@ let config: Config;
 
     const fileExt = path.extname(configPath);
     
-    if (fileExt === '.js') {
+    if (fileExt === '.js' || fileExt === '.mjs' || fileExt === '.cjs') {
       rc = await jsImporter(configPath);
     } else if (fileExt === '.ts') {
       rc = await tsImporter(configPath);
