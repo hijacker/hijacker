@@ -1,5 +1,11 @@
 # @hijacker/core
 
+## 2.0.0-beta.9
+
+### Patch Changes
+
+- 779a527: Set up mjs and cjs files to use js importer
+
 ## 2.0.0-beta.8
 
 ### Minor Changes

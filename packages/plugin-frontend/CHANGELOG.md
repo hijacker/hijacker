@@ -1,5 +1,12 @@
 # @hijacker/plugin-frontend
 
+## 1.0.0-beta.5
+
+### Patch Changes
+
+- Updated dependencies [779a527]
+  - @hijacker/core@2.0.0-beta.9
+
 ## 1.0.0-beta.4
 
 ### Patch Changes

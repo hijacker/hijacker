@@ -1,6 +1,6 @@
 {
   "name": "@hijacker/plugin-frontend",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "type": "module",
   "main": "dist/index.js",
   "description": "Hijacker plugin that adds a web interface to add and modify rules.",
