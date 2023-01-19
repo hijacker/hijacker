@@ -26,7 +26,7 @@ interface RuleManagerOptions {
   eventManager: EventManager;
 }
 
-type ProcessedRule = Partial<Rule> & { id: string };
+export type ProcessedRule = Partial<Rule> & { id: string };
 
 export class RuleManager {
   ruleTypes: Record<string, RuleType> = {};
@@ -77,7 +77,7 @@ export class RuleManager {
     this.events.emit('RULES_UPDATED', this.rules);
   }
 
-  updateRule(rule: Partial<Rule<any>>) {
+  updateRule(rule: ProcessedRule) {
     this.logger.log('DEBUG', '[RuleManager]', 'updateRules');
 
     const index = this.rules.findIndex(x => x.id === rule.id);
@@ -88,7 +88,6 @@ export class RuleManager {
     }
 
     this.rules[index] = {
-      ...this.rules[index],
       ...rule
     };
 

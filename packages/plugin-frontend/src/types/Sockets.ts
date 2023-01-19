@@ -1,4 +1,4 @@
-import type { Rule, Config } from '@hijacker/core';
+import type { Rule, Config, ProcessedRule } from '@hijacker/core';
 import type { Server } from 'socket.io';
 import type { Socket } from 'socket.io-client';
 
@@ -7,7 +7,7 @@ import { HistoryItem } from './History.js';
 
 export interface ClientToServerEvents {
   ADD_RULES: (rule: Partial<Rule<any>>[]) => void;
-  UPDATE_RULES: (rule: Partial<Rule<any>>[]) => void;
+  UPDATE_RULES: (rule: ProcessedRule[]) => void;
   UPDATE_BASE_RULE: (rule: Partial<Rule<any>>) => void;
   DELETE_RULES: (ids: string[]) => void;
 }

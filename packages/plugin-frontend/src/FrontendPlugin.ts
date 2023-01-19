@@ -2,7 +2,7 @@ import { Server } from 'node:http';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { Handler, HijackerContext, HijackerRequest, HijackerResponse, Plugin, Rule } from '@hijacker/core';
+import type { Handler, HijackerContext, HijackerRequest, HijackerResponse, Plugin, Rule, ProcessedRule } from '@hijacker/core';
 import express from 'express';
 import { Server as SocketServer } from 'socket.io';
 
@@ -63,7 +63,7 @@ export class FrontendPlugin implements Plugin {
         this.io.emit('BASE_RULE_UPDATED', rule);
       });
 
-      socket.on('UPDATE_RULES', (rules: Partial<Rule>[]) => {
+      socket.on('UPDATE_RULES', (rules: ProcessedRule[]) => {
         rules.forEach((rule) => ruleManager.updateRule(rule));
       });
 
