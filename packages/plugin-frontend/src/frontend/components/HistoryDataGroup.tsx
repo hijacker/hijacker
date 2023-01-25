@@ -1,13 +1,13 @@
-import { Box, styled, Typography } from "@mui/material";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import { ReactElement, ReactNode, useState } from "react";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Box, styled, Typography } from '@mui/material';
+import { ReactNode, useState } from 'react';
 
 const Wrapper = styled(Box)`
   &.collapsed:last-of-type {
     border-bottom: 1px solid ${({theme}) => theme.palette.grey[300]};
   }
-`
+`;
 
 const Header = styled(Typography)`
   font-size: .9rem;
@@ -40,9 +40,9 @@ export const HistoryDataGroup: React.FC<HistoryDataGroupProps> = ({ name, childr
   const CollapseIcon = collapsed ? ExpandMoreIcon : ExpandLessIcon;
 
   return (
-    <Wrapper className={collapsed ? "collapsed" : undefined}>
+    <Wrapper className={collapsed ? 'collapsed' : undefined}>
       <Header onClick={() => setCollapsed((val) => !val)}>
-        <CollapseIcon fontSize="inherit" sx={{ verticalAlign: "middle", fontSize: "1.1rem", marginRight: ".25rem" }} />
+        <CollapseIcon fontSize="inherit" sx={{ verticalAlign: 'middle', fontSize: '1.1rem', marginRight: '.25rem' }} />
         {name}
       </Header>
       {!collapsed && (
@@ -51,5 +51,5 @@ export const HistoryDataGroup: React.FC<HistoryDataGroupProps> = ({ name, childr
         </Body>
       )}
     </Wrapper>
-  )
-}
+  );
+};

@@ -5,7 +5,7 @@ interface EditorProps {
   value: string;
   onChange?: (val?: string) => void;
   disabled?: boolean;
-};
+}
 
 const MonacoEditor = lazy(() => import('@monaco-editor/react'));
 
@@ -26,6 +26,7 @@ export const Editor: React.FC<EditorProps> = (props) => {
         height="350px"
         onChange={onChange}
         language="json"
+        width={'100%'}
         options={{
           scrollBeyondLastLine: false,
           minimap: {

@@ -62,6 +62,7 @@ export class Hijacker {
           // Generate first HijackerRequest/Lifecycle OBJ and match rule
           const originalReq = await hookManager.executeHook<HijackerRequest>('HIJACKER_REQUEST', {
             requestId: uuid(),
+            timestamp: Date.now(),
             path: req.originalUrl,
             headers: filterResponseHeaders(req.headers as Record<string, string>),
             body: req.body,

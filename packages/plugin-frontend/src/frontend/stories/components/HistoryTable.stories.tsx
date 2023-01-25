@@ -13,9 +13,10 @@ type Story = StoryObj<typeof HistoryTable>;
 export const Primary: Story = {
   args: {
     history: [{
-      requestId: "123",
+      requestId: '123',
       hijackerRequest: {
-        requestId: "123",
+        timestamp: 1231232,
+        requestId: '123',
         body: {},
         headers: {},
         method: 'DELETE',

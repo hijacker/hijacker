@@ -41,7 +41,7 @@ export class FrontendPlugin implements Plugin {
     this.handlers = {
       HIJACKER_REQUEST: this.onHijackerRequest.bind(this),
       HIJACKER_RESPONSE: this.onHijackerResponse.bind(this)
-    }
+    };
   }
 
   initPlugin({ logger, ruleManager, eventManager }: HijackerContext) {
@@ -93,7 +93,7 @@ export class FrontendPlugin implements Plugin {
     const historyItem: HistoryItem = {
       requestId: req.requestId,
       hijackerRequest: req
-    }
+    };
 
     this.io.emit('HISTORY_EVENT', historyItem);
 

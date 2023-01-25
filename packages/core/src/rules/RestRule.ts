@@ -58,6 +58,7 @@ export class RestRuleType implements RuleType<RestRule> {
 
     const responseObj: HijackerResponse = {
       requestId: originalReq.requestId,
+      timestamp: Date.now(),
       body: matchingRule.body ?? {},
       headers: {},
       statusCode: matchingRule.statusCode ?? 200

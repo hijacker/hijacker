@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import "../../.storybook/monaco-shim";
+import '../../.storybook/monaco-shim';
 
 import { HistoryItem } from '../../components/HistoryItem';
 
@@ -16,9 +16,10 @@ type Story = StoryObj<typeof HistoryItem>;
 export const Primary: Story = {
   args: {
     item: {
-      requestId: "123",
+      requestId: '123',
       hijackerRequest: {
-        requestId: "123",
+        timestamp: 12232,
+        requestId: '123',
         body: {
           hello: 'world'
         },
@@ -38,7 +39,8 @@ export const Primary: Story = {
         path: '/test'
       },
       hijackerResponse: {
-        requestId: "123",
+        timestamp: 12320,
+        requestId: '123',
         body: {
           foo: 'bar'
         },
@@ -63,9 +65,10 @@ export const Primary: Story = {
 export const NoResponse: Story = {
   args: {
     item: {
-      requestId: "123",
+      requestId: '123',
       hijackerRequest: {
-        requestId: "123",
+        timestamp: 12323,
+        requestId: '123',
         body: {},
         headers: {
           'Access-Control-Allow-Origin': '*',
@@ -89,9 +92,10 @@ export const NoResponse: Story = {
 export const NoHeaders: Story = {
   args: {
     item: {
-      requestId: "123",
+      requestId: '123',
       hijackerRequest: {
-        requestId: "123",
+        timestamp: 123223,
+        requestId: '123',
         body: {},
         headers: {},
         method: 'DELETE',
