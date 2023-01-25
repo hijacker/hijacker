@@ -1,5 +1,18 @@
 # @hijacker/plugin-frontend
 
+## 1.0.0-beta.6
+
+### Minor Changes
+
+- 7cd3364: Add history page for `@hijacker/plugin-frontend` so traffic through hijacker can be inspected.
+
+  Add `requestId` and `timestamp` fields to `HijackerRequest` and `HijackerResponse` in `@hijacker/core`.
+
+### Patch Changes
+
+- Updated dependencies [7cd3364]
+  - @hijacker/core@2.0.0-beta.10
+
 ## 1.0.0-beta.5
 
 ### Patch Changes
