@@ -4,6 +4,8 @@ import { HttpMethod, Rule } from '../rules/index.js';
 
 // Request to hijacker from client
 export interface HijackerRequest {
+  requestId: string;
+  timestamp: number;
   path: string;
   headers: Record<string, string>;
   body: any;
@@ -11,6 +13,8 @@ export interface HijackerRequest {
 }
 
 export interface HijackerResponse {
+  requestId: string;
+  timestamp: number;
   statusCode: number;
   headers: Record<string, string>;
   body: any;

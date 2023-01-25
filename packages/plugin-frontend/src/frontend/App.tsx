@@ -1,4 +1,5 @@
 import { ThemeProvider, Container, CssBaseline } from '@mui/material';
+import { Suspense } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { ConfigProvider } from './hooks/useConfig.js';
@@ -13,7 +14,9 @@ export const App = () => {
       <ThemeProvider theme={theme}>
         <Container>
           <CssBaseline />
-          <RouterProvider router={router} />
+          <Suspense fallback={<>...</>}>
+            <RouterProvider router={router} />
+          </Suspense>
         </Container>
       </ThemeProvider>
     </ConfigProvider>

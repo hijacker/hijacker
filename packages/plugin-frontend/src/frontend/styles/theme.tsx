@@ -1,5 +1,7 @@
 import { HttpMethod } from '@hijacker/core';
-import { createTheme } from '@mui/material';
+import { LinkProps , createTheme } from '@mui/material';
+import { forwardRef } from 'react';
+import { Link, LinkProps as RouterLinkProps } from 'react-router-dom';
 
 interface MethodColorOptions {
   background: string;
@@ -15,6 +17,15 @@ declare module '@mui/material' {
     methods?: Record<HttpMethod | 'ALL', MethodColorOptions>
   }
 }
+
+const LinkBehavior = forwardRef<
+HTMLAnchorElement,
+Omit<RouterLinkProps, 'to'> & { href: RouterLinkProps['to'] }
+>((props, ref) => {
+  const { href, ...other } = props;
+  // Map href (MUI) -> to (react-router)
+  return <Link ref={ref} to={href} {...other} />;
+});
 
 export const theme = createTheme({
   palette: {
@@ -64,6 +75,16 @@ export const theme = createTheme({
           alignItems: 'center'
         }
       }
-    }
+    },
+    MuiLink: {
+      defaultProps: {
+        component: LinkBehavior,
+      } as LinkProps,
+    },
+    MuiButtonBase: {
+      defaultProps: {
+        LinkComponent: LinkBehavior,
+      },
+    },
   }
 });

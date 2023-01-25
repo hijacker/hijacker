@@ -1,19 +1,13 @@
-import { Rule } from '@hijacker/core';
 import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRounded';
-import SearchIcon from '@mui/icons-material/Search';
-import { Box, Button, styled, TextField, Typography } from '@mui/material';
+import { Box, Button, styled, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import { AddRuleModal } from '../components/AddRuleModal.js';
-import { Header } from '../components/Header.js';
+import { Layout } from '../components/Layout.js';
 import { Rule as RuleWrapper } from '../components/Rule.js';
 import { useConfig } from '../hooks/useConfig.js';
+import { objectSearch } from '../util/index.js';
 
-
-const FilterIcon = styled(SearchIcon)`
-  margin-right: 0.5rem;
-  color: #999999;
-`;
 
 const SectionTitle = styled(Typography)`
   font-size: 1.5rem;
@@ -44,42 +38,12 @@ export const HomePage = () => {
       setFilteredRules(rules);
       return;
     }
-
-    const filteredRules = rules.reduce((acc, cur) => {
-      let match = false;
-
-      // Search all top level key values for filter
-      // Could make this more complex to search nested objects if needed
-      for (const val of Object.values(cur)) {
-        if (typeof val === 'string' && val.indexOf(filter) !== -1) {
-          match = true;
-          break;
-        } 
-      }
-
-      return [...acc, ...(match ? [cur] : [])];
-    }, [] as Partial<Rule<any>>[]);
-
-    setFilteredRules(filteredRules);
+    
+    setFilteredRules(objectSearch(rules, filter));
   }, [rules, filter]);
 
   return (
-    <div>
-      <Header>
-        <TextField 
-          sx={{
-            maxWidth: '400px'
-          }}
-          fullWidth
-          size="small"
-          placeholder="Filter Rules"
-          InputProps={{
-            startAdornment: <FilterIcon />
-          }}
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        />
-      </Header>
+    <Layout filter={filter} onFilterChange={setFilter} filterLabel="Filter Rules">
       <SectionTitle variant="h2">
         Base Rule
       </SectionTitle>
@@ -124,6 +88,6 @@ export const HomePage = () => {
         onAddRule={addRule}
         onModalClose={() => setModalOpen(false)}
       />
-    </div>
+    </Layout>
   );
 };
