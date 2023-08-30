@@ -1,5 +1,6 @@
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { theme } from '../styles/theme';
+import { MemoryRouter } from 'react-router-dom';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -12,14 +13,18 @@ export const parameters = {
 }
 
 const withMuiTheme = (Story) => {
-  console.log(theme);
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Story />
     </ThemeProvider>
   )
-}
+};
 
-export const decorators = [withMuiTheme];
+const withReactRouter = (Story) => (
+  <MemoryRouter initialEntries={['/']}>
+    <Story />
+  </MemoryRouter>
+)
+
+export const decorators = [withMuiTheme, withReactRouter];
