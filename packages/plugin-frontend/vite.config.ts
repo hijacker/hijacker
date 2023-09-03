@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     react(),
     visualizer({
-      filename: 'visualize.html'
+      filename: './dist/visualize.html'
     })
   ],
   root: './src/frontend',
