@@ -24,7 +24,7 @@ interface ConfigContext {
   deleteRule: (ruleId: string) => void;
 }
 
-const ConfigContext = createContext<ConfigContext>({
+export const ConfigContext = createContext<ConfigContext>({
   baseRule: undefined,
   rules: [],
   history: [],
