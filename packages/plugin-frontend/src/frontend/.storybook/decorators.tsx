@@ -3,6 +3,7 @@ import { theme } from '../styles/theme';
 import { MemoryRouter } from 'react-router-dom';
 import { MockConfigProvider } from './mockUseConfig';
 import { mockRules } from './mock_data/rules';
+import { mockHistory } from './mock_data/history';
 
 export const withMuiTheme = (Story: any) => {
   return (
@@ -25,7 +26,11 @@ export const withConfig = (Story: any) => {
   }
 
   return (
-    <MockConfigProvider initialRules={mockRules} initialBaseRule={baseRule}>
+    <MockConfigProvider
+      initialRules={mockRules}
+      initialBaseRule={baseRule}
+      initialHistory={mockHistory}
+    >
       <Story />
     </MockConfigProvider>
   )

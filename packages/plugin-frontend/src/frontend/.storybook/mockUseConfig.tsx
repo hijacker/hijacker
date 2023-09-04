@@ -7,12 +7,18 @@ interface MockConfigProviderProps {
   children: JSX.Element | JSX.Element[];
   initialRules?: Rule<any>[];
   initialBaseRule?: Partial<Rule<any>>;
+  initialHistory?: HistoryItem[];
 }
 
-export const MockConfigProvider = ({ children, initialRules = [], initialBaseRule }: MockConfigProviderProps) => {
+export const MockConfigProvider = ({ 
+  children,
+  initialRules = [],
+  initialBaseRule,
+  initialHistory = []
+}: MockConfigProviderProps) => {
   const [baseRule, setBaseRule] = useState<Partial<Rule<any>> | undefined>(initialBaseRule);
   const [rules, setRules] = useState<Partial<Rule<any>>[]>(initialRules);
-  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [history, setHistory] = useState<HistoryItem[]>(initialHistory);
   const [filter, setFilter] = useState('');
 
   const addRule = (rule: Partial<Rule<any>>) => {
