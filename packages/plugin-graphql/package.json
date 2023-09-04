@@ -21,9 +21,10 @@
     "@hijacker/core": "workspace:*",
     "@hijacker/eslint-config": "workspace:*",
     "@hijacker/tsconfig": "workspace:*",
+    "@vitest/coverage-istanbul": "^0.34.3",
     "eslint": "^8.23.0",
     "typescript": "^5.2.2",
-    "vitest": "^0.22.1"
+    "vitest": "^0.34.3"
   },
   "dependencies": {
     "graphql": "^16.6.0"
