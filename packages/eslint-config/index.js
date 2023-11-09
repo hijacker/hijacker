@@ -19,6 +19,8 @@ const config = {
   rules: {
     "@typescript-eslint/indent": ["error", 2, { "ignoredNodes": ["PropertyDefinition"] }],
     "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-explicit-any": "off", // TODO: Work on removing
+    "import/no-named-as-default": "off",
     "@typescript-eslint/no-unused-vars": ["error"],
     "import/no-unresolved": 0,
     "import/named": 0,

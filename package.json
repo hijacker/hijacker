@@ -8,9 +8,9 @@
   "private": true,
   "scripts": {
     "commit": "git-cz",
-    "clean:node_modules": "rimraf ./**/node_modules",
-    "clean:builds": "rimraf ./**/dist",
-    "clean:coverage": "rimraf ./**/coverage",
+    "clean:node_modules": "rimraf -g ./packages/*/node_modules ./docs/node_modules ./examples/*/node_modules ./node_modules",
+    "clean:builds": "rimraf -g ./packages/*/dist",
+    "clean:coverage": "rimraf -g ./packages/*/coverage",
     "clean:docs": "rimraf ./docs/.docusaurus",
     "clean:all": "pnpm clean:builds && pnpm clean:coverage && pnpm clean:docs && pnpm clean:node_modules",
     "test": "pnpm --filter=!root --filter=!@docs/* test",
@@ -25,7 +25,7 @@
     "@changesets/cli": "^2.24.4",
     "commitizen": "^4.2.5",
     "cz-conventional-changelog": "^3.3.0",
-    "rimraf": "^3.0.2"
+    "rimraf": "^5.0.1"
   },
   "config": {
     "commitizen": {
