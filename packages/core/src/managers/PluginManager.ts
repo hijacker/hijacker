@@ -1,6 +1,6 @@
+import type { RuleType, Handler } from './index.js';
 import type { HijackerContext } from '../types/index.js';
 import type { Logger } from '../utils/index.js';
-import type { RuleType, Handler } from './index.js';
 
 interface PluginManagerOptions {
   context: HijackerContext;

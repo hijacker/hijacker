@@ -54,7 +54,7 @@
     "@vitejs/plugin-react": "^4.0.4",
     "@vitest/coverage-istanbul": "^0.34.3",
     "concurrently": "^7.6.0",
-    "eslint": "^8.23.0",
+    "eslint": "^8.53.0",
     "got": "^12.3.1",
     "lodash-es": "^4.17.21",
     "monaco-editor": "^0.34.1",

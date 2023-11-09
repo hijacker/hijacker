@@ -43,7 +43,7 @@
     "@types/express-xml-bodyparser": "^0.3.2",
     "@types/uuid": "^8.3.4",
     "@vitest/coverage-istanbul": "^0.34.3",
-    "eslint": "^8.23.0",
+    "eslint": "^8.53.0",
     "nock": "^13.2.9",
     "typescript": "^5.2.2",
     "vitest": "^0.34.3"

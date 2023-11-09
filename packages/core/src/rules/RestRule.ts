@@ -6,9 +6,9 @@ import got, { OptionsOfTextResponseBody } from 'got';
 import { routeMatcher } from 'route-matcher';
 import { v4 as uuid } from 'uuid';
 
+import type { Rule } from './index.js';
 import type { RuleType } from '../managers/index.js';
 import type { HijackerRequest, HijackerResponse, Request } from '../types/index.js';
-import type { Rule } from './index.js';
 
 export type HttpMethod =
   'GET' |

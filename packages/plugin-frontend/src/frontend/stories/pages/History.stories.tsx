@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { withConfig } from '../../.storybook/decorators';
-
 import History from '../../pages/History';
 
 const meta: Meta<typeof History> = {

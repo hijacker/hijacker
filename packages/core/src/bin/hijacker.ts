@@ -4,10 +4,10 @@ import path from 'node:path';
 import { program } from 'commander';
 
 // import pkg from '../../package.json';
+import { ImportError, jsImporter, jsonImporter, tsImporter } from './importers/index.js';
 import { Hijacker } from '../hijacker.js';
 import type { Config } from '../types/index.js';
 import { validateConfig, ValidationError } from '../validation/index.js';
-import { ImportError, jsImporter, jsonImporter, tsImporter } from './importers/index.js';
 
 // Define CLI
 // TODO: Read in package.json to correctly set version
