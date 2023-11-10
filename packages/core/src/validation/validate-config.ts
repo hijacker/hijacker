@@ -1,7 +1,10 @@
-import Ajv, { ErrorObject, JSONSchemaType } from 'ajv';
-import keywords from 'ajv-keywords';
+import _Ajv, { ErrorObject, JSONSchemaType } from 'ajv';
+import _keywords from 'ajv-keywords';
 
 import type { Config } from '../hijacker.js';
+
+const Ajv = _Ajv.default;
+const keywords = _keywords.default;
 
 export class ValidationError extends Error {
   errors: ErrorObject[];
@@ -61,7 +64,7 @@ const CONFIG_SCHEMA: JSONSchemaType<Config> = {
 };
 
 export const validateConfig = (config: unknown): Config => {
-  const ajv = new Ajv({ allErrors: true });
+  const ajv = new Ajv();
   keywords(ajv);
 
   const validate = ajv.compile(CONFIG_SCHEMA);

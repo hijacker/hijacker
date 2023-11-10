@@ -22,10 +22,10 @@
     "lint": "pnpm -r lint"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.24.4",
-    "commitizen": "^4.2.5",
+    "@changesets/cli": "^2.26.2",
+    "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
-    "rimraf": "^5.0.1"
+    "rimraf": "^5.0.5"
   },
   "config": {
     "commitizen": {
