@@ -1,6 +1,6 @@
+import { Handler } from '../schemas/index.js';
 import { isPromise } from '../utils/index.js';
 import type { Logger } from '../utils/index.js';
-import { Handler } from '../schemas/index.js';
 
 interface HookManagerOptions {
   logger: Logger;

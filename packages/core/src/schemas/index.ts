@@ -65,7 +65,7 @@ export const RuleType = z.object({
   createRule: z.function().args(Rule.partial()).returns(Rule),
   isMatch: z.function().args(HttpRequest, Rule).returns(z.boolean()),
   handler: z.function().args(HijackerRequest, HijackerContext).returns(z.promise(HttpResponse))
-})
+});
 
 export const Plugin =  z.object({
   name: z.string(),

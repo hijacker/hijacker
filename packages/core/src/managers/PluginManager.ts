@@ -1,5 +1,5 @@
-import type { Logger } from '../utils/index.js';
 import type { Plugin, HijackerContext } from '../schemas/index.js';
+import type { Logger } from '../utils/index.js';
 
 interface PluginManagerOptions {
   context: HijackerContext;
