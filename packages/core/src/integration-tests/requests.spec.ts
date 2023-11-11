@@ -3,7 +3,7 @@ import nock from 'nock';
 import { describe, beforeAll, it, expect, afterEach, afterAll } from 'vitest';
 
 import { Hijacker } from '../hijacker.js';
-import type { Config } from '../types/index.js';
+import type { Config } from '../schemas/index.js';
 
 describe('Request Tests', () => {
   let hijackerServer: Hijacker;

@@ -6,21 +6,9 @@ import got, { OptionsOfTextResponseBody } from 'got';
 import { routeMatcher } from 'route-matcher';
 import { v4 as uuid } from 'uuid';
 
-import type { Rule } from './index.js';
-import type { RuleType } from '../managers/index.js';
-import type { HijackerRequest, HijackerResponse, Request } from '../types/index.js';
+import type { HijackerRequest, RuleType, Rule, HttpMethod, HttpRequest, HttpResponse } from '../schemas/index.js';
 
-export type HttpMethod =
-  'GET' |
-  'HEAD' |
-  'POST' |
-  'PUT' |
-  'DELETE' |
-  'OPTIONS' |
-  'TRACE' |
-  'PATCH';
-
-export interface RestRule {
+export type RestRule = Rule & {
   skipApi: boolean;
   method: HttpMethod | 'ALL';
   body: any;
@@ -29,10 +17,10 @@ export interface RestRule {
   routeTo?: string;
 }
 
-export class RestRuleType implements RuleType<RestRule> {
+export class RestRuleType implements RuleType {
   type = 'rest';
   
-  createRule(rule: Partial<Rule<RestRule>>) {
+  createRule(rule: Partial<RestRule>) {
     return {
       id: rule.id ?? uuid(),
       disabled: rule.disabled ?? false,
@@ -48,27 +36,27 @@ export class RestRuleType implements RuleType<RestRule> {
     };
   }
 
-  isMatch(request: HijackerRequest, rule: Rule<RestRule>) {
+  isMatch(request: HttpRequest, rule: Rule) {
     return !!routeMatcher(rule.path).parse(request.path) && 
       (!Object.prototype.hasOwnProperty.call(rule, 'method') || rule.method === request.method || rule.method === 'ALL');
   }
 
-  async handler(request: Request<RestRule>): Promise<HijackerResponse> {
-    const { originalReq, matchingRule } = request;
+  async handler(request: HijackerRequest): Promise<HttpResponse> {
+    const { httpReq, matchingRule } = request;
 
-    const responseObj: HijackerResponse = {
-      requestId: originalReq.requestId,
+    const responseObj: HttpResponse = {
+      requestId: httpReq.requestId,
       timestamp: Date.now(),
       body: matchingRule.body ?? {},
       headers: {},
-      statusCode: matchingRule.statusCode ?? 200
+      statusCode: matchingRule.statusCode as number ?? 200
     };
 
     const requestOptions: OptionsOfTextResponseBody = {
-      url: matchingRule.baseUrl + (matchingRule.routeTo ?? originalReq.path),
-      method: originalReq.method,
+      url: matchingRule.baseUrl + (matchingRule.routeTo ?? httpReq.path),
+      method: httpReq.method,
       headers: {
-        ...originalReq.headers
+        ...httpReq.headers
       },
       throwHttpErrors: false,
       agent: {
@@ -89,8 +77,8 @@ export class RestRuleType implements RuleType<RestRule> {
       }
     };
 
-    if (originalReq.method !== 'GET') {
-      requestOptions.body = JSON.stringify(originalReq.body);
+    if (httpReq.method !== 'GET') {
+      requestOptions.body = JSON.stringify(httpReq.body);
     }
 
     if (!matchingRule.skipApi) {
@@ -102,7 +90,7 @@ export class RestRuleType implements RuleType<RestRule> {
       } catch {}
 
       responseObj.body = matchingRule.body ?? body;
-      responseObj.statusCode = matchingRule.statusCode ?? response.statusCode;
+      responseObj.statusCode = matchingRule.statusCode as number ?? response.statusCode;
       responseObj.headers = response.headers as Record<string, string>;
     }
 

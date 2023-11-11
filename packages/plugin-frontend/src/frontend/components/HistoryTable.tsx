@@ -1,4 +1,4 @@
-import { HijackerRequest, HijackerResponse } from '@hijacker/core';
+import { HttpRequest, HttpResponse } from '@hijacker/core';
 import { Collapse, styled, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { useState } from 'react';
 
@@ -6,8 +6,8 @@ import { HistoryItem } from './HistoryItem';
 
 interface HistoryItem {
   requestId: string;
-  hijackerRequest: HijackerRequest;
-  hijackerResponse?: HijackerResponse;
+  hijackerRequest: HttpRequest;
+  hijackerResponse?: HttpResponse;
 }
 
 const CollapsibleRow = styled(TableRow)`

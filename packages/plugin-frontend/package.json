@@ -13,10 +13,10 @@
   },
   "scripts": {
     "build": "pnpm build:back && pnpm build:front",
-    "build:back": "tsc",
+    "build:back": "tsc --project tsconfig.build.json",
     "build:front": "vite build",
     "dev": "concurrently \"pnpm dev:back\" \"pnpm dev:front\"",
-    "dev:back": "tsc --watch",
+    "dev:back": "tsc --project tsconfig.build.json --watch",
     "dev:front": "NODE_ENV=development vite build --watch --emptyOutDir",
     "lint": "eslint src/",
     "test": "vitest --coverage --config vitest.config.ts",

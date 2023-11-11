@@ -1,23 +1,23 @@
 
-import type { HijackerRequest, RestRule, Rule } from '@hijacker/core';
+import type { HttpRequest, RestRule, Rule } from '@hijacker/core';
 import { RestRuleType } from '@hijacker/core';
 import { OperationDefinitionNode, parse } from 'graphql';
 
-export interface GraphQLRule extends RestRule {
+export type GraphQLRule = RestRule & {
   operationName?: string;
 }
 
 export class GraphQLRuleType extends RestRuleType {
   type = 'graphql';
 
-  createRule(rule: Partial<Rule<GraphQLRule>>) {
+  createRule(rule: Partial<GraphQLRule>) {
     return {
       ...super.createRule(rule),
       operationName: rule.operationName
     };
   }
 
-  isMatch(request: HijackerRequest, rule: Rule<GraphQLRule>): boolean {
+  isMatch(request: HttpRequest, rule: Rule): boolean {
     try {
       const { definitions } = parse(request.body.query);
       const topOperation = definitions[0] as OperationDefinitionNode;

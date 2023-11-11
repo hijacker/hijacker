@@ -1,9 +1,8 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { RuleManager, HookManager } from './index.js';
-import { PluginManager, Plugin } from './PluginManager';
-import type { Rule } from '../rules/index.js';
-import type { HijackerContext } from '../types/index.js';
+import { PluginManager } from './PluginManager.js';
+import type { HijackerContext, Plugin, Rule } from '../schemas/index.js';
 import type { Logger } from '../utils/index.js';
 
 
@@ -105,11 +104,11 @@ describe('PluginManager', () => {
       ruleManager: mockRuleManager
     };
 
-    const plugin = {
+    const plugin: Plugin = {
       name: 'TestPlugin',
       ruleTypes: [{
         type: 'TestRule',
-        createRule: (rule: Rule) => rule,
+        createRule: (rule: Partial<Rule>) => ({ ...rule, id: 'test', baseUrl: 'test' }),
         isMatch() {
           return true;
         },

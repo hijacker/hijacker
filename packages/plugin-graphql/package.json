@@ -13,8 +13,8 @@
   },
   "scripts": {
     "test": "vitest --coverage",
-    "build": "tsc",
-    "dev": "tsc --watch",
+    "build": "tsc --project tsconfig.build.json",
+    "dev": "tsc --project tsconfig.build.json --watch",
     "lint": "eslint src/"
   },
   "devDependencies": {

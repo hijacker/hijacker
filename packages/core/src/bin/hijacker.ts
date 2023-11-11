@@ -6,7 +6,7 @@ import { program } from 'commander';
 // import pkg from '../../package.json';
 import { ImportError, jsImporter, jsonImporter, tsImporter } from './importers/index.js';
 import { Hijacker } from '../hijacker.js';
-import type { Config } from '../types/index.js';
+import type { Config } from '../schemas/index.js';
 import { validateConfig, ValidationError } from '../validation/index.js';
 
 // Define CLI

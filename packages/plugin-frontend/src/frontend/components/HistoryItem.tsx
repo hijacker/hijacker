@@ -1,4 +1,4 @@
-import { HijackerRequest, HijackerResponse } from '@hijacker/core';
+import { HttpRequest, HttpResponse } from '@hijacker/core';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { Box, Step, StepButton, Stepper, styled, Typography, Link } from '@mui/material';
 import { useState } from 'react';
@@ -22,8 +22,8 @@ const HistoryDataItemLabel = styled('span')`
 
 interface HistoryItem {
   requestId: string;
-  hijackerRequest: HijackerRequest;
-  hijackerResponse?: HijackerResponse;
+  hijackerRequest: HttpRequest;
+  hijackerResponse?: HttpResponse;
 }
 
 interface HistoryItemProps {

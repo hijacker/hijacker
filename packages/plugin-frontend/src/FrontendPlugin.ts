@@ -2,7 +2,7 @@ import { Server } from 'node:http';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { Handler, HijackerContext, HijackerRequest, HijackerResponse, Plugin, Rule, ProcessedRule } from '@hijacker/core';
+import type { Handler, HijackerContext, HttpRequest, HttpResponse, Plugin, Rule, ProcessedRule } from '@hijacker/core';
 import express from 'express';
 import { Server as SocketServer } from 'socket.io';
 
@@ -58,7 +58,7 @@ export class FrontendPlugin implements Plugin {
         rules: ruleManager.rules
       });
 
-      socket.on('UPDATE_BASE_RULE', (rule: Partial<Rule<any>>) => {
+      socket.on('UPDATE_BASE_RULE', (rule: Partial<Rule>) => {
         ruleManager.baseRule = rule;
         this.io.emit('BASE_RULE_UPDATED', rule);
       });
@@ -86,7 +86,7 @@ export class FrontendPlugin implements Plugin {
   }
 
   // For now just send to history. Will eventually have breakpoints in these
-  async onHijackerRequest(req: HijackerRequest): Promise<HijackerRequest> {
+  async onHijackerRequest(req: HttpRequest): Promise<HttpRequest> {
     // Only sending history over sockets and storing on frontend inmemory.
     //    Using tempHistory allows full request lifecycles to always be seen in case frontend
     //    only recieves one of the later events.
@@ -102,7 +102,7 @@ export class FrontendPlugin implements Plugin {
     return req;
   }
 
-  async onHijackerResponse(res: HijackerResponse): Promise<HijackerResponse> {
+  async onHijackerResponse(res: HttpResponse): Promise<HttpResponse> {
     const historyItem = this.tempHistory.find(x => x.requestId === res.requestId)!;
 
     historyItem.hijackerResponse = res;

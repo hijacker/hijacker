@@ -1,4 +1,4 @@
-import type { HijackerRequest } from '@hijacker/core';
+import type { HttpRequest } from '@hijacker/core';
 import { describe, expect, it } from 'vitest';
 
 import { GraphQLRuleType } from './GraphQLRule.js';
@@ -18,12 +18,12 @@ describe('GraphqlRule', () => {
         body: {
           query: 'query Test { tests { result time name } }'
         }
-      } as HijackerRequest;
+      } as HttpRequest;
       const reqTwo = { 
         body: {
           query: 'query CreateTest { tests { result time name } }'
         }
-      } as HijackerRequest;
+      } as HttpRequest;
   
       expect(ruleType.isMatch(reqOne, rule)).toBe(false);
       expect(ruleType.isMatch(reqTwo, rule)).toBe(true);
@@ -42,7 +42,7 @@ describe('GraphqlRule', () => {
         body: {
           query: ' query CreateTest {'
         }
-      } as HijackerRequest;
+      } as HttpRequest;
 
       expect(ruleType.isMatch(req, rule)).toBe(false);
     });

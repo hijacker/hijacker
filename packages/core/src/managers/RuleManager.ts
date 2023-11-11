@@ -2,23 +2,12 @@ import { v4 as uuid } from 'uuid';
 
 import type { EventManager } from './index.js';
 import { RestRuleType } from '../rules/index.js';
-import type { Rule } from '../rules/index.js';
-import type { Request, HijackerContext, HijackerRequest, HijackerResponse } from '../types/index.js';
+import type { HijackerRequest, HijackerContext, HttpRequest, HttpResponse, RuleType, Rule } from '../schemas/index.js';
 import type { Logger } from '../utils/index.js';
 
-export interface RuleType<T = any> {
-  type: string;
-  createRule(rule: Partial<Rule<T>>): Rule<T>;
-  isMatch(request: HijackerRequest, rule: Rule<T>): boolean;
-  handler(
-    request: Request<T>,
-    context: HijackerContext
-  ): Promise<HijackerResponse>;
-}
-
 interface RuleManagerInitOptions {
-  baseRule: Partial<Rule<any>>;
-  rules: Partial<Rule<any>>[];
+  baseRule: Partial<Rule>;
+  rules: Partial<Rule>[];
 }
 
 interface RuleManagerOptions {
@@ -31,7 +20,7 @@ export type ProcessedRule = Partial<Rule> & { id: string };
 export class RuleManager {
   ruleTypes: Record<string, RuleType> = {};
   rules: ProcessedRule[] = [];
-  baseRule: Partial<Rule<any>> = {};
+  baseRule: Partial<Rule> = {};
   logger: Logger;
   events: EventManager;
 
@@ -58,7 +47,7 @@ export class RuleManager {
     });
   }
 
-  addRules(rules: Partial<Rule<any>>[]) {
+  addRules(rules: Partial<Rule>[]) {
     this.logger.log('DEBUG', '[RuleManager]', 'addRules');
 
     for (const rule of rules) {
@@ -102,7 +91,7 @@ export class RuleManager {
     this.events.emit('RULES_UPDATED', this.rules);
   }
 
-  match(request: HijackerRequest) {
+  match(request: HttpRequest) {
     this.logger.log('DEBUG', '[RuleManager]', 'match');
 
     const rule = this.rules.find(r => {
@@ -124,7 +113,7 @@ export class RuleManager {
     });
   }
 
-  async handler(ruleType: string, request: Request, context: HijackerContext): Promise<HijackerResponse> {
+  async handler(ruleType: string, request: HijackerRequest, context: HijackerContext): Promise<HttpResponse> {
     this.logger.log('DEBUG', '[RuleManager]', 'handler');
 
     if (ruleType in this.ruleTypes === false) {

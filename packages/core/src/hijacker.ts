@@ -9,8 +9,7 @@ import xmlParser from 'express-xml-bodyparser';
 import { v4 as uuid } from 'uuid';
 
 import { RuleManager, HookManager, EventManager, PluginManager } from './managers/index.js';
-import type { HttpMethod } from './rules/index.js';
-import type { Config, HijackerContext, HijackerRequest, HijackerResponse, Request } from './types/index.js';
+import type { Config, HijackerContext, HttpRequest, HttpResponse, HijackerRequest, HttpMethod } from './schemas/index.js';
 import { filterResponseHeaders, Logger } from './utils/index.js';
 
 export class Hijacker {
@@ -60,7 +59,7 @@ export class Hijacker {
           logger.log('INFO', `[${req.method}] ${req.originalUrl}`);
 
           // Generate first HijackerRequest/Lifecycle OBJ and match rule
-          const originalReq = await hookManager.executeHook<HijackerRequest>('HIJACKER_REQUEST', {
+          const httpReq = await hookManager.executeHook<HttpRequest>('HIJACKER_REQUEST', {
             requestId: uuid(),
             timestamp: Date.now(),
             path: req.originalUrl,
@@ -69,15 +68,15 @@ export class Hijacker {
             method: req.method as HttpMethod
           });
 
-          const matchingRule = ruleManager.match(originalReq);
+          const matchingRule = ruleManager.match(httpReq);
           
-          const request: Request = {
-            originalReq,
+          const request: HijackerRequest = {
+            httpReq,
             matchingRule
           };
 
           // Call ruletype handler
-          const newRes = await hookManager.executeHook<HijackerResponse>(
+          const newRes = await hookManager.executeHook<HttpResponse>(
             'HIJACKER_RESPONSE',
             await ruleManager.handler(request.matchingRule.type ?? 'rest', request, this.context)
           );
@@ -156,6 +155,6 @@ export class Hijacker {
 
 export const defineConfig = (config: Config) => config;
 export * from './rules/index.js';
-export * from './types/index.js';
+export * from './schemas/index.js';
 export * from './utils/index.js';
 export * from './managers/index.js';

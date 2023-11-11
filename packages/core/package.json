@@ -4,8 +4,8 @@
   "description": "Frontend development tool for intercepting and mocking api requests",
   "author": "Travis Weidenbenner <travis@weidenbenner.com>",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
+    "build": "tsc --project tsconfig.build.json",
+    "dev": "tsc --project tsconfig.build.json --watch",
     "lint": "eslint src/",
     "start": "npm run dev",
     "test": "vitest --coverage --config vitest.config.ts"
@@ -33,7 +33,8 @@
     "route-matcher": "^0.1.0",
     "uuid": "^9.0.1",
     "vite": "^4.5.0",
-    "vite-node": "^0.34.6"
+    "vite-node": "^0.34.6",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@hijacker/eslint-config": "workspace:*",
