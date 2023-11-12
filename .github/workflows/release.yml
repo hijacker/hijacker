@@ -64,8 +64,9 @@ jobs:
           path-to-lcov: './packages/plugin-graphql/coverage/lcov.info'
           parallel: true
 
-  finish:
-    needs: Coveralls Finish
+  coveralls-finish:
+    name: Coveralls Finish
+    needs: test
     if: ${{ always() }}
     runs-on: ubuntu-latest
     steps:
