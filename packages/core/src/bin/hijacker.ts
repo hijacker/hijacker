@@ -2,12 +2,13 @@
 import path from 'node:path';
 
 import { program } from 'commander';
+import { ZodError } from 'zod';
 
 // import pkg from '../../package.json';
 import { ImportError, jsImporter, jsonImporter, tsImporter } from './importers/index.js';
 import { Hijacker } from '../hijacker.js';
+import { Config as ConfigSchema } from '../schemas/index.js';
 import type { Config } from '../schemas/index.js';
-import { validateConfig, ValidationError } from '../validation/index.js';
 
 // Define CLI
 // TODO: Read in package.json to correctly set version
@@ -41,13 +42,13 @@ let config: Config;
       rc = jsonImporter(configPath);
     }
 
-    config = validateConfig(rc);
+    config = ConfigSchema.parse(rc);
   } catch (e: unknown) {
-    if (e instanceof ValidationError) {
+    if (e instanceof ZodError) {
       console.error(`Config file '${options.config}' is invalid. Please fix the following issues:`);
       e.errors.forEach((val) => {
         // TODO: Can still better format errors
-        console.error(`- '${val.instancePath}' ${val.message}`);
+        console.error(`- '${val.path}' ${val.message}`);
       });
     } else if (e instanceof ImportError) {
       console.error('There was an error loading your config file. Please check it for errors');

@@ -79,7 +79,7 @@ export const Config = z.object({
   port: z.number(),
   baseRule: Rule.omit({ id: true }).partial(),
   rules: z.array(Rule.omit({ id: true }).partial()),
-  plugins: z.array(Plugin).optional(),
+  plugins: z.array(z.union([Plugin.passthrough(), Plugin])).optional(),
   logger: LoggerOptions.optional()
 });
 
