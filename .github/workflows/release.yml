@@ -36,6 +36,44 @@ jobs:
         run: pnpm build
       - name: Run Tests
         run: pnpm test
+      - name: 'Coveralls - @hijacker/core'
+        if: ${{ matrix.node-version == '20.x' }}
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          flag-name: '@hijakcer/core'
+          base-path: './packages/core'
+          path-to-lcov: './packages/core/coverage/lcov.info'
+          parallel: true
+      - name: 'Coveralls - @hijacker/plugin-frontend'
+        if: ${{ matrix.node-version == '20.x' }}
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          flag-name: '@hijakcer/plugin-frontend'
+          base-path: './packages/plugin-frontend'
+          path-to-lcov: './packages/plugin-frontend/coverage/lcov.info'
+          parallel: true
+      - name: 'Coveralls - @hijacker/plugin-graphql'
+        if: ${{ matrix.node-version == '20.x' }}
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          flag-name: '@hijakcer/plugin-graphql'
+          base-path: './packages/plugin-graphql'
+          path-to-lcov: './packages/plugin-graphql/coverage/lcov.info'
+          parallel: true
+
+  coveralls-finish:
+    name: Coveralls Finish
+    needs: test
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@v2
+      with:
+        parallel-finished: true
 
   release:
     name: Release

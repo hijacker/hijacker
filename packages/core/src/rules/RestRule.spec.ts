@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
 import { RestRuleType } from './index.js';
-import type { HijackerRequest } from '../types/index.js';
+import type { HttpRequest } from '../schemas/index.js';
 
 describe('RestRule', () => {
   describe('isMatch', () => {
@@ -15,8 +15,8 @@ describe('RestRule', () => {
         method: 'POST'
       });
   
-      const reqOne = { path: '/test-route/1', method: 'POST' } as HijackerRequest;
-      const reqTwo = { path: '/test-route', method: 'POST' } as HijackerRequest;
+      const reqOne = { path: '/test-route/1', method: 'POST' } as HttpRequest;
+      const reqTwo = { path: '/test-route', method: 'POST' } as HttpRequest;
   
       expect(ruleType.isMatch(reqOne, rule)).toBe(false);
       expect(ruleType.isMatch(reqTwo, rule)).toBe(true);
@@ -32,8 +32,8 @@ describe('RestRule', () => {
         method: 'POST'
       });
   
-      const reqOne = { path: '/test-route', method: 'POST' } as HijackerRequest;
-      const reqTwo = { path: '/test-route', method: 'GET' } as HijackerRequest;
+      const reqOne = { path: '/test-route', method: 'POST' } as HttpRequest;
+      const reqTwo = { path: '/test-route', method: 'GET' } as HttpRequest;
   
       expect(ruleType.isMatch(reqOne, rule)).toBe(true);
       expect(ruleType.isMatch(reqTwo, rule)).toBe(false);
@@ -49,8 +49,8 @@ describe('RestRule', () => {
         method: 'ALL'
       });
   
-      const reqOne = { path: '/test-route', method: 'POST' } as HijackerRequest;
-      const reqTwo = { path: '/test-route', method: 'GET' } as HijackerRequest;
+      const reqOne = { path: '/test-route', method: 'POST' } as HttpRequest;
+      const reqTwo = { path: '/test-route', method: 'GET' } as HttpRequest;
   
       expect(ruleType.isMatch(reqOne, rule)).toBe(true);
       expect(ruleType.isMatch(reqTwo, rule)).toBe(true);
@@ -66,8 +66,8 @@ describe('RestRule', () => {
         method: 'POST'
       });
   
-      const reqOne = { path: '/test-route/12', method: 'POST' } as HijackerRequest;
-      const reqTwo = { path: '/test-route', method: 'POST' } as HijackerRequest;
+      const reqOne = { path: '/test-route/12', method: 'POST' } as HttpRequest;
+      const reqTwo = { path: '/test-route', method: 'POST' } as HttpRequest;
   
       expect(ruleType.isMatch(reqOne, rule)).toBe(true);
       expect(ruleType.isMatch(reqTwo, rule)).toBe(false);

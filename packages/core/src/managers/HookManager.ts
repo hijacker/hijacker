@@ -1,7 +1,6 @@
+import { Handler } from '../schemas/index.js';
 import { isPromise } from '../utils/index.js';
 import type { Logger } from '../utils/index.js';
-
-export type Handler<T = any> = (val: T) => T;
 
 interface HookManagerOptions {
   logger: Logger;
@@ -52,7 +51,7 @@ export class HookManager {
       throw new Error(`Can't execute non-existant hook '${hookName}'`);
     }
 
-    return await this.hooks[hookName].reduce(async (acc, cur) => cur(await acc), initialVal);
+    return await this.hooks[hookName].reduce(async (acc, cur) => cur(await acc) as T, initialVal);
   }
 
   executeSyncHook<T = any>(hookName: string, initialVal: T) {
@@ -69,7 +68,7 @@ export class HookManager {
         throw new Error(`${hookName} can't handle async handlers`);
       }
       
-      return val;
+      return val as T;
     }, initialVal);
   }
 }

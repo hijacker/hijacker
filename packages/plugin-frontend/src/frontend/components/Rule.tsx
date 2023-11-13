@@ -19,10 +19,10 @@ import { Editor } from './Editor';
 
 
 interface RuleProps {
-  rule: Partial<RuleType<any>>;
+  rule: Partial<RuleType>;
   name?: string;
   disableable?: boolean;
-  onChange?: (rule: Partial<RuleType<any>>) => void;
+  onChange?: (rule: Partial<RuleType>) => void;
   onDelete?: (ruleId: string) => void;
 }
 
@@ -118,8 +118,8 @@ export const Rule = (props: RuleProps) => {
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
-        <RuleMethod method={rule.method ?? 'ALL'}>{rule.method ?? 'ALL'}</RuleMethod>
-        <RuleTitle fontWeight="600" sx={{ flexGrow: 1 }}>{name ?? rule.name ?? rule.path}</RuleTitle>
+        <RuleMethod method={rule.method as HttpMethod ?? 'ALL'}>{rule.method as HttpMethod ?? 'ALL'}</RuleMethod>
+        <RuleTitle fontWeight="600" sx={{ flexGrow: 1 }}>{name ?? rule.name ?? rule.path as string}</RuleTitle>
         { disableable && <Switch
           size="small"
           checked={!rule.disabled}

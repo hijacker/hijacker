@@ -3,8 +3,7 @@ import { describe, it, expect, vi } from 'vitest';
 import type { EventManager } from './index.js';
 import { RuleManager } from './RuleManager.js';
 import { RestRuleType } from '../rules/index.js';
-import type { Rule } from '../rules/index.js';
-import { HijackerContext, HijackerResponse, HijackerRequest, Request } from '../types/index.js';
+import { HijackerContext, HttpResponse, HttpRequest, HijackerRequest, Rule } from '../schemas/index.js';
 import { Logger } from '../utils/index.js';
 
 class NewRuleType extends RestRuleType {
@@ -14,11 +13,11 @@ class NewRuleType extends RestRuleType {
     return super.createRule(rule);
   }
 
-  isMatch(request: HijackerRequest, rule: Rule): boolean {
+  isMatch(request: HttpRequest, rule: Rule): boolean {
     return rule.name === 'NEW RULE MATCH';
   }
 
-  async handler(): Promise<HijackerResponse> {
+  async handler(): Promise<HttpResponse> {
     throw new Error('');
   }
 }
@@ -94,7 +93,9 @@ describe('RuleManager', () => {
     });
 
     // NewRule matches any rule that has name 'NEW RULE MATCH'
-    const req: HijackerRequest = {
+    const req: HttpRequest = {
+      timestamp: 123,
+      requestId: 'test',
       path: '/testing',
       method: 'POST',
       headers: {},
@@ -243,6 +244,7 @@ describe('RuleManager', () => {
 
     expect(() => {
       ruleManager.updateRule({
+        id: 'ttest',
         type: 'fakeRule'
       });
     }).toThrow();
@@ -262,7 +264,7 @@ describe('RuleManager', () => {
     expect(
       ruleManager.handler(
         'fakeRule',
-        {} as Request,
+        {} as HijackerRequest,
         {} as HijackerContext
       )
     ).rejects.toThrow();

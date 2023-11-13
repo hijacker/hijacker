@@ -1,7 +1,7 @@
 import { describe, beforeAll, it, expect } from 'vitest';
 
 import { Hijacker } from '../hijacker.js';
-import type { Config } from '../types/index.js';
+import type { Config } from '../schemas/index.js';
 
 describe('Event Tests', () => {
   let config: Config;

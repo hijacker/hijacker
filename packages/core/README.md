@@ -141,9 +141,9 @@ It is possible to create custom rule types, that allow for request matching and 
 | Property | Description | Type | Required | Default |
 | -------- | ----------- | ---- | -------- | ------- |
 | `type` | Rule type used to match rules | `string` | `yes` | |
-| `createRule` | Create rule object used for the handler | `(rule: Partial<Rule<T>>) => Rule<T>` | `yes` | |
-| `isMatch` | Used to determine if request matches a rule | `(request: HijackerRequest, rule: Rule<T>) => boolean` | `yes` | |
-| `handler` | Request handler for rule type | `(request: Request<T>, baseRule: Partial<Rule<T>>, context: HijackerContext) => Promise<HijackerResponse>` | `yes` | |
+| `createRule` | Create rule object used for the handler | `(rule: Partial<Rule>) => Rule` | `yes` | |
+| `isMatch` | Used to determine if request matches a rule | `(request: HttpRequest, rule: Rule) => boolean` | `yes` | |
+| `handler` | Request handler for rule type | `(request: HijackerRequest, baseRule: Partial<Rule>, context: HijackerContext) => Promise<HttpResponse>` | `yes` | |
 
 ### Hooks
 Hooks allow plugins to listen and modify objects at specific points in the request lifecycle. Hook handlers are passed an object that they can modify and return an object of the same shape. Right now Hijacker has hooks for the following events:
@@ -151,7 +151,7 @@ Hooks allow plugins to listen and modify objects at specific points in the reque
 | Hook Name | Type | Description | Synchronous |
 | --------- | ---- | ----------- | ----------- |
 | `HIJACKER_START` | `Config` | Executed when hijacker starts up and allows modifying the hijacker config | `yes` |
-| `HIJACKER_REQUEST` | `HijackerRequst` |  Begining of request. Called before rule matched | `no` |
-| `HIJACKER_RESPONSE` | `HijackerResponse` | Called after request handler, before response returned to client | `no` | 
+| `HIJACKER_REQUEST` | `HttpRequest` |  Begining of request. Called before rule matched | `no` |
+| `HIJACKER_RESPONSE` | `HttpResponse` | Called after request handler, before response returned to client | `no` | 
 
 Plugins are able to add additional hooks using the HookManager which allow other plugins to modify their functionality.

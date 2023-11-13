@@ -3,9 +3,7 @@ import nock, { Scope } from 'nock';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 import { Hijacker } from '../hijacker.js';
-import type { Plugin } from '../managers/index.js';
-import type { Rule } from '../rules/index.js';
-import type { Config, HijackerRequest, HijackerResponse } from '../types/index.js';
+import type { Config, HttpRequest, HttpResponse, Plugin, Rule } from '../schemas/index.js';
 
 describe('Plugin Tests', () => {
   let config: Config;
@@ -39,8 +37,10 @@ describe('Plugin Tests', () => {
           {
             type: 'TestRule',
             isMatch: () => true,
-            createRule: (rule: Rule) => rule,
+            createRule: (rule: Partial<Rule>) => ({ ...rule, id: 'test', baseUrl: 'test' }),
             handler: async () => ({
+              timestamp: 123,
+              requestId: '123',
               body: {
                 example: 'hijacker'
               },
@@ -113,7 +113,7 @@ describe('Plugin Tests', () => {
         name: 'TestPlugin',
         handlers: {
           // Redirect path to /posts
-          'HIJACKER_REQUEST': (request: HijackerRequest) => {
+          'HIJACKER_REQUEST': (request: HttpRequest) => {
             expect(request.path).toEqual('/cars');
             
             return {
@@ -152,7 +152,7 @@ describe('Plugin Tests', () => {
         name: 'TestPlugin',
         handlers: {
           // Edit response
-          'HIJACKER_RESPONSE': (response: HijackerResponse) => {
+          'HIJACKER_RESPONSE': (response: HttpResponse) => {
             expect(response.body).toEqual({
               path: 'posts'
             });

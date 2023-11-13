@@ -10,4 +10,4 @@ Hijacker is a develoment tool meant to proxy to an existing API while being able
 
 
 ## Hijacker Lifecycle
-<Lifecycle diagram here>
+`<Lifecycle diagram here>`

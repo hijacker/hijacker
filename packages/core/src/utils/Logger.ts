@@ -1,18 +1,5 @@
-const logLevels = [
-  'SILLY',
-  'DEBUG',
-  'HTTP',
-  'INFO',
-  'WARN',
-  'ERROR',
-  'NONE'
-] as const;
-
-export type LogLevel = typeof logLevels[number];
-
-export interface LoggerOptions {
-  level?: LogLevel;
-}
+import type { LogLevel, LoggerOptions } from '../schemas/index.js';
+import { LOG_LEVELS } from '../schemas/index.js';
 
 export class Logger {
   level: LogLevel;
@@ -22,7 +9,7 @@ export class Logger {
   }
 
   log(level: Exclude<LogLevel, 'NONE'>, ...args: any[]) {
-    if (logLevels.indexOf(level) >= logLevels.indexOf(this.level)) {
+    if (LOG_LEVELS.indexOf(level) >= LOG_LEVELS.indexOf(this.level)) {
       console.log(`[${level}]`, ...args);
     }
   }

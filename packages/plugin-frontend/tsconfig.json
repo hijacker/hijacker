@@ -1,16 +1,15 @@
 {
   "extends": "@hijacker/tsconfig/base.json",
   "compilerOptions": {
-    "module": "ES2022",
-    "moduleResolution": "Node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "outDir": "./dist",
     "rootDir": "src"
   },
-  "include": ["src/types/*.ts", "src/*.ts"],
+  "include": ["src/types/*.ts", "src/*.ts", "src/integration-tests/*.spec.ts"],
   "exclude": [
-    "node_modules",
-    "**/*.spec.ts"
+    "node_modules"
   ],
   "ts-node": {
     "esm": true

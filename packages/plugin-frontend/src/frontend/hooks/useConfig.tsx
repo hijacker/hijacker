@@ -1,4 +1,4 @@
-import { HijackerRequest, HijackerResponse, Rule } from '@hijacker/core';
+import { HttpRequest, HttpResponse, Rule } from '@hijacker/core';
 import { useContext, useEffect, useState , createContext } from 'react';
 import { io } from 'socket.io-client';
 
@@ -7,20 +7,20 @@ import { HijackerSocketClient } from '../../types/index.js';
 
 export interface HistoryItem {
   requestId: string;
-  hijackerRequest: HijackerRequest;
-  hijackerResponse?: HijackerResponse;
+  hijackerRequest: HttpRequest;
+  hijackerResponse?: HttpResponse;
 }
 
 interface ConfigContext {
-  baseRule?: Partial<Rule<any>>;
-  rules: Partial<Rule<any>>[];
+  baseRule?: Partial<Rule>;
+  rules: Partial<Rule>[];
   history: HistoryItem[];
   filter: string;
   clearHistory: () => void;
   setFilter: (val: string) => void;
-  addRule: (rule: Partial<Rule<any>>) => void;
-  updateRule: (rule: Partial<Rule<any>>) => void;
-  updateBaseRule: (rule: Partial<Rule<any>>) => void;
+  addRule: (rule: Partial<Rule>) => void;
+  updateRule: (rule: Partial<Rule>) => void;
+  updateBaseRule: (rule: Partial<Rule>) => void;
   deleteRule: (ruleId: string) => void;
 }
 
@@ -43,8 +43,8 @@ interface ContextProviderProps {
 
 export const ConfigProvider = ({ children }: ContextProviderProps) => {
   const [socket, setSocket] = useState<HijackerSocketClient | null>(null);
-  const [baseRule, setBaseRule] = useState<Partial<Rule<any>> | undefined>(undefined);
-  const [rules, setRules] = useState<Partial<Rule<any>>[]>([]);
+  const [baseRule, setBaseRule] = useState<Partial<Rule> | undefined>(undefined);
+  const [rules, setRules] = useState<Partial<Rule>[]>([]);
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [filter, setFilter] = useState('');
 
@@ -90,7 +90,7 @@ export const ConfigProvider = ({ children }: ContextProviderProps) => {
     };
   }, [setSocket, setRules, setBaseRule, resetSocket]);
 
-  const addRule = (rule: Partial<Rule<any>>) => {
+  const addRule = (rule: Partial<Rule>) => {
     if (socket) {
       socket.emit('ADD_RULES', [rule]);
     }
@@ -100,7 +100,7 @@ export const ConfigProvider = ({ children }: ContextProviderProps) => {
     setHistory([]);
   };
 
-  const updateRule = (rule: Partial<Rule<any>>) => {
+  const updateRule = (rule: Partial<Rule>) => {
     if (socket && rule.id) {
       socket.emit('UPDATE_RULES', [{
         id: rule.id,
@@ -115,7 +115,7 @@ export const ConfigProvider = ({ children }: ContextProviderProps) => {
     }
   };
 
-  const updateBaseRule = (rule: Partial<Rule<any>>) => {
+  const updateBaseRule = (rule: Partial<Rule>) => {
     if (socket) {
       socket.emit('UPDATE_BASE_RULE', rule);
     }

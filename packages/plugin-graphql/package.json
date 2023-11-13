@@ -13,21 +13,21 @@
   },
   "scripts": {
     "test": "vitest --coverage",
-    "build": "tsc",
-    "dev": "tsc --watch",
+    "build": "tsc --project tsconfig.build.json",
+    "dev": "tsc --project tsconfig.build.json --watch",
     "lint": "eslint src/"
   },
   "devDependencies": {
     "@hijacker/core": "workspace:*",
     "@hijacker/eslint-config": "workspace:*",
     "@hijacker/tsconfig": "workspace:*",
-    "@vitest/coverage-istanbul": "^0.34.3",
+    "@vitest/coverage-istanbul": "^0.34.6",
     "eslint": "^8.53.0",
     "typescript": "^5.2.2",
-    "vitest": "^0.34.3"
+    "vitest": "^0.34.6"
   },
   "dependencies": {
-    "graphql": "^16.6.0"
+    "graphql": "^16.8.1"
   },
   "peerDependencies": {
     "@hijacker/core": "workspace:*"
