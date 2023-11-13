@@ -1,5 +1,18 @@
 # @hijacker/core
 
+## 2.0.0-beta.11
+
+### Major Changes
+
+- 55bc52d: Convert to zod types
+
+  Switch to zod and refactor all types to using it. Breaking change because some types are renamed as well as moving types around.
+
+  Types renamed:
+  `HijackerRequest` -> `HttpRequest`
+  `HijackerResponse` -> `HttpResponse`
+  `Request` -> `HijackerRequest`
+
 ## 2.0.0-beta.10
 
 ### Patch Changes
