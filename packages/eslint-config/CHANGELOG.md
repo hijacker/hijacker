@@ -1,5 +1,18 @@
 # @hijacker/eslint-config
 
+## 1.0.0-beta.1
+
+### Major Changes
+
+- 55bc52d: Convert to zod types
+
+  Switch to zod and refactor all types to using it. Breaking change because some types are renamed as well as moving types around.
+
+  Types renamed:
+  `HijackerRequest` -> `HttpRequest`
+  `HijackerResponse` -> `HttpResponse`
+  `Request` -> `HijackerRequest`
+
 ## 1.0.0-beta.0
 
 ### Major Changes
