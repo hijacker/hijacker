@@ -166,9 +166,14 @@ describe('PluginManager', () => {
       ruleManager: mockRuleManager
     };
 
+    const guard = () => true;
+
     const plugin = {
       name: 'TestPlugin',
-      hooks: ['TESTING', 'TEST2']
+      hooks: {
+        'TESTING': guard,
+        'TEST2': guard
+      }
     };
 
     new PluginManager({
@@ -177,8 +182,8 @@ describe('PluginManager', () => {
     });
     
     expect(mockHookManager.registerHook).toBeCalledTimes(2);
-    expect(mockHookManager.registerHook).toBeCalledWith('TESTING');
-    expect(mockHookManager.registerHook).toBeCalledWith('TEST2');
+    expect(mockHookManager.registerHook).toBeCalledWith('TESTING', guard);
+    expect(mockHookManager.registerHook).toBeCalledWith('TEST2', guard);
   });
 
   it('should error out with clashing plugin names', () => {

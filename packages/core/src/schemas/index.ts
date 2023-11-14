@@ -59,6 +59,7 @@ export const HijackerRequest = z.object({
 });
 
 export const Handler = z.function().args(z.any()).returns(z.unknown());
+export const HookGuard = z.function().args(z.unknown()).returns(z.boolean());
 
 export const RuleType = z.object({
   type: z.string(),
@@ -70,7 +71,7 @@ export const RuleType = z.object({
 export const Plugin =  z.object({
   name: z.string(),
   initPlugin: z.function().args(HijackerContext).returns(z.void()).optional(),
-  hooks: z.array(z.string()).optional(),
+  hooks: z.record(HookGuard).optional(),
   handlers: z.record(Handler).optional(),
   ruleTypes: z.array(RuleType).optional()
 });
@@ -86,6 +87,7 @@ export const Config = z.object({
 export type Rule = z.infer<typeof Rule>;
 export type RuleType = z.infer<typeof RuleType>;
 export type Handler = z.infer<typeof Handler>;
+export type HookGuard = z.infer<typeof HookGuard>;
 export type Plugin = z.infer<typeof Plugin>;
 export type HttpMethod = z.infer<typeof HttpMethod>;
 export type HttpRequest = z.infer<typeof HttpRequest>;

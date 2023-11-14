@@ -44,9 +44,9 @@ export class PluginManager {
   private registerPluginHooks(plugin: Plugin) {
     this.logger.log('DEBUG', '[PluginManager]', 'registerPluginHooks');
 
-    plugin.hooks?.forEach((hook) => {
-      this.context.hookManager.registerHook(hook);
-    });
+    Object.entries(plugin.hooks ?? {}).forEach(([hook, guard]) => {
+      this.context.hookManager.registerHook(hook, guard);
+    }) 
   }
 
   private registerPluginHandlers(plugin: Plugin) {
