@@ -1,6 +1,7 @@
+import { Rule } from '../../components/Rule';
+
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Rule } from '../../components/Rule';
 
 const meta: Meta<typeof Rule> = {
   title: 'Components/Rule',

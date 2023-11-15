@@ -1,5 +1,6 @@
-import type { LogLevel, LoggerOptions } from '../schemas/index.js';
 import { LOG_LEVELS } from '../schemas/index.js';
+
+import type { LogLevel, LoggerOptions } from '../schemas/index.js';
 
 export class Logger {
   level: LogLevel;

@@ -1,7 +1,8 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { RuleManager, HookManager } from './index.js';
 import { PluginManager } from './PluginManager.js';
+
+import type { RuleManager, HookManager } from './index.js';
 import type { HijackerContext, Plugin, Rule } from '../schemas/index.js';
 import type { Logger } from '../utils/index.js';
 

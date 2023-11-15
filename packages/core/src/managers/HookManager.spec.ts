@@ -75,7 +75,7 @@ describe('HookManager', () => {
     hookManager.registerHandler('REQUEST', async (val) => new Promise((resolve) => {
       setTimeout(() => {
         resolve(val + 3);
-      }, 400)
+      }, 400);
     }));
     hookManager.registerHandler('REQUEST', (val) => val * 3);
     

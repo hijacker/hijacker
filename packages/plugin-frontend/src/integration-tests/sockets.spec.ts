@@ -1,11 +1,12 @@
 import { Hijacker } from '@hijacker/core';
-import type { Config } from '@hijacker/core';
 import got from 'got';
 import nock from 'nock';
 import io from 'socket.io-client';
 import { describe, beforeAll, it, expect, beforeEach, afterEach, afterAll } from 'vitest';
 
 import { FrontendPlugin } from '../FrontendPlugin.js';
+
+import type { Config } from '@hijacker/core';
 
 describe('Socket Tests', () => {
   let hijackerServer: Hijacker;

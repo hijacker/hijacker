@@ -1,7 +1,8 @@
-import type { HttpRequest } from '@hijacker/core';
 import { describe, expect, it } from 'vitest';
 
 import { GraphQLRuleType } from './GraphQLRule.js';
+
+import type { HttpRequest } from '@hijacker/core';
 
 describe('GraphqlRule', () => {
   describe('isMatch', () => {

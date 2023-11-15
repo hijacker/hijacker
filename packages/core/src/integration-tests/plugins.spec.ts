@@ -3,6 +3,7 @@ import nock, { Scope } from 'nock';
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 import { Hijacker } from '../hijacker.js';
+
 import type { Config, HttpRequest, HttpResponse, Plugin, Rule } from '../schemas/index.js';
 
 describe('Plugin Tests', () => {

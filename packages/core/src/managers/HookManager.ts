@@ -1,6 +1,9 @@
-import type { Handler, HookGuard } from '../schemas/index.js';
+import { Config, HttpRequest, HttpResponse } from '../schemas/index.js';
 import { isPromise } from '../utils/index.js';
+
+import type { Handler, HookGuard } from '../schemas/index.js';
 import type { Logger } from '../utils/index.js';
+
 
 interface HookManagerOptions {
   logger: Logger;
@@ -23,19 +26,19 @@ export class HookManager {
       // Config modification at start
       HIJACKER_START: {
         handlers: [],
-        guard: () => true
+        guard: (config) => Config.safeParse(config).success
       },
 
-      // Request to hijacker. Handler<HijackerRequest>
+      // Request to hijacker. Handler<HttpRequest>
       HIJACKER_REQUEST: {
         handlers: [],
-        guard: () => true
+        guard: (request) => HttpRequest.safeParse(request).success
       },
 
-      // Response from hijacker. Handler<HijackerResponse>
+      // Response from hijacker. Handler<HttpResponse>
       HIJACKER_RESPONSE: {
         handlers: [],
-        guard: () => true
+        guard: (response) => HttpResponse.safeParse(response).success
       }
     };
   }
@@ -76,7 +79,7 @@ export class HookManager {
       const nextVal = await handler(val) as T;
 
       if (!guard(nextVal)) {
-        throw new Error(`A handler for ${hookName} returned an invalid value`)
+        throw new Error(`A handler for ${hookName} returned an invalid value`);
       }
       
       val = nextVal;
@@ -106,7 +109,7 @@ export class HookManager {
       }
 
       if (!guard(nextVal)) {
-        throw new Error(`A handler for ${hookName} returned an invalid value`)
+        throw new Error(`A handler for ${hookName} returned an invalid value`);
       }
       
       val = nextVal;
