@@ -1,8 +1,9 @@
+import { HistoryItem } from './History.js';
+
 import type { Rule, Config, ProcessedRule } from '@hijacker/core';
 import type { Server } from 'socket.io';
 import type { Socket } from 'socket.io-client';
 
-import { HistoryItem } from './History.js';
 
 
 export interface ClientToServerEvents {

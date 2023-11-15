@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
 import { RestRuleType } from './index.js';
+
 import type { HttpRequest } from '../schemas/index.js';
 
 describe('RestRule', () => {

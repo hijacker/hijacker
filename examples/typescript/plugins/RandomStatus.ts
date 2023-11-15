@@ -9,7 +9,7 @@ export class RandomStatusPlugin implements Plugin {
       return {
         ...response,
         statusCode: STATUS_CODES[Math.floor(Math.random()*STATUS_CODES.length)],
-      }
+      };
     }
   };
 }

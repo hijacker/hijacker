@@ -1,9 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
-
 import '../../.storybook/monaco-shim';
 
 import { HistoryItem } from '../../components/HistoryItem';
 
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof HistoryItem> = {
   title: 'Components/History/HistoryItem',

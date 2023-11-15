@@ -8,4 +8,4 @@ export default defineConfig({
   },
   rules: [],
   plugins: [new RandomStatusPlugin()]
-})
+});

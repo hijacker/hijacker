@@ -2,11 +2,12 @@ import { Server } from 'node:http';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { Handler, HijackerContext, HttpRequest, HttpResponse, Plugin, Rule, ProcessedRule } from '@hijacker/core';
 import express from 'express';
 import { Server as SocketServer } from 'socket.io';
 
 import { HijackerSocketServer, HistoryItem } from './types/index.js';
+
+import type { Handler, HijackerContext, HttpRequest, HttpResponse, Plugin, Rule, ProcessedRule } from '@hijacker/core';
 
 interface FrontendPluginOptions {
   name?: string;

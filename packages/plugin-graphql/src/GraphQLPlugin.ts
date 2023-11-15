@@ -1,6 +1,7 @@
+import { GraphQLRuleType } from './GraphQLRule.js';
+
 import type { RuleType, Plugin } from '@hijacker/core';
 
-import { GraphQLRuleType } from './GraphQLRule.js';
 
 interface GraphQLPluginOptions {
   name?: string;

@@ -4,13 +4,14 @@ import { fileURLToPath } from 'node:url';
 
 import bodyParser from 'body-parser';
 import express from 'express';
-import type { Application } from 'express';
 import xmlParser from 'express-xml-bodyparser';
 import { v4 as uuid } from 'uuid';
 
 import { RuleManager, HookManager, EventManager, PluginManager } from './managers/index.js';
-import type { Config, HijackerContext, HttpRequest, HttpResponse, HijackerRequest, HttpMethod } from './schemas/index.js';
 import { filterResponseHeaders, Logger } from './utils/index.js';
+
+import type { Config, HijackerContext, HttpRequest, HttpResponse, HijackerRequest, HttpMethod } from './schemas/index.js';
+import type { Application } from 'express';
 
 export class Hijacker {
   app: Application;

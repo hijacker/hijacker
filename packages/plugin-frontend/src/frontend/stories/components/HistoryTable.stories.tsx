@@ -1,6 +1,7 @@
+import { HistoryTable } from '../../components/HistoryTable';
+
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { HistoryTable } from '../../components/HistoryTable';
 
 const meta: Meta<typeof HistoryTable> = {
   title: 'Components/History/HistoryTable',

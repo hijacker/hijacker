@@ -1,7 +1,8 @@
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { RuleManager, HookManager } from './index.js';
 import { PluginManager } from './PluginManager.js';
+
+import type { RuleManager, HookManager } from './index.js';
 import type { HijackerContext, Plugin, Rule } from '../schemas/index.js';
 import type { Logger } from '../utils/index.js';
 
@@ -166,9 +167,14 @@ describe('PluginManager', () => {
       ruleManager: mockRuleManager
     };
 
+    const guard = () => true;
+
     const plugin = {
       name: 'TestPlugin',
-      hooks: ['TESTING', 'TEST2']
+      hooks: {
+        'TESTING': guard,
+        'TEST2': guard
+      }
     };
 
     new PluginManager({
@@ -177,8 +183,8 @@ describe('PluginManager', () => {
     });
     
     expect(mockHookManager.registerHook).toBeCalledTimes(2);
-    expect(mockHookManager.registerHook).toBeCalledWith('TESTING');
-    expect(mockHookManager.registerHook).toBeCalledWith('TEST2');
+    expect(mockHookManager.registerHook).toBeCalledWith('TESTING', guard);
+    expect(mockHookManager.registerHook).toBeCalledWith('TEST2', guard);
   });
 
   it('should error out with clashing plugin names', () => {

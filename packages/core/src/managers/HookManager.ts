@@ -1,13 +1,21 @@
-import { Handler } from '../schemas/index.js';
+import { Config, HttpRequest, HttpResponse } from '../schemas/index.js';
 import { isPromise } from '../utils/index.js';
+
+import type { Handler, HookGuard } from '../schemas/index.js';
 import type { Logger } from '../utils/index.js';
+
 
 interface HookManagerOptions {
   logger: Logger;
 }
 
+interface HookObject {
+  handlers: Handler[];
+  guard: HookGuard;
+}
+
 export class HookManager {
-  hooks: Record<string, Handler[]>;
+  hooks: Record<string, HookObject>;
   logger: Logger;
 
   constructor({ logger }: HookManagerOptions) {
@@ -16,21 +24,33 @@ export class HookManager {
     // Include default hooks
     this.hooks = {
       // Config modification at start
-      HIJACKER_START: [],
+      HIJACKER_START: {
+        handlers: [],
+        guard: (config) => Config.safeParse(config).success
+      },
 
-      // Request to hijacker. Handler<HijackerRequest>
-      HIJACKER_REQUEST: [],
+      // Request to hijacker. Handler<HttpRequest>
+      HIJACKER_REQUEST: {
+        handlers: [],
+        guard: (request) => HttpRequest.safeParse(request).success
+      },
 
-      // Response from hijacker. Handler<HijackerResponse>
-      HIJACKER_RESPONSE: []
+      // Response from hijacker. Handler<HttpResponse>
+      HIJACKER_RESPONSE: {
+        handlers: [],
+        guard: (response) => HttpResponse.safeParse(response).success
+      }
     };
   }
 
-  registerHook(hookName: string) {
+  registerHook(hookName: string, guard: HookGuard) {
     this.logger.log('DEBUG', '[HookManager]', 'registerHook');
 
     if (hookName in this.hooks === false) {
-      this.hooks[hookName] = [];
+      this.hooks[hookName] = {
+        guard,
+        handlers: []
+      };
     }
   }
 
@@ -41,17 +61,31 @@ export class HookManager {
       throw new Error(`Can't register handler for non-existant hook '${hookName}'`);
     }
 
-    this.hooks[hookName].push(handler);
+    this.hooks[hookName].handlers.push(handler);
   }
 
-  async executeHook<T = any>(hookName: string, initialVal: T | Promise<T>) {
+  async executeHook<T = any>(hookName: string, initialVal: T) {
     this.logger.log('DEBUG', '[HookManager]', 'executeHook');
 
     if (hookName in this.hooks === false) {
       throw new Error(`Can't execute non-existant hook '${hookName}'`);
     }
 
-    return await this.hooks[hookName].reduce(async (acc, cur) => cur(await acc) as T, initialVal);
+    const { handlers, guard } = this.hooks[hookName];
+
+    let val = initialVal;
+    
+    for (const handler of handlers) {
+      const nextVal = await handler(val) as T;
+
+      if (!guard(nextVal)) {
+        throw new Error(`A handler for ${hookName} returned an invalid value`);
+      }
+      
+      val = nextVal;
+    }
+    
+    return val;
   }
 
   executeSyncHook<T = any>(hookName: string, initialVal: T) {
@@ -61,14 +95,26 @@ export class HookManager {
       throw new Error(`Can't execute non-existant hook '${hookName}'`);
     }
 
-    return this.hooks[hookName].reduce((acc, cur) => {
-      const val = cur(acc);
-      
-      if (isPromise(val)) {
+    const { handlers, guard } = this.hooks[hookName];
+
+    let val = initialVal;
+
+    for (const handler of handlers) {
+      const nextVal = handler(val) as T;
+
+      // Throw errors if promise or invalid value.
+      // Could be talked into returning acc instead of throwing errors
+      if (isPromise(nextVal)) {
         throw new Error(`${hookName} can't handle async handlers`);
       }
+
+      if (!guard(nextVal)) {
+        throw new Error(`A handler for ${hookName} returned an invalid value`);
+      }
       
-      return val as T;
-    }, initialVal);
+      val = nextVal;
+    }
+    
+    return val;
   }
 }

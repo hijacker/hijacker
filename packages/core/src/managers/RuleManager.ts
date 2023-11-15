@@ -1,7 +1,8 @@
 import { v4 as uuid } from 'uuid';
 
-import type { EventManager } from './index.js';
 import { RestRuleType } from '../rules/index.js';
+
+import type { EventManager } from './index.js';
 import type { HijackerRequest, HijackerContext, HttpRequest, HttpResponse, RuleType, Rule } from '../schemas/index.js';
 import type { Logger } from '../utils/index.js';
 

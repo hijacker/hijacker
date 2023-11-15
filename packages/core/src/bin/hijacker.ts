@@ -4,10 +4,12 @@ import path from 'node:path';
 import { program } from 'commander';
 import { ZodError } from 'zod';
 
-import { ImportError, jsImporter, jsonImporter, tsImporter } from './importers/index.js';
-import { getPackageVersion } from './utils.js';
 import { Hijacker } from '../hijacker.js';
 import { Config as ConfigSchema } from '../schemas/index.js';
+
+import { ImportError, jsImporter, jsonImporter, tsImporter } from './importers/index.js';
+import { getPackageVersion } from './utils.js';
+
 import type { Config } from '../schemas/index.js';
 
 // Define CLI

@@ -29,4 +29,4 @@ export default defineConfig({
   plugins: [
     new GraphQLPlugin({})
   ]
-})
+});

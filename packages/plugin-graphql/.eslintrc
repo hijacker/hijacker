@@ -1,0 +1,3 @@
+{
+  "extends": ["@hijacker/eslint-config"]
+}
