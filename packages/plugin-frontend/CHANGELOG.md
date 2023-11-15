@@ -1,5 +1,12 @@
 # @hijacker/plugin-frontend
 
+## 1.0.0-beta.8
+
+### Patch Changes
+
+- Updated dependencies [cb43887]
+  - @hijacker/core@2.0.0-beta.12
+
 ## 1.0.0-beta.7
 
 ### Major Changes

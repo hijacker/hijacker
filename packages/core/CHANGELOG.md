@@ -1,5 +1,16 @@
 # @hijacker/core
 
+## 2.0.0-beta.12
+
+### Major Changes
+
+- cb43887: # @hijacker/core
+  Adding guards to hooks. Makes it so that the result of hook handlers must pass validation. Otherwise an error is thrown.
+
+  # @hijacker/eslint-config
+
+  Changing import order to include all groups.
+
 ## 2.0.0-beta.11
 
 ### Major Changes
